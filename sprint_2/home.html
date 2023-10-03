@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Home</title>
+    <meta charset="utf-8">
+    <style>
+        /* Styling for the toast message */
+        .toast {
+            background-color: #333;
+            color: #fff;
+            padding: 15px;
+            border-radius: 5px;
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 1;
+            display: none;
+        }
+        .body {
+            height: 1000px;
+
+            /*background-image: linear-gradient(to right bottom, #909daf, #39709a, #83a5b4, #5ba4b6, #8ad8dc);*/
+        }
+        *, *::before, *::after{
+            box-sizing: border-box;
+        }
+    </style>
+    <style>
+        body {
+            background: #e2eaef;
+            font-family: "Open Sans", sans-serif;
+        }
+        span {
+            color: #000;
+            font-size: 13px;
+            font-weight: 300;
+            text-align: center;
+            text-transform: uppercase;
+            position: relative;
+            margin: 30px 0 60px;
+        }
+        span::after {
+            content: "";
+            width: 100px;
+            position: absolute;
+            margin: 0 auto;
+            height: 4px;
+            border-radius: 1px;
+            left: 0;
+            right: 0;
+            bottom: -20px;
+        }
+        .carousel {
+            margin: 50px auto;
+            padding: 0 70px;
+        }
+        .carousel .item {
+            color: #747d89;
+            min-height: 325px;
+            text-align: center;
+            overflow: hidden;
+        }
+        .carousel .thumb-wrapper {
+            padding: 25px 15px;
+            background: #fff;
+            border-radius: 6px;
+            text-align: center;
+            position: relative;
+            box-shadow: 0 2px 3px rgba(0,0,0,0.2);
+        }
+        .carousel .item .img-box {
+            height: 120px;
+            margin-bottom: 20px;
+            width: 100%;
+            position: relative;
+        }
+        .carousel .item img {
+            max-width: 100%;
+            max-height: 100%;
+            display: inline-block;
+            position: absolute;
+            bottom: 0;
+            margin: 0 auto;
+            left: 0;
+            right: 0;
+        }
+        .carousel .item h4 {
+            font-size: 18px;
+        }
+        .carousel .item h4, .carousel .item p, .carousel .item ul {
+            margin-bottom: 5px;
+        }
+        .carousel .thumb-content .btn {
+            font-size: 11px;
+            text-transform: uppercase;
+            font-weight: bold;
+            background: none;
+            border: 1px solid ;
+            padding: 6px 14px;
+            margin-top: 5px;
+            line-height: 16px;
+            border-radius: 20px;
+        }
+        .carousel .thumb-content .btn:hover, .carousel .thumb-content .btn:focus {
+            color: #fff;
+            box-shadow: none;
+        }
+        .carousel .thumb-content .btn i {
+            font-size: 14px;
+            font-weight: bold;
+            margin-left: 5px;
+        }
+        .carousel .item-price {
+            font-size: 13px;
+            padding: 2px 0;
+        }
+        .carousel .item-price strike {
+            opacity: 0.7;
+            margin-right: 5px;
+        }
+        .carousel-control-prev i, .carousel-control-next i {
+            font-size: 36px;
+            position: absolute;
+            top: 50%;
+            display: inline-block;
+            margin: -19px 0 0 0;
+            z-index: 5;
+            left: 0;
+            right: 0;
+            color: #fff;
+            text-shadow: none;
+            font-weight: bold;
+        }
+        .carousel-control-prev i {
+            margin-left: -2px;
+        }
+        .carousel-control-next i {
+            margin-right: -4px;
+        }
+        .carousel-indicators {
+            bottom: -50px;
+        }
+        .carousel-indicators li, .carousel-indicators li.active {
+            width: 10px;
+            height: 10px;
+            margin: 4px;
+            border-radius: 50%;
+            border: none;
+        }
+        .carousel-indicators li {
+            background: rgba(0, 0, 0, 0.2);
+        }
+        .carousel-indicators li.active {
+            background: rgba(0, 0, 0, 0.6);
+        }
+        .carousel .wish-icon {
+            position: absolute;
+            right: 10px;
+            top: 10px;
+            z-index: 99;
+            cursor: pointer;
+            font-size: 16px;
+            color: #abb0b8;
+        }
+        .carousel .wish-icon .fa-heart {
+            color: #ff6161;
+        }
+        .star-rating li {
+            padding: 0;
+        }
+        .star-rating i {
+            font-size: 14px;
+            color: #ffc000;
+        }
+        nav a:hover{
+            text-decoration: underline white;
+        }
+    </style>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css">
+</head>
+<body class="body">
+<!--<%&#45;&#45;header&#45;&#45;%>-->
+<div>
+    <input type="hidden" id="status" value="${status}">
+    <nav class="navbar navbar-expand-lg navbar-light container-fluid " style="font-size: 13px;             background-image: linear-gradient(to right bottom, #051937, #194363, #36728e, #5ba4b6, #8ad8dc);
+">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/" style="color: white">PHONE STORE</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+<!--            <%&#45;&#45;        left&#45;&#45;%>-->
+            <div>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="/home" style="color: white">
+                                <i class="fa-solid fa-house-chimney"></i>
+                                Trang chủ
+                            </a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                               data-bs-toggle="dropdown" aria-expanded="false" style="color: white">
+                                <i class="fa-solid fa-book"></i>
+                                Danh mục
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <li><a class="dropdown-item" href="#">Laptop</a></li>
+                                <li><a class="dropdown-item" href="#">Phụ kiện</a></li>
+                            </ul>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown1" role="button"
+                               data-bs-toggle="dropdown" aria-expanded="false" style="color: white">
+                                <i class="fa-solid fa-location-dot"></i>
+                                Xem vị trí cửa hàng
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown1">
+                                <li><a class="dropdown-item" href="#">Đà Nẵng</a></li>
+                                <li><a class="dropdown-item" href="#">Hà Nội</a></li>
+                                <li><a class="dropdown-item" href="#">Hồ Chí Minh</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <form action="/product" method="get" class="d-flex">
+                                <input type="text" name="action" value="search" hidden>
+                                <input name="name" class="form-control me-2" type="text" placeholder="Bạn cần tìm gì?"
+                                       aria-label="Search">
+                                <button class="btn btn-outline-light" type="submit">
+                                    <i class="fa-solid fa-magnifying-glass"></i>
+                                </button>
+                            </form>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="#" style="margin-left: 10px;color: white">
+                                <span><i class="fa-solid fa-phone" style="color: white"></i></span>Liên hệ Shop
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+<!--            <%&#45;&#45;        left&#45;&#45;%>-->
+
+<!--            <%&#45;&#45;        right&#45;&#45;%>-->
+            <div>
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+<!--                        <c:if test="${sessionScope.user==null}">-->
+<!--                            <a class="nav-link active" aria-current="page" href="/login" style="color: white">-->
+<!--                                <i class="fa-solid fa-truck-fast"></i>Đơn hàng của bạn-->
+<!--                            </a>-->
+<!--                        </c:if>-->
+<!--                        <c:if test="${sessionScope.user!=null}">-->
+                            <a class="nav-link active" aria-current="page" href="/order?action=back&id=${sessionScope.user.userId}" style="color: white">
+                                <i class="fa-solid fa-truck-fast"></i>Đơn hàng của bạn
+                            </a>
+<!--                        </c:if>-->
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="/view/cart_shopping/cart.jsp"
+                           style="color: white">
+<!--                            <i class="fa-solid fa-bag-shopping" style="font-size: 20px"></i> <b style="font-size: 15px">${sessionScope.cart.itemsList.size()}</b>-->
+                        </a>
+                    </li>
+<!--                    <c:choose>-->
+<!--                        <c:when test="${sessionScope.user!=null && sessionScope.user.getRoleID()==1}">-->
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown2" role="button"
+                                   data-bs-toggle="dropdown" aria-expanded="false">
+<!--                                    <span><b style="color: white"> Xin chào ${sessionScope.user.getUserName()}</b></span>-->
+                                </a>
+                                <ul class="dropdown-menu p-0" aria-labelledby="navbarDropdown2">
+                                    <li><a class="dropdown-item" href="/customer">Quản lý khách hàng</a></li>
+                                    <li><a class="dropdown-item" href="/employee">Quản lý nhân viên</a></li>
+                                    <li><a class="dropdown-item" href="/product">Quản lý sản phẩm</a></li>
+                                    <li><a class="dropdown-item" href="/order">Quản lý đơn hàng</a></li>
+                                    <li><a class="dropdown-item" href="#">Thông tin tài khoản</a></li>
+                                    <li>
+                                        <hr class="dropdown-divider">
+                                    </li>
+                                    <li><a class="nav-link active" aria-current="page" href="/logout">
+                                        Đăng xuất
+                                    </a>
+                                    </li>
+                                </ul>
+                            </li>
+<!--                        </c:when>-->
+<!--                        <c:when test="${sessionScope.user!=null && sessionScope.user.getRoleID()==2}">-->
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown3" role="button"
+                                   data-bs-toggle="dropdown" aria-expanded="false">
+<!--                                    <span><b style="color: white;">Xin chào ${sessionScope.user.getUserName()}</b></span>-->
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="navbarDropdown3">
+                                    <li><a class="dropdown-item" href="/customer?action=detail&idAccount=${sessionScope.user.userId}">Thông tin tài khoản</a></li>
+                                    <li>
+                                        <hr class="dropdown-divider">
+                                    </li>
+                                    <li>
+                                        <a class="nav-link active" aria-current="page" href="/logout">Đăng xuất
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+<!--                        </c:when>-->
+<!--                        <c:otherwise>-->
+                            <li class="nav-item">
+                                <a class="nav-link active" aria-current="page" href="/login" style="color: white">
+                                    <i class="fa-solid fa-circle-user"></i>Đăng Nhập
+                                </a>
+                            </li>
+<!--                        </c:otherwise>-->
+<!--                    </c:choose>-->
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+<!--    <%&#45;&#45;header&#45;&#45;%>-->
+
+<!--    <%&#45;&#45;carousel&#45;&#45;%>-->
+<!--    <jsp:include page="common/carousel.jsp"></jsp:include>-->
+<!--    <%&#45;&#45;carousel&#45;&#45;%>-->
+
+<!--    <%&#45;&#45;main&#45;&#45;%>-->
+    <main>
+        <div class="container-fluid">
+            <div class="row row-cols-md-4 row-cols-sm-3 w-100 h-100" style="background-color: white;">
+<!--                <c:forEach var="element" items="${productList}">-->
+                    <div class="col col-md-3 col-sm-4" >
+                        <div class="thumb-wrapper m-3" style="">
+                            <span class="wish-icon"><i class="fa fa-heart-o"></i></span>
+                            <div class="img-box">
+                                <img src="${element.getImage()}" class="img-fluid w-100 h-75" alt="">
+                            </div>
+                            <div class="thumb-content">
+
+<!--                                <span>${element.getProductName()}</span>-->
+                                <div class="star-rating">
+                                    <ul class="list-inline">
+                                        <li class="list-inline-item"><i class="fa fa-star"></i></li>
+                                        <li class="list-inline-item"><i class="fa fa-star"></i></li>
+                                        <li class="list-inline-item"><i class="fa fa-star"></i></li>
+                                        <li class="list-inline-item"><i class="fa fa-star"></i></li>
+                                        <li class="list-inline-item"><i class="fa fa-star-o"></i></li>
+                                    </ul>
+                                </div>
+<!--                                <p class="item-price"><b>${element.getPrice()} VND</b></p>-->
+                                <a href="/cart?id=${element.getProductId()}" class="btn btn-outline-primary">Thêm vào
+                                    giỏ</a>
+                                <!-- Button trigger modal -->
+                                <button type="button" class="btn btn-primary btn-lg" data-bs-toggle="modal"
+                                        data-bs-target="#details${element.getProductId()}">
+                                    Xem chi tiết
+                                </button>
+
+                                <!-- Modal -->
+                                <div class="modal fade" id="details${element.getProductId()}" tabindex="-1" role="dialog"
+                                     aria-labelledby="modelTitleId" aria-hidden="true">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h4 class="modal-title" id="modelTitleId1">Chi tết sản phẩm</h4>
+                                                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="row">
+                                                    <div class="col-6">
+<!--                                                        <h5 class="card-title">${element.getProductName()}</h5>-->
+<!--                                                        <pre class="card-text">${element.getDescribe()}</pre>-->
+<!--                                                        <span class="item-price">-->
+<!--                                                            ${element.getPrice()}-->
+<!--                                                    </span>-->
+
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <div class="thumb-wrapper m-3" style="">
+                                                            <span class="wish-icon"><i class="fa fa-heart-o"></i></span>
+                                                            <div class="img-box">
+                                                                <img src="${element.getImage()}" class="img-fluid w-100 h-75"
+                                                                     alt="#">
+                                                            </div>
+                                                            <div class="thumb-content">
+<!--                                                                <span>${element.getProductName()}</span>-->
+                                                                <div class="star-rating">
+                                                                    <ul class="list-inline">
+                                                                        <li class="list-inline-item"><i class="fa fa-star"></i>
+                                                                        </li>
+                                                                        <li class="list-inline-item"><i class="fa fa-star"></i>
+                                                                        </li>
+                                                                        <li class="list-inline-item"><i class="fa fa-star"></i>
+                                                                        </li>
+                                                                        <li class="list-inline-item"><i class="fa fa-star"></i>
+                                                                        </li>
+                                                                        <li class="list-inline-item"><i
+                                                                                class="fa fa-star-o"></i></li>
+                                                                    </ul>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+<!--                </c:forEach>-->
+            </div>
+        </div>
+    </main>
+
+</div>
+
+<!--<%&#45;&#45;main&#45;&#45;%>-->
+
+<!--<%&#45;&#45;footer&#45;&#45;%>-->
+<!--<jsp:include page="common/footer.jsp"></jsp:include>-->
+<!--<%&#45;&#45;footer&#45;&#45;%>-->
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<link rel="stylesheet" href="alert/dist/sweetalert.css">
+<script type="text/javascript">
+    var status = document.getElementById("status").value;
+    if (status == "loginsuccess") {
+        swal("Login Successfully", " Welcome Store", "success");
+    } else if (status == "logoutsuccess") {
+        swal("Logout Successfully", "Thank you for supporting our store", "success");
+    }
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+</body>
+</html>
