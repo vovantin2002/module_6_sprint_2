@@ -426,8 +426,9 @@
 <div class="container">
   <div class="forms-container">
     <div class="signin-signup">
-      <form action="/login?action=login" class="sign-in-form" method="post">
-        <h2 class="title">Sign in</h2>
+      <form action="home.html" class="sign-in-form" method="post">
+<!--      <form action="/login?action=login" class="sign-in-form" method="post">-->
+        <h2 class="title">Đăng nhập</h2>
         <div class="input-field">
           <i class="fas fa-user"></i>
           <input type="text" placeholder="Username" name="username" required="required"/>
@@ -436,8 +437,11 @@
           <i class="fas fa-lock"></i>
           <input type="password" placeholder="Password" name="password" required="required"/>
         </div>
-        <input type="submit" value="Login" class="btn solid"/>
-        <p class="social-text">Or Sign in with social platforms</p>
+        <a href="home.html">
+          <input type="submit" value="Đăng nhập" class="btn solid"/>
+<!--        <input type="submit" value="Login" class="btn solid"/>-->
+        </a>
+        <p class="social-text">Hoặc Đăng nhập bằng nền tảng xã hội</p>
         <div class="social-media">
           <a href="#" class="social-icon">
             <i class="fab fa-facebook-f"></i>
@@ -454,7 +458,7 @@
         </div>
       </form>
       <form action="/login?action=registration" class="sign-up-form" method="post">
-        <h2 class="title">Sign up</h2>
+        <h2 class="title">Đăng ký</h2>
         <div class="input-field">
           <i class="fas fa-user"></i>
           <input type="text" placeholder="Username" name="username" required="required"/>
@@ -467,8 +471,8 @@
           <i class="fas fa-lock"></i>
           <input type="password" placeholder="Password" name="password" required="required"/>
         </div>
-        <input type="submit" class="btn" value="Sign up"/>
-        <p class="social-text">Or Sign up with social platforms</p>
+        <input type="submit" class="btn" value="Đăng ký"/>
+        <p class="social-text">Hoặc Đăng ký bằng nền tảng xã hội</p>
         <div class="social-media">
           <a href="#" class="social-icon">
             <i class="fab fa-facebook-f"></i>
@@ -489,24 +493,24 @@
   <div class="panels-container">
     <div class="panel left-panel">
       <div class="content">
-        <h3>Welcome Back</h3>
+        <h3>Chào mừng trở lại</h3>
         <p>
-          To keep with us please login with your personal info
+          Để theo dõi chúng tôi, vui lòng đăng nhập bằng thông tin cá nhân của bạn
         </p>
         <button class="btn transparent" id="sign-up-btn">
-          Sign up
+          Đăng ký
         </button>
       </div>
     </div>
     <div class="panel right-panel">
       <div class="content">
-        <h3>Hello Friend</h3>
+        <h3>Chào bạn</h3>
         <p>
-          Enter your personal details and start journey with us
+          Nhập thông tin cá nhân của bạn và bắt đầu hành trình với chúng tôi
         </p>
 
         <button class="btn transparent" id="sign-in-btn">
-          Sign in
+          Đăng nhập
         </button>
       </div>
     </div>

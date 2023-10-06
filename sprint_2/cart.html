@@ -316,26 +316,29 @@
                 <div class="col-lg-12">
                   <div class="p-5">
                     <div class="d-flex justify-content-between align-items-center mb-5">
-                      <h1 class="fw-bold mb-0 text-black">Shopping Cart</h1>
+                      <h1 class="fw-bold mb-0 text-black">Giỏ hàng</h1>
                       <h6 class="mb-0 text-muted"></h6>
                     </div>
                     <hr class="my-4">
 <!--                    <c:forEach items="${sessionScope.cart.itemsList}" var="cart">-->
                       <div class="row mb-4 d-flex justify-content-between align-items-center">
                         <div class="col-md-2 col-lg-2 col-xl-2">
-                          <img src="${cart.product.image}" class="img-fluid rounded-3"
+<!--                          <img src="${cart.product.image}" class="img-fluid rounded-3"-->
+<!--                               style="width: 150px; height: 120px">-->
+                          <img src="https://images.fpt.shop/unsafe/fit-in/214x214/filters:quality(90):fill(white)/fptshop.com.vn/Uploads/Originals/2023/9/14/638302786719525352_ip-15-pro-max-dd.jpg" class="img-fluid rounded-3"
                                style="width: 150px; height: 120px">
                         </div>
                         <div class="col-md-3 col-lg-3 col-xl-3">
-                          <h6 class="text-muted">${cart.product.productName}</h6>
+<!--                          <h6 class="text-muted">${cart.product.productName}</h6>-->
+                          <h6 class="text-muted">iPhone 15 Pro Max 256GB</h6>
                         </div>
                         <div class="col-md-3 col-lg-3 col-xl-2 d-flex">
                           <a role="button"
                              href="/cart?action=quantityMinus&id=${cart.product.productId}">
                             <i class="fas fa-minus"></i>
                           </a>
-                          <input style="width: 50px"
-                                 name="quantity" value="${cart.quantity}" type="number"
+                          <input style=" text-align: center; width: 50px"
+                                 name="quantity" value="1" type="number"
                                  readonly
                                  class="form-control form-control-sm"/>
                           <a role="button"
@@ -358,30 +361,31 @@
                       <hr class="my-4">
 <!--                    </c:forEach>-->
                     <div>
-                      <h5 style="margin-left: 700px" class="text-uppercase">Total price: ${sessionScope.cart.total} </h5>
+                      <h5 style="margin-left: 700px" class="text-uppercase">Tổng tiền: 36.490.000₫ </h5>
+<!--                      <h5 style="margin-left: 700px" class="text-uppercase">Total price: ${sessionScope.cart.total} </h5>-->
                     </div>
                     <hr class="my-4">
-<!--                    <c:if test="${sessionScope.user.userName == null && sessionScope.cart.itemsList == null}">-->
-                      <h3 style="text-align: center">Giỏ hàng trống</h3>
-<!--                    </c:if>-->
-<!--                    <c:if test="${sessionScope.user.userName == null && sessionScope.cart.itemsList != null}">-->
-                      <a role="button" class="btn btn-outline-dark" href="/login">Đặt hàng</a>
-<!--                    </c:if>-->
-<!--                    <c:if test="${sessionScope.user.userName != null}">-->
-                      <input type="hidden" value="${sessionScope.user.userId}" name="idCustomer">
-<!--                      <c:if test="${sessionScope.cart.itemsList == null}">-->
-                        <h3 style="text-align: center">Giỏ hàng trống</h3>
-<!--                      </c:if>-->
-<!--                      <c:if test="${sessionScope.cart.itemsList != null}">-->
-                        <a role="button" type="submit" class="btn btn-outline-dark" href="/order?action=create&id=${sessionScope.user.userId}"
-                           data-mdb-ripple-color="dark" style="text-align: center">Đặt hàng
-                        </a>
+<!--&lt;!&ndash;                    <c:if test="${sessionScope.user.userName == null && sessionScope.cart.itemsList == null}">&ndash;&gt;-->
+<!--                      <h3 style="text-align: center">Giỏ hàng trống</h3>-->
+<!--&lt;!&ndash;                    </c:if>&ndash;&gt;-->
+<!--&lt;!&ndash;                    <c:if test="${sessionScope.user.userName == null && sessionScope.cart.itemsList != null}">&ndash;&gt;-->
+<!--                      <a role="button" class="btn btn-outline-dark" href="/login">Đặt hàng</a>-->
+<!--&lt;!&ndash;                    </c:if>&ndash;&gt;-->
+<!--&lt;!&ndash;                    <c:if test="${sessionScope.user.userName != null}">&ndash;&gt;-->
+<!--                      <input type="hidden" value="${sessionScope.user.userId}" name="idCustomer">-->
+<!--&lt;!&ndash;                      <c:if test="${sessionScope.cart.itemsList == null}">&ndash;&gt;-->
+<!--                        <h3 style="text-align: center">Giỏ hàng trống</h3>-->
+<!--&lt;!&ndash;                      </c:if>&ndash;&gt;-->
+<!--&lt;!&ndash;                      <c:if test="${sessionScope.cart.itemsList != null}">&ndash;&gt;-->
+<!--                        <a role="button" type="submit" class="btn btn-outline-dark" href="/order?action=create&id=${sessionScope.user.userId}"-->
+<!--                           data-mdb-ripple-color="dark" style="text-align: center">Đặt hàng-->
+<!--                        </a>-->
 <!--                      </c:if>-->
 <!--                    </c:if>-->
                     <div class="pt-5">
                       <h6 class="mb-0">
-                        <a href="/home" class="text-body">
-                          <i class="fas fa-long-arrow-alt-left me-2"></i>Back to shop
+                        <a href="home.html" class="text-body">
+                          <i class="fas fa-long-arrow-alt-left me-2"></i>Quay lại trang chủ
                         </a>
                       </h6>
                     </div>
