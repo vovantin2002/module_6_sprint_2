@@ -15,9 +15,15 @@ public class Roles {
 
     @Column(name = "flag_deleted")
     private Boolean flagDeleted;
-    @ManyToOne
-    @JoinColumn(name = "account_id", referencedColumnName = "account_id")
-    private Accounts accounts;
+
+    public Roles(Integer roleId, String roleName, Boolean flagDeleted) {
+        this.roleId = roleId;
+        this.roleName = roleName;
+        this.flagDeleted = flagDeleted;
+    }
+
+    public Roles() {
+    }
 
     public Integer getRoleId() {
         return this.roleId;

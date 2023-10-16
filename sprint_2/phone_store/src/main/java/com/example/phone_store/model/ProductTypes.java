@@ -16,6 +16,15 @@ public class ProductTypes {
     @Column(name = "flag_deleted")
     private Boolean flagDeleted;
 
+    public ProductTypes(Integer productTypeId, String productTypeName, Boolean flagDeleted) {
+        this.productTypeId = productTypeId;
+        this.productTypeName = productTypeName;
+        this.flagDeleted = flagDeleted;
+    }
+
+    public ProductTypes() {
+    }
+
     public Integer getProductTypeId() {
         return this.productTypeId;
     }

@@ -1,4 +1,39 @@
 package com.example.phone_store.service.product;
 
-public class ProductService {
+import com.example.phone_store.model.Products;
+import com.example.phone_store.repository.product.IProductRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+@Service
+public class ProductService implements IProductService{
+    @Autowired
+    private IProductRepository productRepository;
+    @Override
+    public List<Products> display() {
+        return productRepository.findAll();
+    }
+
+    @Override
+    public Page<Products> displayList(Pageable pageable) {
+        return productRepository.findAll(pageable);
+    }
+
+    @Override
+    public void addNewProduct(Products products) {
+        productRepository.save(products);
+    }
+
+    @Override
+    public void editProduct(Products products) {
+        productRepository.save(products);
+    }
+
+    @Override
+    public Products findProductById(int id) {
+        return productRepository.findById(id).get();
+    }
 }

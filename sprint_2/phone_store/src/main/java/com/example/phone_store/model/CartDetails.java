@@ -6,21 +6,46 @@ import javax.persistence.*;
 @Table(name = "cart_details")
 public class CartDetails {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "cart_id")
     private Integer cartId;
-
-    @Column(name = "customer_id")
-    private Integer customerId;
-
-    @Column(name = "product_id")
-    private Integer productId;
-
     @Column(name = "quantity")
     private Integer quantity;
 
     @Column(name = "flag_deleted")
     private Boolean flagDeleted;
+    @ManyToOne
+    @JoinColumn(name = "product_id", referencedColumnName = "product_id")
+    private Products products;
+    @ManyToOne
+    @JoinColumn(name = "account_id", referencedColumnName = "account_id")
+    private Accounts accounts;
+
+    public CartDetails(Integer cartId, Integer quantity, Boolean flagDeleted, Products products, Accounts accounts) {
+        this.cartId = cartId;
+        this.quantity = quantity;
+        this.flagDeleted = flagDeleted;
+        this.products = products;
+        this.accounts = accounts;
+    }
+
+    public CartDetails() {
+    }
+
+    public Products getProducts() {
+        return products;
+    }
+
+    public void setProducts(Products products) {
+        this.products = products;
+    }
+
+    public Accounts getAccounts() {
+        return accounts;
+    }
+
+    public void setAccounts(Accounts accounts) {
+        this.accounts = accounts;
+    }
 
     public Integer getCartId() {
         return this.cartId;
@@ -28,22 +53,6 @@ public class CartDetails {
 
     public void setCartId(Integer cartId) {
         this.cartId = cartId;
-    }
-
-    public Integer getCustomerId() {
-        return this.customerId;
-    }
-
-    public void setCustomerId(Integer customerId) {
-        this.customerId = customerId;
-    }
-
-    public Integer getProductId() {
-        return this.productId;
-    }
-
-    public void setProductId(Integer productId) {
-        this.productId = productId;
     }
 
     public Integer getQuantity() {

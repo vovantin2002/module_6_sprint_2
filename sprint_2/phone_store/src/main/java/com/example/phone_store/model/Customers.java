@@ -14,7 +14,7 @@ public class Customers {
     private String name;
 
     @Column(name = "birthday")
-    private java.sql.Date birthday;
+    private String birthday;
 
     @Column(name = "address")
     private String address;
@@ -50,11 +50,11 @@ public class Customers {
         this.name = name;
     }
 
-    public java.sql.Date getBirthday() {
+    public String getBirthday() {
         return this.birthday;
     }
 
-    public void setBirthday(java.sql.Date birthday) {
+    public void setBirthday(String birthday) {
         this.birthday = birthday;
     }
 

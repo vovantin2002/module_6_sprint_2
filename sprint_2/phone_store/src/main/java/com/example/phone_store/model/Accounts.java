@@ -10,20 +10,47 @@ public class Accounts {
     @Column(name = "account_id")
     private Integer accountId;
 
-    @Column(name = "customer_id")
-    private Integer customerId;
-
     @Column(name = "username")
     private String username;
 
     @Column(name = "password")
     private String password;
 
-    @Column(name = "role_id")
-    private Integer roleId;
-
     @Column(name = "flag_deleted")
     private Boolean flagDeleted;
+    @ManyToOne
+    @JoinColumn(name = "customer_id", referencedColumnName = "customer_id")
+    private Customers customers;
+
+    public Accounts(Integer accountId, String username, String password, Boolean flagDeleted, Customers customers) {
+        this.accountId = accountId;
+        this.username = username;
+        this.password = password;
+        this.flagDeleted = flagDeleted;
+        this.customers = customers;
+    }
+
+    public Accounts() {
+    }
+
+    @Override
+    public String toString() {
+        return "Accounts{" +
+                "accountId=" + accountId +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", flagDeleted=" + flagDeleted +
+                ", customers=" + customers +
+                '}';
+    }
+
+    public Customers getCustomers() {
+        return customers;
+    }
+
+    public void setCustomers(Customers customers) {
+        this.customers = customers;
+    }
 
     public Integer getAccountId() {
         return this.accountId;
@@ -33,20 +60,12 @@ public class Accounts {
         this.accountId = accountId;
     }
 
-    public Integer getCustomerId() {
-        return this.customerId;
-    }
-
-    public void setCustomerId(Integer customerId) {
-        this.customerId = customerId;
-    }
-
     public String getUsername() {
         return this.username;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setUsername(String userName) {
+        this.username = userName;
     }
 
     public String getPassword() {
@@ -55,14 +74,6 @@ public class Accounts {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public Integer getRoleId() {
-        return this.roleId;
-    }
-
-    public void setRoleId(Integer roleId) {
-        this.roleId = roleId;
     }
 
     public Boolean getFlagDeleted() {

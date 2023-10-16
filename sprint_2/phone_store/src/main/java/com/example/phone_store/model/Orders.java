@@ -10,14 +10,8 @@ public class Orders {
     @Column(name = "order_id")
     private Integer orderId;
 
-    @Column(name = "customer_id")
-    private Integer customerId;
-
-    @Column(name = "product_id")
-    private Integer productId;
-
     @Column(name = "order_date")
-    private java.sql.Date orderDate;
+    private String orderDate;
 
     @Column(name = "total_amount")
     private Double totalAmount;
@@ -25,8 +19,27 @@ public class Orders {
     @Column(name = "flag_deleted")
     private Boolean flagDeleted;
     @ManyToOne
-    @JoinColumn(name = "customer_id", referencedColumnName = "customer_id")
-    private Customers customers;
+    @JoinColumn(name = "account_id", referencedColumnName = "account_id")
+    private Accounts accounts;
+
+    public Orders(Integer orderId, String orderDate, Double totalAmount, Boolean flagDeleted, Accounts accounts) {
+        this.orderId = orderId;
+        this.orderDate = orderDate;
+        this.totalAmount = totalAmount;
+        this.flagDeleted = flagDeleted;
+        this.accounts = accounts;
+    }
+
+    public Orders() {
+    }
+
+    public Accounts getAccounts() {
+        return accounts;
+    }
+
+    public void setAccounts(Accounts accounts) {
+        this.accounts = accounts;
+    }
 
     public Integer getOrderId() {
         return this.orderId;
@@ -36,27 +49,11 @@ public class Orders {
         this.orderId = orderId;
     }
 
-    public Integer getCustomerId() {
-        return this.customerId;
-    }
-
-    public void setCustomerId(Integer customerId) {
-        this.customerId = customerId;
-    }
-
-    public Integer getProductId() {
-        return this.productId;
-    }
-
-    public void setProductId(Integer productId) {
-        this.productId = productId;
-    }
-
-    public java.sql.Date getOrderDate() {
+    public String getOrderDate() {
         return this.orderDate;
     }
 
-    public void setOrderDate(java.sql.Date orderDate) {
+    public void setOrderDate(String orderDate) {
         this.orderDate = orderDate;
     }
 

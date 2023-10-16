@@ -6,12 +6,8 @@ import javax.persistence.*;
 @Table(name = "products")
 public class Products {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "product_id")
     private Integer productId;
-
-    @Column(name = "product_type_id")
-    private Integer productTypeId;
 
     @Column(name = "model_name")
     private String modelName;
@@ -48,9 +44,62 @@ public class Products {
 
     @Column(name = "flag_deleted")
     private Boolean flagDeleted;
+
+    @Column(name = "sim")
+    private String sim;
+
+    @Column(name = "launch_time")
+    private String launchTime;
+
+    @Column(name = "origin")
+    private String origin;
+
     @ManyToOne
     @JoinColumn(name = "product_type_id", referencedColumnName = "product_type_id")
     private ProductTypes productTypes;
+    @ManyToOne
+    @JoinColumn(name = "brand_id", referencedColumnName = "brand_id")
+    private PhoneBrands phoneBrands;
+
+    public Products(Integer productId, String modelName, String color, Double price, Integer quantity, Double screenSize, String cameraResolution, Integer storageCapacity, Integer ramCapacity, Integer batteryCapacity, String operatingSystem, String imageUrl, Boolean flagDeleted, String sim, String launchTime, String origin, ProductTypes productTypes, PhoneBrands phoneBrands) {
+        this.productId = productId;
+        this.modelName = modelName;
+        this.color = color;
+        this.price = price;
+        this.quantity = quantity;
+        this.screenSize = screenSize;
+        this.cameraResolution = cameraResolution;
+        this.storageCapacity = storageCapacity;
+        this.ramCapacity = ramCapacity;
+        this.batteryCapacity = batteryCapacity;
+        this.operatingSystem = operatingSystem;
+        this.imageUrl = imageUrl;
+        this.flagDeleted = flagDeleted;
+        this.sim = sim;
+        this.launchTime = launchTime;
+        this.origin = origin;
+        this.productTypes = productTypes;
+        this.phoneBrands = phoneBrands;
+    }
+
+    public Products() {
+    }
+
+    public ProductTypes getProductTypes() {
+        return productTypes;
+    }
+
+    public void setProductTypes(ProductTypes productTypes) {
+        this.productTypes = productTypes;
+    }
+
+    public PhoneBrands getPhoneBrands() {
+        return phoneBrands;
+    }
+
+    public void setPhoneBrands(PhoneBrands phoneBrands) {
+        this.phoneBrands = phoneBrands;
+    }
 
     public Integer getProductId() {
         return this.productId;
@@ -58,14 +107,6 @@ public class Products {
 
     public void setProductId(Integer productId) {
         this.productId = productId;
-    }
-
-    public Integer getProductTypeId() {
-        return this.productTypeId;
-    }
-
-    public void setProductTypeId(Integer productTypeId) {
-        this.productTypeId = productTypeId;
     }
 
     public String getModelName() {
@@ -162,5 +203,29 @@ public class Products {
 
     public void setFlagDeleted(Boolean flagDeleted) {
         this.flagDeleted = flagDeleted;
+    }
+
+    public String getSim() {
+        return this.sim;
+    }
+
+    public void setSim(String sim) {
+        this.sim = sim;
+    }
+
+    public String getLaunchTime() {
+        return this.launchTime;
+    }
+
+    public void setLaunchTime(String launchTime) {
+        this.launchTime = launchTime;
+    }
+
+    public String getOrigin() {
+        return this.origin;
+    }
+
+    public void setOrigin(String origin) {
+        this.origin = origin;
     }
 }

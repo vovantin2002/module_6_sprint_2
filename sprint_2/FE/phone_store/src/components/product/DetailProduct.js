@@ -1,447 +1,301 @@
+import Header from "../home/Header";
+import Footer from "../home/Footer";
+import "./DetailProduct.css";
+import axios from "axios";
+import {useEffect, useState} from "react";
+import moment from 'moment';
+import 'moment/locale/vi';
+import {useParams} from "react-router-dom"; // Import locale for Vietnamese
+moment.locale('vi'); // Set the locale to Vietnamese
+
 export default function DetailProduct() {
-    return(
+    const {id} = useParams();
+    const [reviews, setReviews] = useState([]);
+    const [product, setProducts] = useState([]);
+    const getProducts = async () => {
+        const product = await axios.get(`http://localhost:8080/api/product/${id}`)
+        setProducts(product?.data);
+    }
+    useEffect(() => {
+        getProducts();
+    }, [])
+
+    useEffect(() => {
+        // Fetch reviews from the server
+        const fetchReviews = async () => {
+            try {
+                const response = await axios.get('http://localhost:8080/api/review'); // Replace with your API endpoint
+                setReviews(response?.data.content);
+            } catch (error) {
+                console.error(error);
+            }
+        };
+
+        fetchReviews();
+    }, []);
+    const getTimeAgo = (reviewDate) => {
+        const currentTime = moment();
+        const reviewTime = moment(reviewDate);
+        const duration = moment.duration(currentTime.diff(reviewTime));
+
+        const daysAgo = duration.days(); // Số ngày trước
+        const hoursAgo = duration.hours(); // Số giờ trước
+        const minutesAgo = duration.minutes(); // Số phút trước
+
+        let humanizedDuration = '';
+
+        if (daysAgo > 0) {
+            humanizedDuration += `${daysAgo} ngày `;
+        }
+
+        if (hoursAgo > 0) {
+            humanizedDuration += `${hoursAgo} giờ `;
+        }
+
+        if (minutesAgo > 0) {
+            humanizedDuration += `${minutesAgo} phút `;
+        }
+
+        return humanizedDuration + 'trước';
+    };
+    return (
         <>
-            <div>
-                <!--<input type="hidden" id="status" value="${status}">-->
-                <!--<nav class="navbar navbar-expand-lg navbar-light container-fluid " style="font-size: 13px;             background-image: linear-gradient(to right bottom, #051937, #194363, #36728e, #5ba4b6, #8ad8dc);-->
-                <!--">-->
-                <!--    <div class="container-fluid">-->
-                <!--        <a class="navbar-brand" href="/" style="color: white">-->
-                <!--            PHONE STORE-->
-                <!--            &lt;!&ndash;                <img src="https://png.pngtree.com/png-clipart/20200727/original/pngtree-smartphone-shop-sale-logo-design-png-image_5069958.jpg" alt="" width="50" height="50">&ndash;&gt;-->
-                <!--        </a>-->
-                <!--        <button class="navbar-toggler" type="button" data-bs-toggle="collapse"-->
-                <!--                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"-->
-                <!--                aria-expanded="false" aria-label="Toggle navigation">-->
-                <!--            <span class="navbar-toggler-icon"></span>-->
-                <!--        </button>-->
-                <!--        &lt;!&ndash;            <%&#45;&#45;        left&#45;&#45;%>&ndash;&gt;-->
-                <!--        <div>-->
-                <!--            <div class="collapse navbar-collapse" id="navbarSupportedContent">-->
-                <!--                <ul class="navbar-nav me-auto mb-2 mb-lg-0">-->
-                <!--                    <li class="nav-item">-->
-                <!--                        <a class="nav-link active" aria-current="page" href="/home" style="color: white">-->
-                <!--                            <i class="fa-solid fa-house-chimney"></i>-->
-                <!--                            Trang chủ-->
-                <!--                        </a>-->
-                <!--                    </li>-->
-                <!--                    <li class="nav-item dropdown">-->
-                <!--                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"-->
-                <!--                           data-bs-toggle="dropdown" aria-expanded="false" style="color: white">-->
-                <!--                            <i class="fa-solid fa-book"></i>-->
-                <!--                            Danh mục-->
-                <!--                        </a>-->
-                <!--                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">-->
-                <!--                            <li><a class="dropdown-item" href="#">Laptop</a></li>-->
-                <!--                            <li><a class="dropdown-item" href="#">Phụ kiện</a></li>-->
-                <!--                        </ul>-->
-                <!--                    </li>-->
-                <!--                    <li class="nav-item dropdown">-->
-                <!--                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown1" role="button"-->
-                <!--                           data-bs-toggle="dropdown" aria-expanded="false" style="color: white">-->
-                <!--                            <i class="fa-solid fa-location-dot"></i>-->
-                <!--                            Xem vị trí cửa hàng-->
-                <!--                        </a>-->
-                <!--                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown1">-->
-                <!--                            <li><a class="dropdown-item" href="#">Đà Nẵng</a></li>-->
-                <!--                            <li><a class="dropdown-item" href="#">Hà Nội</a></li>-->
-                <!--                            <li><a class="dropdown-item" href="#">Hồ Chí Minh</a></li>-->
-                <!--                        </ul>-->
-                <!--                    </li>-->
-                <!--                    <li>-->
-                <!--                        <form action="/product" method="get" class="d-flex">-->
-                <!--                            <input type="text" name="action" value="search" hidden>-->
-                <!--                            <input name="name" class="form-control me-2" type="text" placeholder="Bạn cần tìm gì?"-->
-                <!--                                   aria-label="Search">-->
-                <!--                            <button class="btn btn-outline-light" type="submit">-->
-                <!--                                <i class="fa-solid fa-magnifying-glass"></i>-->
-                <!--                            </button>-->
-                <!--                        </form>-->
-                <!--                    </li>-->
-                <!--                    <li class="nav-item">-->
-                <!--                        <a class="nav-link active" aria-current="page" href="#" style="margin-left: 10px;color: white">-->
-                <!--                            <span><i class="fa-solid fa-phone" style="color: white"></i></span>Liên hệ Shop-->
-                <!--                        </a>-->
-                <!--                    </li>-->
-                <!--                </ul>-->
-                <!--            </div>-->
-                <!--        </div>-->
-                <!--        &lt;!&ndash;            <%&#45;&#45;        left&#45;&#45;%>&ndash;&gt;-->
-
-                <!--        &lt;!&ndash;            <%&#45;&#45;        right&#45;&#45;%>&ndash;&gt;-->
-                <!--        <div>-->
-                <!--            <ul class="navbar-nav me-auto mb-2 mb-lg-0">-->
-                <!--                <li class="nav-item">-->
-                <!--                    &lt;!&ndash;                        <c:if test="${sessionScope.user==null}">&ndash;&gt;-->
-                <!--                    &lt;!&ndash;                            <a class="nav-link active" aria-current="page" href="/login" style="color: white">&ndash;&gt;-->
-                <!--                    &lt;!&ndash;                                <i class="fa-solid fa-truck-fast"></i>Đơn hàng của bạn&ndash;&gt;-->
-                <!--                    &lt;!&ndash;                            </a>&ndash;&gt;-->
-                <!--                    &lt;!&ndash;                        </c:if>&ndash;&gt;-->
-                <!--                    &lt;!&ndash;                        <c:if test="${sessionScope.user!=null}">&ndash;&gt;-->
-                <!--                    <a class="nav-link active" aria-current="page" href="/order?action=back&id=${sessionScope.user.userId}" style="color: white">-->
-                <!--                        <i class="fa-solid fa-truck-fast"></i>Đơn hàng của bạn-->
-                <!--                    </a>-->
-                <!--                    &lt;!&ndash;                        </c:if>&ndash;&gt;-->
-                <!--                </li>-->
-                <!--                <li class="nav-item">-->
-                <!--                    <a class="nav-link active" aria-current="page" href="/view/cart_shopping/cart.jsp"-->
-                <!--                       style="color: white">-->
-                <!--                        &lt;!&ndash;                            <i class="fa-solid fa-bag-shopping" style="font-size: 20px"></i> <b style="font-size: 15px">${sessionScope.cart.itemsList.size()}</b>&ndash;&gt;-->
-                <!--                    </a>-->
-                <!--                </li>-->
-                <!--                &lt;!&ndash;                    <c:choose>&ndash;&gt;-->
-                <!--                &lt;!&ndash;                        <c:when test="${sessionScope.user!=null && sessionScope.user.getRoleID()==1}">&ndash;&gt;-->
-                <!--                <li class="nav-item dropdown">-->
-                <!--                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown2" role="button"-->
-                <!--                       data-bs-toggle="dropdown" aria-expanded="false">-->
-                <!--                        &lt;!&ndash;                                    <span><b style="color: white"> Xin chào ${sessionScope.user.getUserName()}</b></span>&ndash;&gt;-->
-                <!--                    </a>-->
-                <!--                    <ul class="dropdown-menu p-0" aria-labelledby="navbarDropdown2">-->
-                <!--                        <li><a class="dropdown-item" href="/customer">Quản lý khách hàng</a></li>-->
-                <!--                        <li><a class="dropdown-item" href="/employee">Quản lý nhân viên</a></li>-->
-                <!--                        <li><a class="dropdown-item" href="/product">Quản lý sản phẩm</a></li>-->
-                <!--                        <li><a class="dropdown-item" href="/order">Quản lý đơn hàng</a></li>-->
-                <!--                        <li><a class="dropdown-item" href="#">Thông tin tài khoản</a></li>-->
-                <!--                        <li>-->
-                <!--                            <hr class="dropdown-divider">-->
-                <!--                        </li>-->
-                <!--                        <li><a class="nav-link active" aria-current="page" href="/logout">-->
-                <!--                            Đăng xuất-->
-                <!--                        </a>-->
-                <!--                        </li>-->
-                <!--                    </ul>-->
-                <!--                </li>-->
-                <!--                &lt;!&ndash;                        </c:when>&ndash;&gt;-->
-                <!--                &lt;!&ndash;                        <c:when test="${sessionScope.user!=null && sessionScope.user.getRoleID()==2}">&ndash;&gt;-->
-                <!--                <li class="nav-item dropdown">-->
-                <!--                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown3" role="button"-->
-                <!--                       data-bs-toggle="dropdown" aria-expanded="false">-->
-                <!--                        &lt;!&ndash;                                    <span><b style="color: white;">Xin chào ${sessionScope.user.getUserName()}</b></span>&ndash;&gt;-->
-                <!--                    </a>-->
-                <!--                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown3">-->
-                <!--                        <li><a class="dropdown-item" href="/customer?action=detail&idAccount=${sessionScope.user.userId}">Thông tin tài khoản</a></li>-->
-                <!--                        <li>-->
-                <!--                            <hr class="dropdown-divider">-->
-                <!--                        </li>-->
-                <!--                        <li>-->
-                <!--                            <a class="nav-link active" aria-current="page" href="/logout">Đăng xuất-->
-                <!--                            </a>-->
-                <!--                        </li>-->
-                <!--                    </ul>-->
-                <!--                </li>-->
-                <!--                &lt;!&ndash;                        </c:when>&ndash;&gt;-->
-                <!--                &lt;!&ndash;                        <c:otherwise>&ndash;&gt;-->
-                <!--                <li class="nav-item">-->
-                <!--                    <a class="nav-link active" aria-current="page" href="/login" style="color: white">-->
-                <!--                        <i class="fa-solid fa-circle-user"></i>Đăng Nhập-->
-                <!--                    </a>-->
-                <!--                </li>-->
-                <!--                &lt;!&ndash;                        </c:otherwise>&ndash;&gt;-->
-                <!--                &lt;!&ndash;                    </c:choose>&ndash;&gt;-->
-                <!--            </ul>-->
-                <!--        </div>-->
-                <!--    </div>-->
-                <!--</nav>-->
-                <div>
-                    <input type="hidden" id="status" value="${status}">
-                        <nav className="navbar navbar-expand-lg navbar-light container-fluid " style="font-size: 13px;             background-image: linear-gradient(to right bottom, #051937, #194363, #36728e, #5ba4b6, #8ad8dc);
-">
-                            <div className="container-fluid">
-                                <a className="navbar-brand" href="/" style="color: white">
-                                    PHONE STORE
-                                    <!--                <img src="https://png.pngtree.com/png-clipart/20200727/original/pngtree-smartphone-shop-sale-logo-design-png-image_5069958.jpg" alt="" width="50" height="50">-->
-                                </a>
-                                <button className="navbar-toggler" type="button" data-bs-toggle="collapse"
-                                        data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
-                                        aria-expanded="false" aria-label="Toggle navigation">
-                                    <span className="navbar-toggler-icon"></span>
-                                </button>
-                                <!--            <%&#45;&#45;        left&#45;&#45;%>-->
-                                <div>
-                                    <div className="collapse navbar-collapse" id="navbarSupportedContent">
-                                        <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-                                            <li className="nav-item">
-                                                <a className="nav-link active" aria-current="page" href="/home"
-                                                   style="color: white">
-                                                    <i className="fa-solid fa-house-chimney"></i>
-                                                    Trang chủ
-                                                </a>
-                                            </li>
-                                            <li className="nav-item dropdown">
-                                                <a className="nav-link dropdown-toggle" href="#" id="navbarDropdown"
-                                                   role="button"
-                                                   data-bs-toggle="dropdown" aria-expanded="false" style="color: white">
-                                                    <i className="fa-solid fa-book"></i>
-                                                    Danh mục
-                                                </a>
-                                                <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
-                                                    <li><a className="dropdown-item" href="#">Điện thoại</a></li>
-                                                    <li><a className="dropdown-item" href="#">Phụ kiện</a></li>
-                                                </ul>
-                                            </li>
-                                            <li className="nav-item dropdown">
-                                                <a className="nav-link dropdown-toggle" href="#" id="navbarDropdown1"
-                                                   role="button"
-                                                   data-bs-toggle="dropdown" aria-expanded="false" style="color: white">
-                                                    <i className="fa-solid fa-location-dot"></i>
-                                                    Xem vị trí cửa hàng
-                                                </a>
-                                                <ul className="dropdown-menu" aria-labelledby="navbarDropdown1">
-                                                    <li><a className="dropdown-item" href="#">Đà Nẵng</a></li>
-                                                    <li><a className="dropdown-item" href="#">Hà Nội</a></li>
-                                                    <li><a className="dropdown-item" href="#">Hồ Chí Minh</a></li>
-                                                </ul>
-                                            </li>
-                                            <li>
-                                                <form action="/product" method="get" className="d-flex">
-                                                    <input type="text" name="action" value="search" hidden>
-                                                        <input name="name" className="form-control me-2" type="text"
-                                                               placeholder="Bạn cần tìm gì?"
-                                                               aria-label="Search">
-                                                            <button className="btn btn-outline-light" type="submit">
-                                                                <i className="fa-solid fa-magnifying-glass"></i>
-                                                            </button>
-                                                </form>
-                                            </li>
-                                            <li className="nav-item">
-                                                <a className="nav-link active" aria-current="page" href="#"
-                                                   style="margin-left: 10px;color: white">
-                                                    <span><i className="fa-solid fa-phone"
-                                                             style="color: white"></i></span>Liên hệ Shop
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-                                <!--            <%&#45;&#45;        left&#45;&#45;%>-->
-
-                                <!--            <%&#45;&#45;        right&#45;&#45;%>-->
-                                <div>
-                                    <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-                                        <li className="nav-item">
-                                            <!--                        <c:if test="${sessionScope.user==null}">-->
-                                            <!--                            <a class="nav-link active" aria-current="page" href="/login" style="color: white">-->
-                                            <!--                                <i class="fa-solid fa-truck-fast"></i>Đơn hàng của bạn-->
-                                            <!--                            </a>-->
-                                            <!--                        </c:if>-->
-                                            <!--                        <c:if test="${sessionScope.user!=null}">-->
-                                            <a className="nav-link active" aria-current="page"
-                                               href="/order?action=back&id=${sessionScope.user.userId}"
-                                               style="color: white">
-                                                <i className="fa-solid fa-truck-fast"></i>Đơn hàng của bạn
-                                            </a>
-                                            <!--                        </c:if>-->
-                                        </li>
-                                        <li className="nav-item">
-                                            <a className="nav-link active" aria-current="page"
-                                               href="/view/cart_shopping/cart.jsp"
-                                               style="color: white">
-                                                <!--                            <i class="fa-solid fa-bag-shopping" style="font-size: 20px"></i> <b style="font-size: 15px">${sessionScope.cart.itemsList.size()}</b>-->
-                                            </a>
-                                        </li>
-                                        <!--                    <c:choose>-->
-                                        <!--                        <c:when test="${sessionScope.user!=null && sessionScope.user.getRoleID()==1}">-->
-                                        <li className="nav-item dropdown">
-                                            <a className="nav-link dropdown-toggle" href="#" id="navbarDropdown2"
-                                               role="button"
-                                               data-bs-toggle="dropdown" aria-expanded="false">
-                                                <!--                                    <span><b style="color: white"> Xin chào ${sessionScope.user.getUserName()}</b></span>-->
-                                            </a>
-                                            <ul className="dropdown-menu p-0" aria-labelledby="navbarDropdown2">
-                                                <li><a className="dropdown-item" href="/customer">Quản lý khách hàng</a>
-                                                </li>
-                                                <li><a className="dropdown-item" href="/employee">Quản lý nhân viên</a>
-                                                </li>
-                                                <li><a className="dropdown-item" href="/product">Quản lý sản phẩm</a>
-                                                </li>
-                                                <li><a className="dropdown-item" href="/order">Quản lý đơn hàng</a></li>
-                                                <li><a className="dropdown-item" href="#">Thông tin tài khoản</a></li>
-                                                <li>
-                                                    <hr className="dropdown-divider">
-                                                </li>
-                                                <li><a className="nav-link active" aria-current="page" href="/logout">
-                                                    Đăng xuất
-                                                </a>
-                                                </li>
-                                            </ul>
-                                        </li>
-                                        <!--                        </c:when>-->
-                                        <!--                        <c:when test="${sessionScope.user!=null && sessionScope.user.getRoleID()==2}">-->
-                                        <li className="nav-item dropdown">
-                                            <a className="nav-link dropdown-toggle" href="#" id="navbarDropdown3"
-                                               role="button"
-                                               data-bs-toggle="dropdown" aria-expanded="false">
-                                                <!--                                    <span><b style="color: white;">Xin chào ${sessionScope.user.getUserName()}</b></span>-->
-                                            </a>
-                                            <ul className="dropdown-menu" aria-labelledby="navbarDropdown3">
-                                                <li><a className="dropdown-item"
-                                                       href="/customer?action=detail&idAccount=${sessionScope.user.userId}">Thông
-                                                    tin tài
-                                                    khoản</a></li>
-                                                <li>
-                                                    <hr className="dropdown-divider">
-                                                </li>
-                                                <li>
-                                                    <a className="nav-link active" aria-current="page" href="/logout">Đăng
-                                                        xuất
-                                                    </a>
-                                                </li>
-                                            </ul>
-                                        </li>
-                                        <!--                        </c:when>-->
-                                        <!--                        <c:otherwise>-->
-                                        <li className="nav-item">
-                                            <a className="nav-link active" aria-current="page" href="/login"
-                                               style="color: white">
-                                                <i className="fa-solid fa-circle-user"></i>Đăng Nhập
-                                            </a>
-                                        </li>
-                                        <!--                        </c:otherwise>-->
-                                        <!--                    </c:choose>-->
-                                    </ul>
-                                </div>
+        <Header></Header>
+        <div style={{backgroundColor: "#f8f9fa"}}>
+            <div className="container">
+                <h4><b>iPhone 15 Pro Max 256GB</b></h4>
+                <hr/>
+                <div className="row">
+                    <div className="product row">
+                        <div className="product-image col-6" style={{textAlign: "center"}}>
+                            <img style={{width: "60%"}}
+                                 src="https://images.fpt.shop/unsafe/fit-in/214x214/filters:quality(90):fill(white)/fptshop.com.vn/Uploads/Originals/2023/9/14/638302786719525352_ip-15-pro-max-dd.jpg"
+                                 alt="Phone"/>
+                            <br/>
+                            <div className="product-price">
+                                <b><h4 style={{
+                                    color: "#cb1c22", fontSizeize: "28px;",
+                                    fontWeighteight: "500;",
+                                    lineHeight: "36px;"
+                                }}>36.490.000₫</h4></b>
                             </div>
-                        </nav>
-                        <div className="container">
-                            <h1><b>iPhone 15 Pro Max 256GB</b></h1>
-                            <hr>
-                                <div className="row">
-                                    <div className="product row">
-                                        <div className="product-image col-6">
-                                            <img
-                                                src="https://images.fpt.shop/unsafe/fit-in/214x214/filters:quality(90):fill(white)/fptshop.com.vn/Uploads/Originals/2023/9/14/638302786719525352_ip-15-pro-max-dd.jpg"
-                                                alt="Phone">
-                                                <br>
-                                                    <div className="product-price">36.490.000₫</div>
-                                                    <a href="cart.html" className="product-button">Thêm vào giỏ hàng</a>
-                                        </div>
-                                        <div className="product-details col-6">
-                                            <!--                    <div class="product-title">Điện thoại XYZ</div>-->
-                                            <!--                    <div class="product-description">Mô tả sản phẩm điện thoại XYZ.</div>-->
-                                            <div className="card re-card st-card"><h1 className="card-title"><b>Thông số
-                                                kỹ thuật</b></h1>
-                                                <div className="card-body">
-                                                    <table className="st-pd-table">
-                                                        <tbody>
-                                                        <tr>
-                                                            <td>Màn hình</td>
-                                                            <td>6.7 inch, OLED, Super Retina XDR, 2796 x 1290 Pixels
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Camera sau</td>
-                                                            <td>48.0 MP + 12.0 MP + 12.0 MP</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Camera Selfie</td>
-                                                            <td>12.0 MP</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>RAM</td>
-                                                            <td>8 GB</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Bộ nhớ trong</td>
-                                                            <td>256 GB</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>CPU</td>
-                                                            <td>Apple A17 Pro</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Dung lượng pin</td>
-                                                            <td>29 Giờ</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Thẻ sim</td>
-                                                            <td>1 - 1 eSIM, 1 Nano SIM</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Hệ điều hành</td>
-                                                            <td>iOS 17</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Xuất xứ</td>
-                                                            <td>Trung Quốc</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Thời gian ra mắt</td>
-                                                            <td>09/2023</td>
-                                                        </tr>
-                                                        </tbody>
-                                                    </table>
-                                                    <div className="st-pd-table-viewDetail"><a href="#"
-                                                                                               className="re-link js--open-modal">Xem
-                                                        cấu hình chi
-                                                        tiết <span className="carret"></span></a></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                            <button style={{backgroundColor: "#cb1c22", color: "white"}}
+                                    className="btn btn-primary btn-xl btn-full" id="btn-buy-now">
+                                <div><strong>THÊM VÀO GIỎ HÀNG</strong></div>
+                            </button>
+                            {/*<h5><Link href="cart.html" className="product-button">Thêm vào giỏ hàng</Link></h5>*/}
 
-                                </div>
                         </div>
-                </div>
-                <footer>
-                    <div className="container-fluid">
-                        <div className="row" style="background-color: #f2f2f2; margin-top: 15px">
-                            <div className="col-6 d-flex justify-content-center">
-                                <div style="padding: 20px;"><h5>Follow this page</h5></div>
-                                <div style="padding: 20px;">
-                                    <a href="https://www.facebook.com/" style="color: black"><i
-                                        className="fa-brands fa-facebook-f"></i></a>
-                                    <a href="https://twitter.com/?lang=vi" style="color: black"><i
-                                        className="fa-brands fa-twitter"></i></a>
-                                    <a href="https://www.instagram.com/" style="color: black"><i
-                                        className="fa-brands fa-instagram"></i></a>
-                                    <a href="https://www.linkedin.com/?original_referer=https%3A%2F%2Fwww.google.com%2F"
-                                       style="color: black"><i className="fa-brands fa-invision"></i></a>
-                                </div>
-                            </div>
-                            <div className="col-6 d-flex justify-content-center">
-                                <div style="padding: 20px;"><h5>Share this page </h5></div>
-                                <div style="padding: 20px;">
-                                    <a href="https://www.facebook.com/" style="color: black"><i
-                                        className="fa-brands fa-facebook-f"></i></a>
-                                    <a href="https://twitter.com/?lang=vi" style="color: black"><i
-                                        className="fa-brands fa-twitter"></i></a>
-                                    <a href="https://www.linkedin.com/?original_referer=https%3A%2F%2Fwww.google.com%2F"
-                                       style="color: black"><i className="fa-brands fa-invision"></i></a>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="row footer d-flex text-center" id="footer"
-                             style="background-color: #f2f2f2; font-size: 15px">
-                            <div className="col-3 size">
-                                <div><h5> PHONE STORE </h5></div>
-                                <div>Tận tâm phục vụ</div>
-                                <div>Ưu đãi tốt nhất</div>
-                            </div>
-                            <div className="col-3 size">
-                                <div><i className="fa-solid fa-headphones"></i>Tổng đài hỗ trợ miễn phí</div>
-                                <div><a href="#"><i className="fa-solid fa-phone-volume"></i>Gọi mua hàng 19005508</a>
-                                </div>
-                                <div><a href="#"><i className="fa-solid fa-phone-volume"></i>Gọi khiếu nại 19003508</a>
-                                </div>
-                                <div><a href="#"><i className="fa-solid fa-phone-volume"></i>Gọi bảo hành 19001508</a>
-                                </div>
-                            </div>
-                            <div className="col-3 size">
-                                <div><a href="#"><i className="fa-solid fa-file-pen"></i>Chính sách bảo hành</a></div>
-                                <div><a href="#"><i className="fa-solid fa-money-check-dollar"></i>Chính sách thanh toán</a>
-                                </div>
-                                <div><a href="#"><i className="fa-brands fa-usps"></i>Chính sách giao hàng</a></div>
-                                <div><a href="#"><i className="fa-solid fa-user-secret"></i>Chính sách bảo mật</a></div>
-                            </div>
-                            <div className="col-3">
-                                <img
-                                    src="https://theme.hstatic.net/1000026716/1000440777/14/20150827110756-dathongbao.png"
-                                    style="width: 100%">
+                        <div className="product-details col-6">
+                            {/*// <!--                    <div class="product-title">Điện thoại XYZ</div>-->*/}
+                            {/*// <!--                    <div class="product-description">Mô tả sản phẩm điện thoại XYZ.</div>-->*/}
+                            <div className="card re-card st-card">
+                                <h5 className="card-title" style={{marginLeft: "10px", marginTop: "16px"}}><b>Thông
+                                    số kỹ thuật</b></h5>
+                                <div className="card-body"
+                                     style={{backgroundColor: "#f8f9fa", marginLeft: "10px", marginTop: "16px"}}>
+                                    <table className="st-pd-table">
+                                        <tbody>
+                                        <tr style={{borderSpacing: "10px;"}}>
+                                            <td>Màn hình</td>
+                                            <td style={{paddingLeft:"10px"}}>{product.screenSize} inch
+                                            </td>
+                                        </tr>
+                                        <tr style={{height:"8px"}}></tr>
+                                        <tr style={{paddingBottom:"20px"}}>
+                                            <td>Camera sau</td>
+                                            <td style={{paddingLeft:"10px"}}>{product.cameraResolution} MP</td>
+                                        </tr>
+                                        <tr style={{height:"8px"}}></tr>
+                                        <tr style={{paddingBottom:"20px"}}>
+                                            <td>RAM</td>
+                                            <td style={{paddingLeft:"10px"}}>{product.ramCapacity} GB</td>
+                                        </tr>
+                                        <tr style={{height:"8px"}}></tr>
+                                        <tr style={{paddingBottom:"20px"}}>
+                                            <td>Bộ nhớ trong</td>
+                                            <td style={{paddingLeft:"10px"}}>{product.storageCapacity} GB</td>
+                                        </tr>
+                                        <tr style={{height:"8px"}}></tr>
+                                        <tr style={{paddingBottom:"20px"}}>
+                                            <td>Dung lượng pin</td>
+                                            <td style={{paddingLeft:"10px"}}>{product.batteryCapacity} Giờ</td>
+                                        </tr>
+                                        <tr style={{height:"8px"}}></tr>
+                                        <tr style={{paddingBottom:"20px"}}><td>Thẻ sim</td>
+                                            <td style={{paddingLeft:"10px"}}>{product.sim}</td>
+                                            {/*<td style={{paddingLeft:"10px"}}>1 - 1 eSIM, 1 Nano SIM </td>*/}
+                                        </tr>
+                                        <tr style={{height:"8px"}}></tr>
+                                        <tr style={{paddingBottom:"20px"}}>
+                                            <td>Hệ điều hành</td>
+                                            <td style={{paddingLeft:"10px"}}>{product.operatingSystem}</td>
+                                        </tr>
+                                        <tr style={{height:"8px"}}></tr>
+                                        <tr style={{paddingBottom:"20px"}}><td>Xuất xứ</td>
+                                            <td style={{paddingLeft:"10px"}}>{product.origin}</td>
+                                            {/*<td style={{paddingLeft:"10px"}}>Trung Quốc </td>*/}
+                                        </tr>
+                                        <tr style={{height:"8px"}}></tr>
+                                        <tr style={{paddingBottom:"20px"}}><td>Thời gian ra mắt</td>
+                                            <td style={{paddingLeft:"10px"}}>{product.launchTime}</td>
+                                        </tr>
+                                        {/* Các thông tin khác */}
+                                        </tbody>
+                                    </table>
+                                    {/*<div className="st-pd-table-viewDetail">*/}
+                                    {/*    <a href="#" className="re-link js--open-modal">Xem cấu hình chi tiết <span*/}
+                                    {/*        className="carret"></span></a>*/}
+                                    {/*</div>*/}
+                                {/*<div className="st-pd-table-viewDetail"><a href="#"*/}
+                                {/*                                           className="re-link js--open-modal">Xem*/}
+                                {/*    cấu hình chi*/}
+                                {/*    tiết <span className="carret"></span></a></div>*/}
                             </div>
                         </div>
                     </div>
-                </footer>
+                </div>
+
             </div>
-        </>
-    )
+        </div>
+        <div className={"card re-card st-card"}
+             style={{marginTop: "30px", marginLeft: "30px", marginBottom: "30px"}}>
+            <div className="card-title" style={{marginLeft: "15px", marginTop: "15px"}}>
+                <h3 className="h5 heading">Đánh giá sản phẩm </h3>
+            </div>
+            <hr/>
+            <div className="user-rate__box" style={{
+                padding: "16px 0;", margin: " 0;",
+                // padding:" 0;",
+                border: "0;",
+                fontSizeize: "100%;",
+                fontWeight: "normal",
+                verticalAlign: "baseline",
+                background: "transparent",
+                marginLeft: "15px"
+            }}>
+                <div className="row">
+                    <div className="col-4">
+                        <div className="star" style={{textAlign: "center"}}>
+                            <div className="text f-s-p-16">Đánh Giá Trung Bình</div>
+                            <div className="f-s-ui-44 text-primary f-w-500 m-t-4"><h1
+                                style={{color: "#cb1c22"}}>5/5</h1></div>
+                            <div className="tin">
+                                {/*<input type="radio" name="rating" id="star5" value="5"/>*/}
+                                <label htmlFor="star5"></label>
+                                {/*<input type="radio" name="rating" id="star4" value="4"/>*/}
+                                <label htmlFor="star4"></label>
+                                {/*<input type="radio" name="rating" id="star3" value="3"/>*/}
+                                <label htmlFor="star3"></label>
+                                {/*<input type="radio" name="rating" id="star2" value="2"/>*/}
+                                <label htmlFor="star2"></label>
+                                {/*<input type="radio" name="rating" id="star1" value="1"/>*/}
+                                <label htmlFor="star1"></label>
+                            </div>
+                            <div className="text text-grayscale m-t-4">45 đánh giá</div>
+                        </div>
+                    </div>
+                    <div className="col-4">
+                        <div className="progress-block">
+                            <div className="progress-block__line"><span className="text">5</span><span
+                                className="cm-ic-star cm-ic-color-warning cm-ic-xs m-x-4"></span>
+                                <div className="progress progress-success progress-sm progress-line">
+                                    <div className="progress-bar" style={{width: "82%;"}}></div>
+                                </div>
+                                <span className="text m-l-4">37</span></div>
+                            <div className="progress-block__line"><span className="text">4</span><span
+                                className="cm-ic-star cm-ic-color-warning cm-ic-xs m-x-4"></span>
+                                <div className="progress progress-success progress-sm progress-line">
+                                    <div className="progress-bar" style={{width: "18%;"}}></div>
+                                </div>
+                                <span className="text m-l-4">8</span></div>
+                            <div className="progress-block__line"><span className="text">3</span><span
+                                className="cm-ic-star cm-ic-color-warning cm-ic-xs m-x-4"></span>
+                                <div className="progress progress-success progress-sm progress-line">
+                                    <div className="progress-bar" style={{width: "0%;"}}></div>
+                                </div>
+                                <span className="text m-l-4">0</span></div>
+                            <div className="progress-block__line"><span className="text">2</span><span
+                                className="cm-ic-star cm-ic-color-warning cm-ic-xs m-x-4"></span>
+                                <div className="progress progress-success progress-sm progress-line">
+                                    <div className="progress-bar" style={{width: "0%;"}}></div>
+                                </div>
+                                <span className="text m-l-4">0</span></div>
+                            <div className="progress-block__line"><span className="text">1</span><span
+                                className="cm-ic-star cm-ic-color-warning cm-ic-xs m-x-4"></span>
+                                <div className="progress progress-success progress-sm progress-line">
+                                    <div className="progress-bar" style={{width: "0%;"}}></div>
+                                </div>
+                                <span className="text m-l-4">0</span></div>
+                        </div>
+                    </div>
+                    <div className="col-4">
+                        <div className="action">
+                            <div className="text">Bạn đã dùng sản phẩm này?</div>
+                            <a className="btn btn-primary btn-lg m-t-8" aria-controls="comment-rate-invalid">GỬI
+                                ĐÁNH GIÁ</a></div>
+                    </div>
+                </div>
+            </div>
+
+            {/*<h1>Đánh giá sản phẩm</h1>*/}
+            {reviews.map((review) => (
+                <div key={review.reviewId} className={"row"} style={{marginLeft: "10px", marginBottom: "30px"}}>
+                    <div className={"col-1"}
+                         style={{
+                             width: '40px',
+                             height: '40px',
+                             borderRadius: '50%',
+                             backgroundColor: '#cbd1d6',
+                             display: 'flex',
+                             justifyContent: 'center',
+                             alignItems: 'center',
+                             color: 'white',
+                             fontWeight: 'bold',
+                         }}
+                    >
+                        {review.customers.name
+                            .split(' ')
+                            .map((word) => word[0])
+                            .join('')}
+                    </div>
+
+                    <div className={"col-11"}>
+                        <h5>{review.customers.name}</h5>
+                        {Array.from({length: 5}, (_, index) => (
+                            <span
+                                key={index}
+                                style={{
+                                    color: review.rating >= index + 1 ? '#efb140' : '#cbd1d6',
+                                    fontSize: review.rating >= index + 1 ? '24px' : '20px',
+                                    fontWeight: "900;",
+                                    content: "\f005",
+                                    fontFamily: "Font Awesome 5 Free",
+                                    // fontSize: "inherit;",
+                                    display: "inline-block;"
+                                }}
+                            >
+                                        {review.rating >= index + 1 ? '\u2605' : '\u2606'}
+                                    </span>
+                        ))}
+                        <div>{review.reviewText}</div>
+                        <div className={"row"}>{getTimeAgo(review.reviewDate)}
+                            {/*<div style={{ display: "inline-block" }}>*/}
+                            <div className={"col-4"}>
+                                {/*<li></li>*/}
+                                <div className="link link-xs" style={{ color: "blue" }}>Thích  Trả lời</div>
+                                {/*<li></li>*/}
+                                <div className="link link-xs" aria-controls="comment-reply-invalid" style={{ color: "blue" }}></div>
+                            </div>
+                            <div className={"col-8"}></div>
+                        </div>
+
+                    </div>
+                </div>
+            ))}
+        </div>
+        </div>
+    <Footer></Footer>
+</>
+)
 }
