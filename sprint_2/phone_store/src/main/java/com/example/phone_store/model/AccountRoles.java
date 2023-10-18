@@ -6,6 +6,7 @@ import javax.persistence.*;
 @Table(name = "account_roles")
 public class AccountRoles {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "account_roles_id")
     private Integer accountRolesId;
     @Column(name = "flag_deleted")

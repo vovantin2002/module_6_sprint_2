@@ -32,7 +32,7 @@ export default function Footer() {
                     <div className="row footer d-flex text-center" id="footer"
                          style={{ backgroundColor: '#f2f2f2', fontSize: '15px' }}>
                         <div className="col-3 size">
-                            <div><h5> PHONE STORE </h5></div>
+                            <div><h5>VVT SHOP</h5></div>
                             <div>Tận tâm phục vụ</div>
                             <div>Ưu đãi tốt nhất</div>
                         </div>

@@ -1,10 +1,55 @@
+import {useState} from "react";
+import axios from "axios";
+import Product from "../product/Product";
+import {useNavigate} from "react-router-dom";
+
+export const name = async () => {
+    let name = document.getElementById("name").value;
+    console.log(name)
+    return name;
+}
 export default function Header() {
+    const [products, setProducts] = useState([]);
+    const [searchTerm, setSearchTerm] = useState('');
+    const navigate = useNavigate();
+    const [isLoggedIn, setIsLoggedIn] = useState(false); // Trạng thái đăng nhập
+    const [username, setUsername] = useState(''); // Tên người dùng
+
+    const handleLogin = () => {
+        // Logic đăng nhập
+        setIsLoggedIn(true);
+        setUsername('John Doe'); // Thay thế 'John Doe' bằng tên người dùng thực tế
+    };
+
+    const handleLogout = () => {
+        // Logic đăng xuất
+        setIsLoggedIn(false);
+        setUsername('');
+    };
+
+    const handleSearch = async (event) => {
+        event.preventDefault();
+        navigate(`/product?term=${encodeURIComponent(searchTerm)}`);
+        // const result = await axios.get(`http://localhost:8080/api/product?modelName=${searchTerm}&productTypes=&minPrice=&maxPrice=&phoneBrands=&page=0&size=8`);
+        // await console.log(result.data.content);
+        // await setProducts(result?.data.content);
+
+        // onSearch(searchTerm);
+    };
     return (
         <>
-            <nav className="navbar navbar-expand-lg navbar-light container-fluid" style={{ fontSize: '13px', backgroundImage: 'linear-gradient(to right bottom, #051937, #194363, #36728e, #5ba4b6, #8ad8dc)' }}>
+            {/*<div>*/}
+            {/*    {*/}
+            {/*        <Product props={searchTerm}></Product>*/}
+            {/*    }*/}
+            {/*</div>*/}
+            <nav className="navbar navbar-expand-lg navbar-light container-fluid" style={{
+                fontSize: '13px',
+                backgroundImage: 'linear-gradient(to right bottom, #051937, #194363, #36728e, #5ba4b6, #8ad8dc)'
+            }}>
                 <div className="container-fluid">
                     <a className="navbar-brand" href="/home" style={{color: "white"}}>
-                        PHONE STORE
+                        VVT SHOP
                         {/*// <!--                <img src="https://png.pngtree.com/png-clipart/20200727/original/pngtree-smartphone-shop-sale-logo-design-png-image_5069958.jpg" alt="" width="50" height="50">-->*/}
                     </a>
                     <button className="navbar-toggler" type="button" data-bs-toggle="collapse"
@@ -47,9 +92,11 @@ export default function Header() {
                                     </ul>
                                 </li>
                                 <li>
-                                    <form action="/product" method="get" className="d-flex">
+                                    <form action="/product" method="get" className="d-flex" onSubmit={handleSearch}>
                                         <input type="text" name="action" value="search" hidden/>
-                                        <input name="name" className="form-control me-2" type="text"
+                                        <input name="name" id="name" className="form-control me-2" type="text"
+                                               value={searchTerm}
+                                               onChange={(event) => setSearchTerm(event.target.value)}
                                                placeholder="Bạn cần tìm gì?"
                                                aria-label="Search"/>
                                         <button className="btn btn-outline-light" type="submit">
@@ -59,8 +106,9 @@ export default function Header() {
                                 </li>
                                 <li className="nav-item">
                                     <a className="nav-link active" aria-current="page" href="#"
-                                       style={{ marginLeft: "10px", color: "white" }}>
-                                        <span><i className="fa-solid fa-phone" style={{color: "white"}}></i></span>Liên hệ
+                                       style={{marginLeft: "10px", color: "white"}}>
+                                        <span><i className="fa-solid fa-phone" style={{color: "white"}}></i></span>Liên
+                                        hệ
                                         Shop
                                     </a>
                                 </li>
@@ -80,8 +128,8 @@ export default function Header() {
                                 {/*// <!--                        </c:if>-->*/}
                                 {/*// <!--                        <c:if test="${sessionScope.user!=null}">-->*/}
                                 <a className="nav-link active" aria-current="page"
-                                   href="/order?action=back&id=${sessionScope.user.userId}" style={{color: "white"}}>
-                                    <i className="fa-solid fa-truck-fast"></i>Đơn hàng của bạn
+                                   href="/cart" style={{color: "white"}}>
+                                    <i className="fa-solid fa-cart-shopping"></i>Đơn hàng của bạn
                                 </a>
                                 {/*// <!--                        </c:if>-->*/}
                             </li>
@@ -136,12 +184,30 @@ export default function Header() {
                             </li>
                             {/*// <!--                        </c:when>-->*/}
                             {/*// <!--                        <c:otherwise>-->*/}
-                            <li className="nav-item">
-                                <a className="nav-link active" aria-current="page" href="login.html"
-                                   style={{color: "white"}}>
-                                    <i className="fa-solid fa-circle-user"></i>Đăng Nhập
-                                </a>
-                            </li>
+                            <ul>
+                                {isLoggedIn ? (
+                                    <li className="nav-item">
+                                        <span className="nav-link" style={{color: 'white'}}>
+                                          <i className="fa-solid fa-circle-user"></i>
+                                            {username}
+                                        </span>
+                                        <button className="btn" onClick={handleLogout}>
+                                            Đăng Xuất
+                                        </button>
+                                    </li>
+                                ) : (
+                                    <li className="nav-item">
+                                        <a
+                                            className="nav-link active"
+                                            aria-current="page"
+                                            href="/"
+                                            style={{color: 'white'}}
+                                        >
+                                            <i className="fa-solid fa-circle-user"></i>Đăng Nhập
+                                        </a>
+                                    </li>
+                                )}
+                            </ul>
                             {/*// <!--                        </c:otherwise>-->*/}
                             {/*// <!--                    </c:choose>-->*/}
                         </ul>

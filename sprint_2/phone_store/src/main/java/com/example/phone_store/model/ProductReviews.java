@@ -6,6 +6,7 @@ import javax.persistence.*;
 @Table(name = "product_reviews")
 public class ProductReviews {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "review_id")
     private Integer reviewId;
 

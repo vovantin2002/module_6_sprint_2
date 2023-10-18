@@ -8,13 +8,25 @@ import 'bootstrap-icons/font/bootstrap-icons.css';
 
 export default function Home() {
     const [products, setProducts] = useState([]);
+    const [productsNew, setProductsNew] = useState([]);
     const getProducts = async () => {
         const product = await axios.get("http://localhost:8080/api/product")
         setProducts(product?.data.content);
     }
+    const getNewProducts = async () => {
+        const product = await axios.get("http://localhost:8080/api/product?page=0&size=4")
+        setProductsNew(product?.data.content);
+    }
     useEffect(() => {
         getProducts();
     }, [])
+    useEffect(() => {
+        getNewProducts();
+    }, [])
+    function formatPrice(price) {
+        const formatter = new Intl.NumberFormat('vi-VN');
+        return formatter.format(price);
+    }
     return (
         <>
             <div id="home">
@@ -164,16 +176,16 @@ export default function Home() {
                             <div className="box-container cate-box cat-prd box-pad15 bg-white mb24">
 
                                 <div className="row cat-prd-oustanding margin-18">
-                                    <div className="col-11 title f20"><h5>ĐIỆN THOẠI NỔI BẬT</h5></div>
-                                    <div className="col-1 cat-prd-tabs"><a href="/dien-thoai"><small>Xem tất cả</small></a>
+                                    <div className="col-11 title f20"><h5>SẢN PHẨM NỐI BẬT</h5></div>
+                                    <div className="col-1 cat-prd-tabs"><a href="/product"><small>Xem tất cả</small></a>
                                     </div>
                                 </div>
 
 
                                 <div className="row product-list">
-                                    {products.map((product, index) => (
+                                    {productsNew.map((product, index) => (
                                         <div className="col-3 cdt-product" style={{marginTop: "20px;"}} key={index}>
-                                            <div className="cdt-product__img">
+                                            <div className="cdt-product__img"  style={{textAlign:"center",marginTop: "10px;"}}>
                                                 <a href={`product/${product.productId}`}>
                                               <span
                                                   className=" lazy-load-image-background opacity lazy-load-image-loaded">
@@ -183,36 +195,23 @@ export default function Home() {
                                                 </a>
                                             </div>
                                             <div className="cdt-product__info">
-                                                <h3>
-                                                    <a href={product.link} title={product.modelName}
-                                                       className="cdt-product__name">
-                                                        {product.modelName}
-                                                    </a>
-                                                </h3>
-                                                <div className="cdt-product__price">
+                                                <h6 style={{fontWeight:"bold"}}>
+                                                    {/*<a href={product.link} title={product.modelName}*/}
+                                                    {/*   className="cdt-product__name">*/}
+                                                    {product.modelName}
+                                                    {/*</a>*/}
+                                                </h6>
+                                                <div className="cdt-product__price" style={{marginBottom:"10px"}}>
                                                     <div className="tcdm text-left">
-                                                        <div className="price">{product.price}</div>
+                                                        <div className="price">{formatPrice(product.price)} đ</div>
                                                     </div>
                                                 </div>
                                                 <div className="cdt-product__config list-layout">
-                                                    <div className="cdt-product__config__param">
-                                                        {/*<span data-title="CPU">*/}
-                                                        {/*  <i className="icon-cpu"></i>*/}
-                                                        {/*    {product.cpu}*/}
-                                                        {/*</span>*/}
-                                                        <span data-title="Màn hình">
-                                                          <i className="icon-mobile"></i>
-                                                                                                    {product.screenSize}
-                                                            </span>
-                                                                                                    <span data-title="RAM">
-                                                              <i className="icon-ram"></i>
-                                                                                                        {product.ramCapacity}
-                                                            </span>
-                                                                                                    <span data-title="Bộ nhớ trong">
-                                                              <i className="icon-hdd-black"></i>
-                                                                                                        {product.storageCapacity}
-                                                            </span>
-                                                    </div>
+                                                    <div className="product__badge" style={{display:"flex"}}>
+                                                        <p
+                                                            className="product__more-info__item">{product.screenSize} inches</p><p
+                                                        className="product__more-info__item">{product.ramCapacity} GB</p><p
+                                                        className="product__more-info__item">{product.storageCapacity} GB</p></div>
                                                 </div>
                                                 <div className="cdt-product__btn">
                                                     <a href={product.link} className="btn btn-primary btn-sm btn-main">
@@ -229,7 +228,8 @@ export default function Home() {
                                 </div>
                             </div>
                             <div className="container-fluid">
-                                <div className="row" style={{backgroundColor: "#ffd391", marginTop: "10px"}}>
+                                <div className="row"
+                                     style={{backgroundColor: "#ffd391", marginTop: "10px", borderRadius: "10px"}}>
                                     <div>
                                         <div className="col-12" style={{textAlignlign: "center", marginTopop: "15px"}}>
                                             <img src="https://cdn2.cellphones.com.vn/600x,webp/media/wysiwyg/hst.png"/>
@@ -320,6 +320,73 @@ export default function Home() {
                                             </div>
                                         </div>
                                     </div>
+                                </div>
+                            </div>
+                            <div>
+                                <span className=" lazy-load-image-background opacity lazy-load-image-loaded"
+                                      style={{
+                                          display: "inline-block",
+                                          height: "200px",
+                                          marginTop: "20px",
+                                          marginBottom: "20px",
+                                          borderRadius: "10px"
+                                      }}><img style={{borderRadius: "10px"}}
+                                              src="https://images.fpt.shop/unsafe/fit-in/1200x200/filters:quality(90):fill(white)/fptshop.com.vn/Uploads/Originals/2023/9/30/638317084560547430_F-H5_1200x200.png"
+                                              alt="H5_Tab A8 Wifi" title="H5_Tab A8 Wifi" height="200"/></span>
+                            </div>
+                            {/*sản phẩm mới nhất*/}
+                            <div className="box-container cate-box cat-prd box-pad15 bg-white mb24">
+
+                                <div className="row cat-prd-oustanding margin-18">
+                                    <div className="col-11 title f20"><h5>SẢN PHẨM MỚI NHẤT</h5></div>
+                                    {/*<div className="col-1 cat-prd-tabs"><a href="/product"><small>Xem tất cả</small></a>*/}
+                                    {/*</div>*/}
+                                </div>
+
+
+                                <div className="row product-list">
+                                    {productsNew.map((product, index) => (
+                                        <div className="col-3 cdt-product" style={{marginTop: "20px;"}} key={index}>
+                                            <div className="cdt-product__img"  style={{textAlign:"center",marginTop: "10px;"}}>
+                                                <a href={`product/${product.productId}`}>
+                                              <span
+                                                  className=" lazy-load-image-background opacity lazy-load-image-loaded">
+                                                <img className={"image-home"} src={product?.imageUrl}
+                                                     alt={product.modelName} title={product.modelName} height="214"/>
+                                              </span>
+                                                </a>
+                                            </div>
+                                            <div className="cdt-product__info">
+                                                <h6 style={{fontWeight:"bold"}}>
+                                                    {/*<a href={product.link} title={product.modelName}*/}
+                                                    {/*   className="cdt-product__name">*/}
+                                                        {product.modelName}
+                                                    {/*</a>*/}
+                                                </h6>
+                                                <div className="cdt-product__price" style={{marginBottom:"10px"}}>
+                                                    <div className="tcdm text-left">
+                                                        <div className="price">{formatPrice(product.price)} đ</div>
+                                                    </div>
+                                                </div>
+                                                <div className="cdt-product__config list-layout">
+                                                    <div className="product__badge" style={{display:"flex"}}>
+                                                        <p
+                                                            className="product__more-info__item">{product.screenSize} inches</p><p
+                                                        className="product__more-info__item">{product.ramCapacity} GB</p><p
+                                                        className="product__more-info__item">{product.storageCapacity} GB</p></div>
+                                                </div>
+                                                <div className="cdt-product__btn">
+                                                    <a href={product.link} className="btn btn-primary btn-sm btn-main">
+                                                        MUA NGAY
+                                                    </a>
+                                                    {/*<a href={product.compareLink}*/}
+                                                    {/*   className="btn btn-secondary btn-sm btn-sub">*/}
+                                                    {/*    SO SÁNH*/}
+                                                    {/*</a>*/}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    ))}
                                 </div>
                             </div>
                         </div>

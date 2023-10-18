@@ -6,6 +6,7 @@ import javax.persistence.*;
 @Table(name = "cart_details")
 public class CartDetails {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "cart_id")
     private Integer cartId;
     @Column(name = "quantity")

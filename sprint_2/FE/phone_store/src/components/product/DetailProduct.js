@@ -63,13 +63,13 @@ export default function DetailProduct() {
         <Header></Header>
         <div style={{backgroundColor: "#f8f9fa"}}>
             <div className="container">
-                <h4><b>iPhone 15 Pro Max 256GB</b></h4>
+                <h4><b>{product.modelName}</b></h4>
                 <hr/>
                 <div className="row">
                     <div className="product row">
                         <div className="product-image col-6" style={{textAlign: "center"}}>
                             <img style={{width: "60%"}}
-                                 src="https://images.fpt.shop/unsafe/fit-in/214x214/filters:quality(90):fill(white)/fptshop.com.vn/Uploads/Originals/2023/9/14/638302786719525352_ip-15-pro-max-dd.jpg"
+                                 src={product.imageUrl}
                                  alt="Phone"/>
                             <br/>
                             <div className="product-price">
@@ -175,7 +175,7 @@ export default function DetailProduct() {
                 marginLeft: "15px"
             }}>
                 <div className="row">
-                    <div className="col-4">
+                    <div className="col-4" style={{marginBottom:"20px"}}>
                         <div className="star" style={{textAlign: "center"}}>
                             <div className="text f-s-p-16">Đánh Giá Trung Bình</div>
                             <div className="f-s-ui-44 text-primary f-w-500 m-t-4"><h1
@@ -196,45 +196,46 @@ export default function DetailProduct() {
                         </div>
                     </div>
                     <div className="col-4">
-                        <div className="progress-block">
-                            <div className="progress-block__line"><span className="text">5</span><span
-                                className="cm-ic-star cm-ic-color-warning cm-ic-xs m-x-4"></span>
-                                <div className="progress progress-success progress-sm progress-line">
-                                    <div className="progress-bar" style={{width: "82%;"}}></div>
-                                </div>
-                                <span className="text m-l-4">37</span></div>
-                            <div className="progress-block__line"><span className="text">4</span><span
-                                className="cm-ic-star cm-ic-color-warning cm-ic-xs m-x-4"></span>
-                                <div className="progress progress-success progress-sm progress-line">
-                                    <div className="progress-bar" style={{width: "18%;"}}></div>
-                                </div>
-                                <span className="text m-l-4">8</span></div>
-                            <div className="progress-block__line"><span className="text">3</span><span
-                                className="cm-ic-star cm-ic-color-warning cm-ic-xs m-x-4"></span>
-                                <div className="progress progress-success progress-sm progress-line">
-                                    <div className="progress-bar" style={{width: "0%;"}}></div>
-                                </div>
-                                <span className="text m-l-4">0</span></div>
-                            <div className="progress-block__line"><span className="text">2</span><span
-                                className="cm-ic-star cm-ic-color-warning cm-ic-xs m-x-4"></span>
-                                <div className="progress progress-success progress-sm progress-line">
-                                    <div className="progress-bar" style={{width: "0%;"}}></div>
-                                </div>
-                                <span className="text m-l-4">0</span></div>
-                            <div className="progress-block__line"><span className="text">1</span><span
-                                className="cm-ic-star cm-ic-color-warning cm-ic-xs m-x-4"></span>
-                                <div className="progress progress-success progress-sm progress-line">
-                                    <div className="progress-bar" style={{width: "0%;"}}></div>
-                                </div>
-                                <span className="text m-l-4">0</span></div>
-                        </div>
+                        {/*<div className="progress-block">*/}
+                        {/*    <div className="progress-block__line"><span className="text">5</span><span*/}
+                        {/*        className="cm-ic-star cm-ic-color-warning cm-ic-xs m-x-4"></span>*/}
+                        {/*        <div className="progress progress-success progress-sm progress-line">*/}
+                        {/*            <div className="progress-bar" style={{width: "82%;"}}></div>*/}
+                        {/*        </div>*/}
+                        {/*        <span className="text m-l-4">37</span></div>*/}
+                        {/*    <div className="progress-block__line"><span className="text">4</span><span*/}
+                        {/*        className="cm-ic-star cm-ic-color-warning cm-ic-xs m-x-4"></span>*/}
+                        {/*        <div className="progress progress-success progress-sm progress-line">*/}
+                        {/*            <div className="progress-bar" style={{width: "18%;"}}></div>*/}
+                        {/*        </div>*/}
+                        {/*        <span className="text m-l-4">8</span></div>*/}
+                        {/*    <div className="progress-block__line"><span className="text">3</span><span*/}
+                        {/*        className="cm-ic-star cm-ic-color-warning cm-ic-xs m-x-4"></span>*/}
+                        {/*        <div className="progress progress-success progress-sm progress-line">*/}
+                        {/*            <div className="progress-bar" style={{width: "0%;"}}></div>*/}
+                        {/*        </div>*/}
+                        {/*        <span className="text m-l-4">0</span></div>*/}
+                        {/*    <div className="progress-block__line"><span className="text">2</span><span*/}
+                        {/*        className="cm-ic-star cm-ic-color-warning cm-ic-xs m-x-4"></span>*/}
+                        {/*        <div className="progress progress-success progress-sm progress-line">*/}
+                        {/*            <div className="progress-bar" style={{width: "0%;"}}></div>*/}
+                        {/*        </div>*/}
+                        {/*        <span className="text m-l-4">0</span></div>*/}
+                        {/*    <div className="progress-block__line"><span className="text">1</span><span*/}
+                        {/*        className="cm-ic-star cm-ic-color-warning cm-ic-xs m-x-4"></span>*/}
+                        {/*        <div className="progress progress-success progress-sm progress-line">*/}
+                        {/*            <div className="progress-bar" style={{width: "0%;"}}></div>*/}
+                        {/*        </div>*/}
+                        {/*        <span className="text m-l-4">0</span></div>*/}
+                        {/*</div>*/}
                     </div>
-                    <div className="col-4">
+                    <div className="col-4" style={{textAlign:"center"}}>
                         <div className="action">
                             <div className="text">Bạn đã dùng sản phẩm này?</div>
-                            <a className="btn btn-primary btn-lg m-t-8" aria-controls="comment-rate-invalid">GỬI
+                            <a style={{marginTop:"10px"}} className="btn btn-primary btn-lg m-t-8" aria-controls="comment-rate-invalid">GỬI
                                 ĐÁNH GIÁ</a></div>
                     </div>
+                    <hr/>
                 </div>
             </div>
 

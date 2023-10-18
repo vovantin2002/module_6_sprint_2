@@ -70,3 +70,38 @@
     background-color: #FEA116;
     border-color: #FEA116;
 }
+.product__more-info__item {
+    border: 1px solid #d1d5db;
+    border-radius: 5px;
+    color: #3a3a3a;
+    font-size: 11px;
+    margin-right: 10px;
+    padding: 1px 5px;
+}
+
+.cdt-product__price .price {
+    font-size: 18px;
+    font-weight: 700;
+    color: #cb1c22;
+    line-height: normal;
+}
+.cdt-product {
+    /*text-align: center;*/
+    border: 1px solid transparent; /* Khung viền mặc định không hiển thị */
+}
+
+.cdt-product:hover {
+    border-radius: 10px;
+    border-color: #d1d5db; /* Màu khung viền khi hover (#000 - đen) */
+}
+.cdt-product__img{
+    text-align: center;
+    margin-top: 10px;
+}
+/*.cdt-product__btn  {*/
+/*    display: none; !* Ẩn nút mua ngay mặc định *!*/
+/*}*/
+
+/*.cdt-product__btn:hover  {*/
+/*    display: inline-block; !* Hiển thị nút mua ngay khi hover *!*/
+/*}*/

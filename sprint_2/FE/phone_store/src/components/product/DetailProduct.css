@@ -120,6 +120,10 @@ html, body, body .fpt-comment div {
 .tin {
     color: #efb140;
 }
+
+.custom-checkbox input[type="checkbox"]:checked + label {
+    background-color: red; /* Màu đỏ */
+}
 /*.progress-block__line{*/
 /*    display: flex;*/
 /*    align-items: center;*/

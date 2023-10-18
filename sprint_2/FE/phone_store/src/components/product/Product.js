@@ -3,31 +3,73 @@ import Footer from "../home/Footer";
 import {useEffect, useState} from "react";
 import axios from "axios";
 import "./DetailProduct.css";
-import {Carousel} from 'react-responsive-carousel';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
-import {Link} from "react-router-dom";
-
+import "./DetailProduct.css"
+import { useLocation } from 'react-router-dom';
 
 export default function Product() {
+    const location = useLocation();
+    const searchParams = new URLSearchParams(location.search);
+    const searchTerm = searchParams.get('term');
     const [products, setProducts] = useState([]);
-    const getProducts = async () => {
-        const product = await axios.get("http://localhost:8080/api/product")
-        setProducts(product?.data.content);
+    const [priceRange, setPriceRange] = useState('');
+    const [selectedBrands, setSelectedBrands] = useState('');
+
+    const handlePriceChange = (event) => {
+        const value = event.target.value;
+        setPriceRange(value);
+    };
+    function formatPrice(price) {
+        const formatter = new Intl.NumberFormat('vi-VN');
+        return formatter.format(price);
     }
+
+    const getMinMaxValues = () => {
+        if (priceRange) {
+            const [min, max] = priceRange.split('-');
+            return {min, max};
+        }
+        return {min: '', max: ''};
+    };
+
+    const {min, max} = getMinMaxValues();
+
+    const handleBrandChange = (event) => {
+        const value = event.target.value;
+        console.log(value)
+        setSelectedBrands(value);
+        console.log(selectedBrands)
+    };
+
+    const search = async (searchTerm,min,max, selectedBrands) => {
+        console.log(min)
+        console.log(max)
+        console.log(selectedBrands)
+        const result = await axios.get(`http://localhost:8080/api/product?modelName=${searchTerm}&productTypes=&minPrice=${min}&maxPrice=${max}&phoneBrands=${selectedBrands}&page=0&size=9`);
+        await console.log(result.data.content);
+        await setProducts(result?.data.content);
+    };
+
     useEffect(() => {
-        getProducts();
-    }, [])
+        search(searchTerm,min,max,selectedBrands);
+    }, [searchTerm,min, max, selectedBrands])
     return (
         <>
             <Header></Header>
             <div style={{backgroundColor: "#f8f9fa"}}>
                 <div id="carouselExampleFade" className="carousel slide carousel-fade w-100"
                      data-bs-ride="carousel" data-bs-interval="3000"
-                     style={{marginTop: "20px", marginBottom: "20px", marginLeft: "20px", marginRight: "20px", borderRadius:"10px"}}>
+                     style={{
+                         marginTop: "20px",
+                         marginBottom: "20px",
+                         marginLeft: "20px",
+                         marginRight: "20px",
+                         borderRadius: "10px"
+                     }}>
                     <div id="myCarousel" className="carousel slide" data-bs-ride="carousel">
                         <div className="carousel-inner">
                             {/*// <!-- Đây là các mục trong carousel -->*/}
-                            <div className="carousel-item active" style={{ borderRadius:"10px"}}>
+                            <div className="carousel-item active" style={{borderRadius: "10px"}}>
                                 <img
                                     src="https://images.fpt.shop/unsafe/fit-in/1200x300/filters:quality(90):fill(white)/fptshop.com.vn/Uploads/Originals/2023/10/11/638326123868033069_F-C1_1200x300.png"
                                     className="d-block w-100" alt="Image 1"/>
@@ -43,28 +85,7 @@ export default function Product() {
                                     className="d-block w-100" alt="Image 3"/>
                             </div>
                         </div>
-
-                        {/*// <!-- Đây là các nút điều khiển carousel -->*/}
-                        {/*<a className="carousel-control-prev" href="#myCarousel" role="button" data-bs-slide="prev">*/}
-                        {/*    <span className="carousel-control-prev-icon" aria-hidden="true"></span>*/}
-                        {/*    <span className="visually-hidden">Previous</span>*/}
-                        {/*</a>*/}
-                        {/*<a className="carousel-control-next" href="#myCarousel" role="button" data-bs-slide="next">*/}
-                        {/*    <span className="carousel-control-next-icon" aria-hidden="true"></span>*/}
-                        {/*    <span className="visually-hidden">Next</span>*/}
-                        {/*</a>*/}
                     </div>
-                    {/*<Carousel>*/}
-                    {/*    <div>*/}
-                    {/*        <img src="https://images.fpt.shop/unsafe/fit-in/1200x300/filters:quality(90):fill(white)/fptshop.com.vn/Uploads/Originals/2023/10/11/638326123868033069_F-C1_1200x300.png" alt="Image 1" />*/}
-                    {/*    </div>*/}
-                    {/*    <div>*/}
-                    {/*        <img src="https://images.fpt.shop/unsafe/fit-in/1200x300/filters:quality(90):fill(white)/fptshop.com.vn/Uploads/Originals/2023/10/11/638326123868033069_F-C1_1200x300.png" alt="Image 2" />*/}
-                    {/*    </div>*/}
-                    {/*    <div>*/}
-                    {/*        <img src="https://images.fpt.shop/unsafe/fit-in/1200x300/filters:quality(90):fill(white)/fptshop.com.vn/Uploads/Originals/2023/10/11/638326123868033069_F-C1_1200x300.png" alt="Image 3" />*/}
-                    {/*    </div>*/}
-                    {/*</Carousel>*/}
                     <div id="carouselExampleFade" className="carousel slide carousel-fade w-100"
                          data-bs-ride="carousel" data-bs-interval="3000" style={{marginTop: "-5px"}}>
                         <div className="carousel-inner">
@@ -241,127 +262,264 @@ export default function Product() {
                 </div>
                 <div className={"row"} style={{marginTop: "20px"}}>
                     <div className={"col-3"} style={{marginTop: "20px"}}>
-                        <div className="cdt-filter__block" style={{marginBottom: "20px"}}>
+                        <div className="cdt-filter__block" style={{marginLeft:"10px",marginBottom: "20px"}}>
                             <div className="cdt-filter__title" data-toggle="collapse" data-target="#hang-san-xuat"
                                  aria-expanded="true"><b><h5>Hãng sản xuất</h5></b>
+
                             </div>
-                            <div className="cdt-filter__checklist listfilterv4 filterBrand" data-query="hang-san-xuat"
-                                 data-level="-1">
-                                <div data-search="" data-value="" data-id="0"
-                                     className="checkbox checkboxAll frowitem  active"><a title="Tất cả"><i
-                                    className="iconcate-checkbox"></i>Tất cả</a></div>
-                                <div data-search="Apple (iPhone)apple (iphone)APPLE (IPHONE)" data-name="Apple (iPhone)"
-                                     data-value="apple-iphone" className="checkbox frowitem"><a
-                                    data-value="apple-iphone"
-                                    data-id="157"
-                                    title="Apple (iPhone)"
-                                    href="/dien-thoai/apple-iphone?sort=ban-chay-nhat"><i
-                                    className="iconcate-checkbox"></i><label>Apple (iPhone)</label></a></div>
-                                <div data-search="SamsungsamsungSAMSUNG" data-name="Samsung" data-value="samsung"
-                                     className="checkbox frowitem"><a data-value="samsung" data-id="159" title="Samsung"
-                                                                      href="/dien-thoai/samsung?sort=ban-chay-nhat"><i
-                                    className="iconcate-checkbox"></i><label>Samsung</label></a></div>
-                                <div data-search="OppooppoOPPO" data-name="Oppo" data-value="oppo"
-                                     className="checkbox frowitem"><a data-value="oppo" data-id="403" title="Oppo"
-                                                                      href="/dien-thoai/oppo?sort=ban-chay-nhat"><i
-                                    className="iconcate-checkbox"></i><label>Oppo</label></a></div>
-                                <div data-search="XiaomixiaomiXIAOMI" data-name="Xiaomi" data-value="xiaomi"
-                                     className="checkbox frowitem"><a data-value="xiaomi" data-id="1933" title="Xiaomi"
-                                                                      href="/dien-thoai/xiaomi?sort=ban-chay-nhat"><i
-                                    className="iconcate-checkbox"></i><label>Xiaomi</label></a></div>
-                                <div data-search="HonorhonorHONOR" data-name="Honor" data-value="honor"
-                                     className="checkbox frowitem"><a data-value="honor" data-id="2060" title="Honor"
-                                                                      href="/dien-thoai/honor?sort=ban-chay-nhat"><i
-                                    className="iconcate-checkbox"></i><label>Honor</label></a></div>
-                                <div data-search="realmerealmeREALME" data-name="realme" data-value="realme"
-                                     className="checkbox frowitem"><a data-value="realme" data-id="2119" title="realme"
-                                                                      href="/dien-thoai/realme?sort=ban-chay-nhat"><i
-                                    className="iconcate-checkbox"></i><label>realme</label></a></div>
-                                <div data-search="VivovivoVIVO" data-name="Vivo" data-value="vivo"
-                                     className="checkbox frowitem"><a data-value="vivo" data-id="1701" title="Vivo"
-                                                                      href="/dien-thoai/vivo?sort=ban-chay-nhat"><i
-                                    className="iconcate-checkbox"></i><label>Vivo</label></a></div>
-                                <div data-search="AsusasusASUS" data-name="Asus" data-value="asus"
-                                     className="checkbox frowitem"><a data-value="asus" data-id="163" title="Asus"
-                                                                      href="/dien-thoai/asus?sort=ban-chay-nhat"><i
-                                    className="iconcate-checkbox"></i><label>Asus</label></a></div>
-                                <div data-search="MasstelmasstelMASSTEL" data-name="Masstel" data-value="masstel"
-                                     className="checkbox frowitem"><a data-value="masstel" data-id="456" title="Masstel"
-                                                                      href="/dien-thoai/masstel?sort=ban-chay-nhat"><i
-                                    className="iconcate-checkbox"></i><label>Masstel</label></a></div>
-                                <div data-search="NokianokiaNOKIA" data-name="Nokia" data-value="nokia"
-                                     className="checkbox frowitem"><a data-value="nokia" data-id="161" title="Nokia"
-                                                                      href="/dien-thoai/nokia?sort=ban-chay-nhat"><i
-                                    className="iconcate-checkbox"></i><label>Nokia</label></a></div>
-                            </div>
-                        </div>
-                        <div className="cdt-filter__block">
-                            <div className="cdt-filter__title" data-toggle="collapse" data-target="#muc-gia"
-                                 aria-expanded="true"><b><h5>Mức giá</h5></b>
-                            </div>
-                            <div className="cdt-filter__checklist listfilterv4 filterPrice" data-query="muc-gia">
-                                <div data-search="" data-value="" data-id="0"
-                                     className="checkbox checkboxAll frowitem  active"><a title="Tất cả"><i
-                                    className="iconcate-checkbox"></i>Tất cả</a></div>
-                                <div data-search="Dưới 2 triệudưới 2 triệuDƯỚI 2 TRIỆU" data-name="Dưới 2 triệu"
-                                     data-value="duoi-2-trieu" className="checkbox frowitem"><a
-                                    data-value="duoi-2-trieu"
-                                    data-id="0"
-                                    title="Dưới 2 triệu"
-                                    href="/dien-thoai/duoi-2-trieu?sort=ban-chay-nhat"><i
-                                    className="iconcate-checkbox"></i><label>Dưới 2 triệu</label></a></div>
-                                <div data-search="Từ 2 - 4 triệutừ 2 - 4 triệuTỪ 2 - 4 TRIỆU" data-name="Từ 2 - 4 triệu"
-                                     data-value="tu-2-4-trieu" className="checkbox frowitem"><a
-                                    data-value="tu-2-4-trieu"
-                                    data-id="0"
-                                    title="Từ 2 - 4 triệu"
-                                    href="/dien-thoai/tu-2-4-trieu?sort=ban-chay-nhat"><i
-                                    className="iconcate-checkbox"></i><label>Từ 2 - 4 triệu</label></a></div>
-                                <div data-search="Từ 4 - 7 triệutừ 4 - 7 triệuTỪ 4 - 7 TRIỆU" data-name="Từ 4 - 7 triệu"
-                                     data-value="tu-4-7-trieu" className="checkbox frowitem"><a
-                                    data-value="tu-4-7-trieu"
-                                    data-id="0"
-                                    title="Từ 4 - 7 triệu"
-                                    href="/dien-thoai/tu-4-7-trieu?sort=ban-chay-nhat"><i
-                                    className="iconcate-checkbox"></i><label>Từ 4 - 7 triệu</label></a></div>
-                                <div data-search="Từ 7 - 13 triệutừ 7 - 13 triệuTỪ 7 - 13 TRIỆU"
-                                     data-name="Từ 7 - 13 triệu"
-                                     data-value="tu-7-13-trieu" className="checkbox frowitem"><a
-                                    data-value="tu-7-13-trieu"
-                                    data-id="0"
-                                    title="Từ 7 - 13 triệu"
-                                    href="/dien-thoai/tu-7-13-trieu?sort=ban-chay-nhat"><i
-                                    className="iconcate-checkbox"></i><label>Từ 7 - 13 triệu</label></a></div>
-                                <div data-search="Trên 13 triệutrên 13 triệuTRÊN 13 TRIỆU" data-name="Trên 13 triệu"
-                                     data-value="tren-13-trieu" className="checkbox frowitem"><a
-                                    data-value="tren-13-trieu"
-                                    data-id="0"
-                                    title="Trên 13 triệu"
-                                    href="/dien-thoai/tren-13-trieu?sort=ban-chay-nhat"><i
-                                    className="iconcate-checkbox"></i><label>Trên 13 triệu</label></a></div>
+                            <div>
+                                {/*<label>*/}
+                                {/*    Hãng điện thoại:*/}
+                                {/*</label>*/}
+                                <table style={{
+                                    borderCollapse: "separate;",
+                                    borderSpacing: "0 10px; "/* Khoảng cách ngang và dọc giữa các hàng */
+                                }}>
+                                    <input
+                                        style={{backgroundColor: "#cb1c22", marginBottom:"10px"}}
+                                        type="checkbox"
+                                        value=""
+                                        checked={selectedBrands === ''}
+                                        onChange={handleBrandChange}
+                                    />
+                                    Tất cả
+                                    <tr style={{marginTop:"10px",marginBottom: '10px'}}>
+
+                                        <td>
+                                            <label>
+                                                <input
+                                                    style={{backgroundColor: "#cb1c22"}}
+                                                    type="checkbox"
+                                                    value="2"
+                                                    checked={selectedBrands==='2'}
+                                                    onChange={handleBrandChange}
+                                                />
+                                                Samsung
+                                            </label>
+                                            <br/>
+                                        </td>
+                                        <td>
+                                            <label>
+                                                <input
+                                                    style={{backgroundColor: "#cb1c22"}}
+                                                    type="checkbox"
+                                                    value="7"
+                                                    checked={selectedBrands==='7'}
+                                                    onChange={handleBrandChange}
+                                                />
+                                                Apple (iPhone)
+                                            </label>
+                                        </td>
+                                        <br/>
+                                    </tr>
+                                    <tr style={{height: "10px"}}></tr>
+                                    <tr style={{marginBottom: '10px'}}>
+                                        <td>
+                                            <label>
+                                                <input
+                                                    style={{backgroundColor: "#cb1c22"}}
+                                                    type="checkbox"
+                                                    value="3"
+                                                    checked={selectedBrands==='3'}
+                                                    onChange={handleBrandChange}
+                                                />
+                                                Oppo
+                                            </label>
+                                            <br/>
+                                        </td>
+                                        <td>
+                                            <label>
+                                                <input
+                                                    style={{backgroundColor: "#cb1c22"}}
+                                                    type="checkbox"
+                                                    value="8"
+                                                    checked={selectedBrands==='8'}
+                                                    onChange={handleBrandChange}
+                                                />
+                                                Xiaomi
+                                            </label>
+                                            <br/>
+                                        </td>
+
+                                    </tr>
+                                    <tr style={{height: "10px"}}></tr>
+                                    <tr style={{marginBottom: '10px'}}>
+                                        <td>
+                                            <label>
+                                                <input
+                                                    style={{backgroundColor: "#cb1c22"}}
+                                                    type="checkbox"
+                                                    value="4"
+                                                    checked={selectedBrands==='4'}
+                                                    onChange={handleBrandChange}
+                                                />
+                                                Honor
+                                            </label>
+                                            <br/>
+                                        </td>
+                                        <td>
+                                            <label>
+                                                <input
+                                                    style={{backgroundColor: "#cb1c22"}}
+                                                    type="checkbox"
+                                                    value="9"
+                                                    checked={selectedBrands==='9'}
+                                                    onChange={handleBrandChange}
+                                                />
+                                                realme
+                                            </label>
+                                            <br/>
+                                        </td>
+                                    </tr>
+                                    <tr style={{height: "10px"}}></tr>
+                                    <tr style={{marginBottom: '10px'}}>
+                                        <td>
+                                            <label>
+                                                <input
+                                                    style={{backgroundColor: "#cb1c22"}}
+                                                    type="checkbox"
+                                                    value="5"
+                                                    checked={selectedBrands==='5'}
+                                                    onChange={handleBrandChange}
+                                                />
+                                                Vivo
+                                            </label>
+                                            <br/>
+                                        </td>
+                                        <td>
+                                            <label>
+                                                <input
+                                                    style={{backgroundColor: "#cb1c22"}}
+                                                    type="checkbox"
+                                                    value="1"
+                                                    checked={selectedBrands==='1'}
+                                                    onChange={handleBrandChange}
+                                                />
+                                                Asus
+                                            </label>
+                                            <br/>
+                                        </td>
+                                    </tr>
+                                    <tr style={{height: "10px"}}></tr>
+                                    <tr style={{marginBottom: '10px'}}>
+                                        <td>
+                                            <label>
+                                                <input
+                                                    style={{backgroundColor: "#cb1c22"}}
+                                                    type="checkbox"
+                                                    value="6"
+                                                    checked={selectedBrands==='6'}
+                                                    onChange={handleBrandChange}
+                                                />
+                                                Masstel
+                                            </label>
+                                            <br/>
+                                        </td>
+                                        <td>
+                                            <label>
+                                                <input
+                                                    style={{backgroundColor: "#cb1c22"}}
+                                                    type="checkbox"
+                                                    value="10"
+                                                    checked={selectedBrands==='10'}
+                                                    onChange={handleBrandChange}
+                                                />
+                                                Nokia
+                                            </label>
+                                            <br/>
+                                        </td>
+                                    </tr>
+                                    <tr style={{height: "10px"}}></tr>
+                                    <label style={{marginBottom: "10px"}}>
+                                        <h5>Mức giá</h5>
+                                        <input
+                                            style={{backgroundColor: "#cb1c22"}}
+                                            type="checkbox"
+                                            value=""
+                                            checked={priceRange === ''}
+                                            onChange={handlePriceChange}
+                                        />
+                                        Tất cả
+                                    </label>
+                                    <br/>
+                                    <label style={{marginBottom: "10px"}}>
+                                        <input
+                                            style={{backgroundColor: "#cb1c22"}}
+                                            type="checkbox"
+                                            value="0-2000000"
+                                            checked={priceRange === '0-2000000'}
+                                            onChange={handlePriceChange}
+                                        />
+                                        Dưới 2 triệu
+                                    </label>
+                                    <br/>
+                                    <label style={{marginBottom: "10px"}}>
+                                        <input
+                                            style={{backgroundColor: "#cb1c22"}}
+                                            type="checkbox"
+                                            value="2000000-4000000"
+                                            checked={priceRange === '2000000-4000000'}
+                                            onChange={handlePriceChange}
+                                        />
+                                        Từ 2 - 4 triệu
+                                    </label>
+                                    <br/>
+                                    <label style={{marginBottom: "10px"}}>
+                                        <input
+                                            style={{backgroundColor: "#cb1c22"}}
+                                            type="checkbox"
+                                            value="4000000-7000000"
+                                            checked={priceRange === '4000000-7000000'}
+                                            onChange={handlePriceChange}
+                                        />
+                                        Từ 4 - 7 triệu
+                                    </label>
+                                    <br/>
+                                    <label style={{marginBottom: "10px"}}>
+                                        <input
+                                            style={{backgroundColor: "#cb1c22"}}
+                                            type="checkbox"
+                                            value="7000000-13000000"
+                                            checked={priceRange === '7000000-13000000'}
+                                            onChange={handlePriceChange}
+                                        />
+                                        Từ 7 - 13 triệu
+                                    </label>
+                                    <br/>
+                                    <label style={{marginBottom: "10px"}}>
+                                        <input
+                                            style={{backgroundColor: "#cb1c22"}}
+                                            type="checkbox"
+                                            value="13000000-1000000000"
+                                            checked={priceRange === '13000000-1000000000'}
+                                            onChange={handlePriceChange}
+                                        />
+                                        Trên 13 triệu
+                                    </label>
+
+                                    <br/>
+                                </table>
                             </div>
                         </div>
                     </div>
                     <div className={"col-9"} style={{marginTop: "20px"}}>
                         <div className="card-header">
-                            <div className="cdt-head" style={{border: "1px solid #f8f9fa;"}}>
-                                <h1 className="cdt-head__title">Điện thoại</h1><span>(285 sản phẩm)</span>
+                            <div className="cdt-head" style={{display:"inline",border: "1px solid #f8f9fa;"}}>
+                                    <h1 className="cdt-head__title">Điện thoại</h1>
+                                    {/*<span>(285 sản phẩm)</span>*/}
                             </div>
                         </div>
                         <div className="box-container cate-box cat-prd box-pad15 bg-white mb24">
 
-                            {/*<div className="row cat-prd-oustanding margin-18">*/}
-                            {/*    <div className="col-11 title f20"><h5>ĐIỆN THOẠI NỔI BẬT</h5></div>*/}
-                            {/*    <div className="col-1 cat-prd-tabs"><a href="/dien-thoai"><small>Xem tất cả</small></a></div>*/}
-                            {/*</div>*/}
+                            <div className="row cat-prd-oustanding margin-18">
+                                <div className="col-11 title f20"><h5>SẢN PHẨM MỚI NHẤT</h5></div>
+                            </div>
 
 
-                            <div className="row product-list"
-                                 style={{marginTop: "15px", marginBottom: "15px", marginLeft: "15px"}}>
+                            <div className="row product-list">
                                 {products.map((product, index) => (
-                                    <div className="col-4 cdt-product"
-                                         style={{marginTop: "20px;", marginBottom: "15px"}} key={index}>
-                                        <div className="cdt-product__img">
+                                    <div className="col-4 cdt-product" style={{marginTop: "20px;"}} key={index}>
+                                        <div className="cdt-product__img"  style={{textAlign:"center",marginTop: "10px;"}}>
                                             <a href={`product/${product.productId}`}>
                                               <span
                                                   className=" lazy-load-image-background opacity lazy-load-image-loaded">
@@ -371,37 +529,23 @@ export default function Product() {
                                             </a>
                                         </div>
                                         <div className="cdt-product__info">
-                                            <h3>
-                                                <a style={{color: "black"}} href={product.link}
-                                                   title={product.modelName}
-                                                   className="cdt-product__name">
-                                                    {product.modelName}
-                                                </a>
-                                            </h3>
-                                            <div className="cdt-product__price">
+                                            <h6 style={{fontWeight:"bold"}}>
+                                                {/*<a href={product.link} title={product.modelName}*/}
+                                                {/*   className="cdt-product__name">*/}
+                                                {product.modelName}
+                                                {/*</a>*/}
+                                            </h6>
+                                            <div className="cdt-product__price" style={{marginBottom:"10px"}}>
                                                 <div className="tcdm text-left">
-                                                    <div className="price">{product.price}</div>
+                                                    <div className="price">{formatPrice(product.price)} đ</div>
                                                 </div>
                                             </div>
                                             <div className="cdt-product__config list-layout">
-                                                <div className="cdt-product__config__param">
-                                                    {/*<span data-title="CPU">*/}
-                                                    {/*  <i className="icon-cpu"></i>*/}
-                                                    {/*    {product.cpu}*/}
-                                                    {/*</span>*/}
-                                                    <span data-title="Màn hình">
-                  <i className="icon-mobile"></i>
-                                                        {product.screenSize}
-                </span>
-                                                    <span data-title="RAM">
-                  <i className="icon-ram"></i>
-                                                        {product.ramCapacity}
-                </span>
-                                                    <span data-title="Bộ nhớ trong">
-                  <i className="icon-hdd-black"></i>
-                                                        {product.storageCapacity}
-                </span>
-                                                </div>
+                                                <div className="product__badge" style={{display:"flex"}}>
+                                                    <p
+                                                        className="product__more-info__item">{product.screenSize} inches</p><p
+                                                    className="product__more-info__item">{product.ramCapacity} GB</p><p
+                                                    className="product__more-info__item">{product.storageCapacity} GB</p></div>
                                             </div>
                                             <div className="cdt-product__btn">
                                                 <a href={product.link} className="btn btn-primary btn-sm btn-main">

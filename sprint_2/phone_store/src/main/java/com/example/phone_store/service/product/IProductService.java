@@ -12,4 +12,5 @@ public interface IProductService {
     void addNewProduct(Products products);
     void editProduct(Products products);
     Products findProductById(int  id);
+    Page<Products> search( String modelName, String productTypes, String minPrice, String maxPrice, String phoneBrands, Pageable pageable);
 }

@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {Link, useNavigate} from "react-router-dom";
 import Swal from "sweetalert2";
 import axios from "axios";
@@ -14,6 +14,9 @@ const Loginss = () => {
     const handleSignInClick = () => {
         setIsSignUpMode(false);
     };
+    useEffect(() => {
+        document.title = 'VVT Shop - Trang đăng nhập'
+    })
     const handleLogin = async () => {
         let username = document.getElementById('username').value;
         let password = document.getElementById('password').value;
