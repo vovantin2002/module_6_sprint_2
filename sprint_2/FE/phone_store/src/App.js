@@ -8,6 +8,7 @@ import CartDetail from "./components/cart_detail/CartDetail";
 import Loginss from "./components/login/Loginss";
 import Home from "./components/home/Home";
 import Login from "./components/login/Login";
+import ReturnVNPay from "./components/cart_detail/ReturnVNPay";
 
 
 function App() {
@@ -16,9 +17,9 @@ function App() {
             <BrowserRouter>
                 <Routes>
                     <Route path="" element={<Loginss/>}></Route>
-                    <Route path="/login" element={<Login/>}></Route>
+                    <Route path="/success" element={<ReturnVNPay/>}></Route>
                     <Route path="/home" element={<Home/>}></Route>
-                    <Route path="/cart" element={<CartDetail/>}></Route>
+                    <Route path="/cart/:id" element={<CartDetail/>}></Route>
                     <Route path="/product/:id" element={<DetailProduct />} />
                     <Route path="/customer" element={<Customer/>}></Route>
                     <Route path="/product" element={<Product/>}></Route>

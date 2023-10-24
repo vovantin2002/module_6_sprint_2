@@ -1,6 +1,5 @@
 package com.example.phone_store.repository.order;
 
-import com.example.phone_store.model.Accounts;
 import com.example.phone_store.model.Orders;
 import org.springframework.data.jpa.repository.JpaRepository;
 

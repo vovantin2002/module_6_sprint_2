@@ -52,4 +52,20 @@ public class AccountService implements IAccountService {
 
         return userDetails;
     }
+
+    @Override
+    public Accounts findAccontsByUserName(String userName) {
+        return accountRepository.findAccountsByUsername(userName);
+    }
+
+    @Override
+    public void add(Accounts accounts) {
+        accountRepository.save(accounts);
+    }
+
+    @Override
+    public Boolean existsByUsername(String userName) {
+        Accounts accounts=accountRepository.findAccountsByUsername(userName);
+        return accounts!=null;
+    }
 }

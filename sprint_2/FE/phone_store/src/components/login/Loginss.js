@@ -2,6 +2,8 @@ import React, {useEffect, useState} from "react";
 import {Link, useNavigate} from "react-router-dom";
 import Swal from "sweetalert2";
 import axios from "axios";
+import {ErrorMessage, Field, Form, Formik} from "formik";
+import * as Yup from "yup"
 
 const Loginss = () => {
     const navigate = useNavigate();
@@ -27,6 +29,7 @@ const Loginss = () => {
         try {
             const result = axios.post(`http://localhost:8080/api/user/login`, account);
             localStorage.setItem("JWT", (await result).data);
+            Swal.fire("Đăng nhập thành công", "", "success");
             navigate("/home")
         } catch (e) {
             Swal.fire({
@@ -36,6 +39,23 @@ const Loginss = () => {
         }
 
     }
+
+    const addAccounts = async (values, setErrors) => {
+        try {
+            await axios.post("http://localhost:8080/api/user", values);
+            Swal.fire("Thêm tài khoản thành công", "", "success");
+            navigate("")
+        } catch (e) {
+            if (e.response.status === 406) {
+                console.log(e);
+                setErrors(e.response.data);
+            } else {
+                Swal.fire(e.response.data, "", "warning");
+                // alert(e.response.data);
+            }
+        }
+    }
+
     return (
         <>
             <meta charSet="UTF-8"/>
@@ -96,56 +116,87 @@ const Loginss = () => {
                                 </a>
                             </div>
                         </form>
-                        <form
-                            action="/login?action=registration"
-                            className="sign-up-form"
-                            method="post"
+                        <Formik initialValues={{
+                            username: "",
+                            password: "",
+                            confirmPassword: ""
+                        }
+                        } onSubmit={(values, setErrors) => {
+                            addAccounts(values, setErrors);
+                        }
+                        }
+                                validationSchema={Yup.object({
+                                    username: Yup.string().required('Vui lòng nhập tên người dùng'),
+                                    password: Yup.string().required('Vui lòng nhập mật khẩu'),
+                                    confirmPassword: Yup.string()
+                                        .oneOf([Yup.ref('password'), null], 'Xác nhận mật khẩu không khớp')
+                                        .required('Vui lòng xác nhận mật khẩu'),
+                                })}
                         >
-                            <h2 className="title">Đăng ký</h2>
-                            <div className="input-field">
-                                <i className="fas fa-user"/>
-                                <input
-                                    type="text"
-                                    placeholder="Username"
-                                    name="username"
-                                    required="required"
-                                />
-                            </div>
-                            <div className="input-field">
-                                <i className="fas fa-envelope"/>
-                                <input
-                                    type="email"
-                                    placeholder="Email"
-                                    name="email"
-                                    required="required"
-                                />
-                            </div>
-                            <div className="input-field">
-                                <i className="fas fa-lock"/>
-                                <input
-                                    type="password"
-                                    placeholder="Password"
-                                    name="password"
-                                    required="required"
-                                />
-                            </div>
-                            <input type="submit" className="btn" value="Đăng ký"/>
-                            <p className="social-text">Hoặc Đăng ký bằng nền tảng xã hội</p>
-                            <div className="social-media">
-                                <a href="#" className="social-icon">
-                                    <i className="fab fa-facebook-f"/>
-                                </a>
-                                <a href="#" className="social-icon">
-                                    <i className="fab fa-twitter"/>
-                                </a>
-                                <a href="#" className="social-icon">
-                                    <i className="fab fa-google"/>
-                                </a>
-                                <a href="#" className="social-icon">
-                                    <i className="fab fa-linkedin-in"/>
-                                </a>
-                            </div>
-                        </form>
+                            <Form
+                                action="/login?action=registration"
+                                className="sign-up-form"
+                                method="post"
+                            >
+                                <h2 className="title">Đăng ký</h2>
+                                <div className="input-field">
+                                    <i className="fas fa-user"/>
+                                    <Field
+                                        type="text"
+                                        placeholder="Username"
+                                        name="username"
+                                        required="required"
+                                    />
+                                    <ErrorMessage name="username" component="small" className="error"/>
+                                </div>
+                                {/*<div className="input-field">*/}
+                                {/*    <i className="fas fa-envelope"/>*/}
+                                {/*    <input*/}
+                                {/*        type="email"*/}
+                                {/*        placeholder="Email"*/}
+                                {/*        name="email"*/}
+                                {/*        required="required"*/}
+                                {/*    />*/}
+                                {/*</div>*/}
+                                <div className="input-field">
+                                    <i className="fas fa-lock"/>
+                                    <Field
+                                        type="password"
+                                        placeholder="Password"
+                                        name="password"
+                                        required="required"
+                                    />
+                                    <ErrorMessage className="text-danger" name="password" component="small"/>
+
+                                </div>
+                                <div className="input-field">
+                                    <i className="fas fa-lock"/>
+                                    <Field
+                                        type="password"
+                                        placeholder="Xác nhận password"
+                                        name="confirmPassword"
+                                        required="required"
+                                    />
+                                    <ErrorMessage name="confirmPassword" component="span" className="text-danger"/>
+                                </div>
+                                <input type="submit" className="btn" value="Đăng ký"/>
+                                <p className="social-text">Hoặc Đăng ký bằng nền tảng xã hội</p>
+                                <div className="social-media">
+                                    <a href="#" className="social-icon">
+                                        <i className="fab fa-facebook-f"/>
+                                    </a>
+                                    <a href="#" className="social-icon">
+                                        <i className="fab fa-twitter"/>
+                                    </a>
+                                    <a href="#" className="social-icon">
+                                        <i className="fab fa-google"/>
+                                    </a>
+                                    <a href="#" className="social-icon">
+                                        <i className="fab fa-linkedin-in"/>
+                                    </a>
+                                </div>
+                            </Form>
+                        </Formik>
                     </div>
                 </div>
                 <div className="panels-container">

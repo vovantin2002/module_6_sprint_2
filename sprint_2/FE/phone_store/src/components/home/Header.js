@@ -1,7 +1,9 @@
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import axios from "axios";
 import Product from "../product/Product";
-import {useNavigate} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
+import jwt_decode from "jwt-decode";
+import Swal from "sweetalert2";
 
 export const name = async () => {
     let name = document.getElementById("name").value;
@@ -10,9 +12,11 @@ export const name = async () => {
 }
 export default function Header() {
     const [products, setProducts] = useState([]);
+    const [JwtToken, setJwtToken] = useState(localStorage.getItem("JWT"));
     const [searchTerm, setSearchTerm] = useState('');
     const navigate = useNavigate();
-    const [isLoggedIn, setIsLoggedIn] = useState(false); // Trạng thái đăng nhập
+    const [id, setId] = useState(""); // Trạng thái đăng nhập
+    const [isLoggedIn, setIsLoggedIn] = useState(""); // Trạng thái đăng nhập
     const [username, setUsername] = useState(''); // Tên người dùng
 
     const handleLogin = () => {
@@ -35,6 +39,39 @@ export default function Header() {
         // await setProducts(result?.data.content);
 
         // onSearch(searchTerm);
+    };
+    const infoAppUserByJwtToken = () => {
+        const jwtToken = localStorage.getItem("JWT");
+        if (jwtToken) {
+            const result = jwt_decode(jwtToken);
+            return result;
+        }
+    };
+    useEffect(() => {
+        getUsername();
+    }, []);
+    useEffect(() => {
+        getId();
+    }, []);
+    const getUsername = async () => {
+        const response = await infoAppUserByJwtToken();
+        setUsername(response);
+    };
+    const getId = async () => {
+        const isLoggedIn = infoAppUserByJwtToken();
+            const id = await axios.get(`http://localhost:8080/api/user/getId?userName=${isLoggedIn.sub}`);
+            console.log(id.data);
+            setId(id.data);
+    }
+    const handleLogOut = () => {
+        localStorage.removeItem("JWT");
+        setJwtToken(undefined);
+        setUsername(undefined);
+        Swal.fire({
+            title: "Đăng xuất thành công",
+            icon: "success",
+        });
+        // navigate("/home");
     };
     return (
         <>
@@ -120,71 +157,79 @@ export default function Header() {
                     {/*// <!--            <%&#45;&#45;        right&#45;&#45;%>-->*/}
                     <div>
                         <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-                            <li className="nav-item">
+                            {username  &&(
+                            <li className="nav-item" style={{ marginTop: "auto", marginBottom: "auto" }}>
                                 {/*// <!--                        <c:if test="${sessionScope.user==null}">-->*/}
                                 {/*// <!--                            <a class="nav-link active" aria-current="page" href="/login" style={{color: "white"}}>-->*/}
                                 {/*// <!--                                <i class="fa-solid fa-truck-fast"></i>Đơn hàng của bạn-->*/}
                                 {/*// <!--                            </a>-->*/}
                                 {/*// <!--                        </c:if>-->*/}
                                 {/*// <!--                        <c:if test="${sessionScope.user!=null}">-->*/}
-                                <a className="nav-link active" aria-current="page"
-                                   href="/cart" style={{color: "white"}}>
+                                <Link className="nav-link active" aria-current="page"
+                                   to={`/cart/${id}`} style={{color: "white"}}>
                                     <i className="fa-solid fa-cart-shopping"></i>Đơn hàng của bạn
-                                </a>
+                                </Link>
                                 {/*// <!--                        </c:if>-->*/}
                             </li>
-                            <li className="nav-item">
-                                <a className="nav-link active" aria-current="page" href="/view/cart_shopping/cart.jsp"
-                                   style={{color: "white"}}>
+                                )}
+                            {/*<li className="nav-item">*/}
+                            {/*    <a className="nav-link active" aria-current="page" href="/view/cart_shopping/cart.jsp"*/}
+                            {/*       style={{color: "white"}}>*/}
                                     {/*// <!--                            <i class="fa-solid fa-bag-shopping" style="font-size: 20px"></i> <b style="font-size: 15px">${sessionScope.cart.itemsList.size()}</b>-->*/}
-                                </a>
-                            </li>
+                            {/*    </a>*/}
+                            {/*</li>*/}
                             {/*// <!--                    <c:choose>-->*/}
                             {/*// <!--                        <c:when test="${sessionScope.user!=null && sessionScope.user.getRoleID()==1}">-->*/}
-                            <li className="nav-item dropdown">
-                                <a className="nav-link dropdown-toggle" href="#" id="navbarDropdown2" role="button"
-                                   data-bs-toggle="dropdown" aria-expanded="false">
+                            {/*<li className="nav-item dropdown">*/}
+                            {/*    <a className="nav-link dropdown-toggle" href="#" id="navbarDropdown2" role="button"*/}
+                            {/*       data-bs-toggle="dropdown" aria-expanded="false">*/}
                                     {/*// <!--                                    <span><b style={{color: "white"}}> Xin chào ${sessionScope.user.getUserName()}</b></span>-->*/}
-                                </a>
-                                <ul className="dropdown-menu p-0" aria-labelledby="navbarDropdown2">
-                                    <li><a className="dropdown-item" href="/customer">Quản lý khách hàng</a></li>
-                                    <li><a className="dropdown-item" href="/employee">Quản lý nhân viên</a></li>
-                                    <li><a className="dropdown-item" href="/product">Quản lý sản phẩm</a></li>
-                                    <li><a className="dropdown-item" href="/order">Quản lý đơn hàng</a></li>
-                                    <li><a className="dropdown-item" href="#">Thông tin tài khoản</a></li>
-                                    <li>
-                                        <hr className="dropdown-divider"/>
-                                    </li>
-                                    <li><a className="nav-link active" aria-current="page" href="/logout">
-                                        Đăng xuất
-                                    </a>
-                                    </li>
-                                </ul>
-                            </li>
+                            {/*    </a>*/}
+                            {/*    <ul className="dropdown-menu p-0" aria-labelledby="navbarDropdown2">*/}
+                            {/*        <li><a className="dropdown-item" href="/customer">Quản lý khách hàng</a></li>*/}
+                            {/*        <li><a className="dropdown-item" href="/employee">Quản lý nhân viên</a></li>*/}
+                            {/*        <li><a className="dropdown-item" href="/product">Quản lý sản phẩm</a></li>*/}
+                            {/*        <li><a className="dropdown-item" href="/order">Quản lý đơn hàng</a></li>*/}
+                            {/*        <li><a className="dropdown-item" href="#">Thông tin tài khoản</a></li>*/}
+                            {/*        <li>*/}
+                            {/*            <hr className="dropdown-divider"/>*/}
+                            {/*        </li>*/}
+                            {/*        <li><a className="nav-link active" aria-current="page" href="/logout">*/}
+                            {/*            Đăng xuất*/}
+                            {/*        </a>*/}
+                            {/*        </li>*/}
+                            {/*    </ul>*/}
+                            {/*</li>*/}
                             {/*// <!--                        </c:when>-->*/}
                             {/*// <!--                        <c:when test="${sessionScope.user!=null && sessionScope.user.getRoleID()==2}">-->*/}
-                            <li className="nav-item dropdown">
-                                <a className="nav-link dropdown-toggle" href="#" id="navbarDropdown3" role="button"
-                                   data-bs-toggle="dropdown" aria-expanded="false">
+                            {/*<li className="nav-item dropdown">*/}
+                            {/*    <a className="nav-link dropdown-toggle" href="#" id="navbarDropdown3" role="button"*/}
+                            {/*       data-bs-toggle="dropdown" aria-expanded="false">*/}
                                     {/*// <!--                                    <span><b style="color: white;">Xin chào ${sessionScope.user.getUserName()}</b></span>-->*/}
-                                </a>
-                                <ul className="dropdown-menu" aria-labelledby="navbarDropdown3">
-                                    <li><a className="dropdown-item"
-                                           href="/customer?action=detail&idAccount=${sessionScope.user.userId}">Thông
-                                        tin tài
-                                        khoản</a></li>
-                                    <li>
-                                        <hr className="dropdown-divider"/>
-                                    </li>
-                                    <li>
-                                        <a className="nav-link active" aria-current="page" href="/logout">Đăng xuất
-                                        </a>
-                                    </li>
-                                </ul>
-                            </li>
+                            {/*    </a>*/}
+                            {/*    <ul className="dropdown-menu" aria-labelledby="navbarDropdown3">*/}
+                            {/*        <li><a className="dropdown-item"*/}
+                            {/*               href="/customer?action=detail&idAccount=${sessionScope.user.userId}">Thông*/}
+                            {/*            tin tài*/}
+                            {/*            khoản</a></li>*/}
+                            {/*        <li>*/}
+                            {/*            <hr className="dropdown-divider"/>*/}
+                            {/*        </li>*/}
+                            {/*        <li>*/}
+                            {/*            <div*/}
+                            {/*                className="dropdown-text"*/}
+                            {/*                onClick={() => handleLogOut()}*/}
+                            {/*            >*/}
+                            {/*                Đăng xuất*/}
+                            {/*            </div>*/}
+                            {/*            /!*<a className="nav-link active" aria-current="page" href="/logout">Đăng xuất*!/*/}
+                            {/*            /!*</a>*!/*/}
+                            {/*        </li>*/}
+                            {/*    </ul>*/}
+                            {/*</li>*/}
                             {/*// <!--                        </c:when>-->*/}
                             {/*// <!--                        <c:otherwise>-->*/}
-                            <ul>
+                            {/*<ul>*/}
                                 {isLoggedIn ? (
                                     <li className="nav-item">
                                         <span className="nav-link" style={{color: 'white'}}>
@@ -202,12 +247,41 @@ export default function Header() {
                                             aria-current="page"
                                             href="/"
                                             style={{color: 'white'}}
+
                                         >
-                                            <i className="fa-solid fa-circle-user"></i>Đăng Nhập
+                                            {!username ? (
+                                                    <li className="nav-item">
+                                                        <a className="nav-link active" aria-current="page" href="/"
+                                                           style={{color: "white"}}>
+                                                            <i className="fa-solid fa-circle-user"></i>Đăng Nhập
+                                                        </a>
+                                                    </li>
+                                            // <Link to="/login">
+                                            //     <span className="user-info">Đăng nhập</span>
+                                            // </Link>
+                                        ) : (
+                                                <li className="nav-item dropdown">
+                                                    <a className="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                                                       data-bs-toggle="dropdown" aria-expanded="false" style={{color: "white"}}>
+                                                        <i className="fa-solid fa-circle-user"></i>
+                                                        {username.sub}
+                                                    </a>
+                                                    <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
+                                                        {/*<li><a className="dropdown-item" href="/product">Thông tin cá nhân</a></li>*/}
+                                                        <li><div
+                                                            className="dropdown-text"
+                                                            onClick={() => handleLogOut()}
+                                                        >
+                                                            Đăng xuất
+                                                        </div></li>
+                                                    </ul>
+                                                </li>
+                                        )}
+                                            {/*<i className="fa-solid fa-circle-user"></i>Đăng Nhập*/}
                                         </a>
                                     </li>
                                 )}
-                            </ul>
+                            {/*</ul>*/}
                             {/*// <!--                        </c:otherwise>-->*/}
                             {/*// <!--                    </c:choose>-->*/}
                         </ul>

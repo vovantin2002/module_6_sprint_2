@@ -1,6 +1,7 @@
 package com.example.phone_store.controller.product;
 
 import com.example.phone_store.model.Products;
+import com.example.phone_store.service.product.IProductImagesService;
 import com.example.phone_store.service.product.IProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
@@ -17,16 +18,30 @@ import org.springframework.web.bind.annotation.*;
 public class ProductController {
     @Autowired
     private IProductService productService;
+    @Autowired
+    private IProductImagesService productImagesService;
     @GetMapping("/{id}")
     @ResponseBody
-    public ResponseEntity<Products> display(@PathVariable("id") int id){
+    public ResponseEntity<?> display(@PathVariable("id") int id){
+//        Products products=productService.findProductById(id);
+//        products.setProductImagesList(productImagesService.findByProductId(id));
         return new ResponseEntity<>(productService.findProductById(id), HttpStatus.OK);
     }
-//    @GetMapping("")
-//    @ResponseBody
-//    public ResponseEntity displayPage(@PageableDefault(size = 8)Pageable pageable){
-//        return new ResponseEntity<>(productService.displayList(pageable), HttpStatus.OK);
+//    @GetMapping("/check-quantity")
+//    public ResponseEntity<?> checkQuantity(@RequestParam("medicineId") Long medicineId,
+//                                           @RequestParam("inputQuantity") Long inputQuantity) {
+//        MedicineProjection med = iCartDetailsService.getMedicineToCheckAndDisplay(medicineId);
+//        if (iMedicineService.existsByIdAndFlagDeletedIsFalse(medicineId)
+//                && med.getQuantity() >= (inputQuantity * med.getConversion_Rate())) {
+//            return new ResponseEntity<>(HttpStatus.OK);
+//        }
+//        return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
 //    }
+    @GetMapping("/order")
+    @ResponseBody
+    public ResponseEntity displayPage(){
+        return new ResponseEntity<>(productService.displayAllByQuantityOrder(), HttpStatus.OK);
+    }
     @GetMapping("")
     @ResponseBody
     public ResponseEntity findAllByName(@PageableDefault(size = 8, sort = "product_id", direction = Sort.Direction.DESC )Pageable pageable, @RequestParam(value = "modelName",

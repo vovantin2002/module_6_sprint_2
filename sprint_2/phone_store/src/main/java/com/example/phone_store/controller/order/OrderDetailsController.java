@@ -1,7 +1,7 @@
 package com.example.phone_store.controller.order;
 
-import com.example.phone_store.model.Orders;
-import com.example.phone_store.service.order.IOrderService;
+import com.example.phone_store.model.OrderDetails;
+import com.example.phone_store.service.order.IOrderDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -9,14 +9,14 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @CrossOrigin("*")
-@RequestMapping("/api/order")
-public class OrderController {
+@RequestMapping("/api/order-detail")
+public class OrderDetailsController {
     @Autowired
-    private IOrderService orderService;
+    private IOrderDetailsService orderDetailsService;
     @PostMapping("")
     @ResponseBody
-    public ResponseEntity add(@RequestBody Orders orders){
-        orderService.add(orders);
+    public ResponseEntity add(@RequestBody OrderDetails orderDetails){
+        orderDetailsService.add(orderDetails);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }

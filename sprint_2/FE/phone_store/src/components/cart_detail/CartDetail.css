@@ -63,3 +63,9 @@
 #customer button:hover {
     background-color: #0056b3;
 }
+.price {
+    font-size: 18px;
+    font-weight: 700;
+    color: #cb1c22;
+    line-height: normal;
+}

@@ -1,5 +1,6 @@
 package com.example.phone_store.service.product;
 
+import com.example.phone_store.model.ProductProjection;
 import com.example.phone_store.model.Products;
 import com.example.phone_store.repository.product.IProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,11 @@ public class ProductService implements IProductService {
     }
 
     @Override
+    public List<ProductProjection> displayAllByQuantityOrder() {
+        return productRepository.displayAllByQuantityOrder();
+    }
+
+    @Override
     public Page<Products> displayList(Pageable pageable) {
         return productRepository.findAll(pageable);
     }
@@ -35,12 +41,12 @@ public class ProductService implements IProductService {
     }
 
     @Override
-    public Products findProductById(int id) {
-        return productRepository.findById(id).get();
+    public ProductProjection findProductById(int id) {
+        return productRepository.findProductById(id);
     }
 
     @Override
-    public Page<Products> search(String modelName, String productTypes, String minPrice, String maxPrice, String phoneBrands, Pageable pageable) {
+    public Page<ProductProjection> search(String modelName, String productTypes, String minPrice, String maxPrice, String phoneBrands, Pageable pageable) {
         System.out.println(productRepository.findAllByModelNameContainingAndProductTypesAndPriceBetweenAndPhoneBrands(modelName, productTypes, minPrice, maxPrice, phoneBrands, pageable));
         return productRepository.findAllByModelNameContainingAndProductTypesAndPriceBetweenAndPhoneBrands(modelName, productTypes, minPrice, maxPrice, phoneBrands, pageable);
     }

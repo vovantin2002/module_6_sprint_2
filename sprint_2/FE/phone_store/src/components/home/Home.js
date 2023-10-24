@@ -4,14 +4,25 @@ import {useEffect, useState} from "react";
 import axios from "axios";
 import "./Home.css";
 import 'bootstrap-icons/font/bootstrap-icons.css';
+import Swal from "sweetalert2";
+import {useNavigate} from "react-router-dom";
+import jwt_decode from "jwt-decode";
+import React from 'react';
+import {Carousel} from 'react-bootstrap';
 
 
 export default function Home() {
+    const navigate = useNavigate();
     const [products, setProducts] = useState([]);
+    const [productsOutstanding, setProductsOutstanding] = useState([]);
     const [productsNew, setProductsNew] = useState([]);
     const getProducts = async () => {
-        const product = await axios.get("http://localhost:8080/api/product")
+        const product = await axios.get("http://localhost:8080/api/product?page=3&size=4")
         setProducts(product?.data.content);
+    }
+    const getProductsByOrderQuantity = async () => {
+        const product = await axios.get("http://localhost:8080/api/product/order")
+        setProductsOutstanding(product?.data);
     }
     const getNewProducts = async () => {
         const product = await axios.get("http://localhost:8080/api/product?page=0&size=4")
@@ -21,12 +32,53 @@ export default function Home() {
         getProducts();
     }, [])
     useEffect(() => {
+        getProductsByOrderQuantity();
+    }, [])
+    useEffect(() => {
         getNewProducts();
     }, [])
+
     function formatPrice(price) {
         const formatter = new Intl.NumberFormat('vi-VN');
         return formatter.format(price);
     }
+
+    const infoAppUserByJwtToken = () => {
+        const jwtToken = localStorage.getItem("JWT");
+        if (jwtToken) {
+            const result = jwt_decode(jwtToken);
+            return result;
+        }
+    };
+    const addToCart = async (cartId) => {
+        const isLoggedIn = infoAppUserByJwtToken();
+        if (!isLoggedIn) {
+            Swal.fire("Vui lòng đăng nhập tài khoản!", "", "warning");
+            navigate("/");
+        } else {
+            const id = await axios.get(`http://localhost:8080/api/user/getId?userName=${isLoggedIn.sub}`);
+            console.log(id.data);
+            // setAppUserId(id.data);
+            const cart = {
+                quantity: 1,
+                products: {
+                    productId: cartId
+                },
+                accounts: {
+                    accountId: id.data
+                }
+            }
+            await axios.post(
+                `http://localhost:8080/api/cart/add`, cart);
+            // const response = await addToCartFromHomeAndDetails(
+            //     id.data,
+            //     medicineId,
+            //     1
+            // );
+            // dispatch(getAllCarts(id.data));
+            Swal.fire("Thêm sản phẩm vào giỏ hàng thành công", "", "success");
+        }
+    };
     return (
         <>
             <div id="home">
@@ -39,19 +91,19 @@ export default function Home() {
                                     <div>
                                         <div className="btn-group dropend w-100">
                                             <button type="button" className="btn btn-outline-dark dropdown-toggle"
-                                                    data-bs-toggle="dropdown" aria-expanded="false">
+                                                     aria-expanded="false">
                                                 <i className="fa-solid fa-phone"></i>
                                                 Điện thoại
                                             </button>
-                                            <ul className="dropdown-menu">
+                                            {/*<ul className="dropdown-menu">*/}
 
-                                            </ul>
+                                            {/*</ul>*/}
                                         </div>
                                     </div>
                                     <div className="margin">
                                         <div className="btn-group dropend w-100">
                                             <button type="button" className="btn btn-outline-dark dropdown-toggle"
-                                                    data-bs-toggle="dropdown" aria-expanded="false">
+                                                     aria-expanded="false">
                                                 <i className="fa-solid fa-headphones"></i>
                                                 Tai nghe
                                             </button>
@@ -60,7 +112,7 @@ export default function Home() {
                                     <div className="margin">
                                         <div className="btn-group dropend w-100 ">
                                             <a type="button" className="btn btn-outline-dark dropdown-toggle"
-                                               data-bs-toggle="dropdown" aria-expanded="false">
+                                                aria-expanded="false">
                                                 <i className="fa-solid fa-battery-full"></i>
                                                 Sạc dự phòng
                                             </a>
@@ -69,7 +121,7 @@ export default function Home() {
                                     <div className="margin">
                                         <div className="btn-group dropend w-100">
                                             <button type="button" className="btn btn-outline-dark dropdown-toggle"
-                                                    data-bs-toggle="dropdown" aria-expanded="false">
+                                                     aria-expanded="false">
                                                 <i className="fa-solid fa-gear"></i>
                                                 Phụ kiện
                                             </button>
@@ -78,7 +130,7 @@ export default function Home() {
                                     <div className="margin">
                                         <div className="btn-group dropend w-100">
                                             <button type="button" className="btn btn-outline-dark dropdown-toggle"
-                                                    data-bs-toggle="dropdown" aria-expanded="false">
+                                                     aria-expanded="false">
                                                 <i className="fa-brands fa-hotjar"></i>
                                                 Best Saler
                                             </button>
@@ -87,7 +139,7 @@ export default function Home() {
                                     <div className="margin">
                                         <div className="btn-group dropend w-100">
                                             <button type="button" className="btn btn-outline-dark dropdown-toggle"
-                                                    data-bs-toggle="dropdown" aria-expanded="false">
+                                                     aria-expanded="false">
                                                 <i className="fa-solid fa-volume-high"></i>
                                                 Khuyến mãi
                                             </button>
@@ -112,41 +164,28 @@ export default function Home() {
                                 </div>
 
                                 <div className="col-7 side">
-                                    <div id="carouselExampleFade" className="carousel slide carousel-fade w-100"
-                                         data-bs-ride="carousel" data-bs-interval="3000" style={{marginTop: "-5px"}}>
-                                        <div className="carousel-inner">
-                                            <div className="carousel-item">
-                                                <img
-                                                    src="https://images.fpt.shop/unsafe/fit-in/1200x300/filters:quality(90):fill(white)/fptshop.com.vn/Uploads/Originals/2023/9/26/638313613716762671_F-C1_1200x300.png"
-                                                    className="d-block w-100" alt="..." style={{height: "280px"}}/>
-                                            </div>
-                                            <div className="carousel-item">
-                                                <img
-                                                    src="https://images.fpt.shop/unsafe/fit-in/1200x300/filters:quality(90):fill(white)/fptshop.com.vn/Uploads/Originals/2023/8/1/638264776256861272_F-C1_1200x300iP13%201.png"
-                                                    className="d-block w-100" alt="..." style={{height: "280px"}}/>
-                                            </div>
-                                            <div className="carousel-item active">
-                                                <img
-                                                    src="https://images.fpt.shop/unsafe/fit-in/1200x300/filters:quality(90):fill(white)/fptshop.com.vn/Uploads/Originals/2023/10/3/638319207158675908_F-C1_1200x300.png"
-                                                    className="d-block w-100" alt="..." style={{height: "280px"}}/>
-                                            </div>
-                                            <div className="carousel-item">
-                                                <img
-                                                    src="https://images.fpt.shop/unsafe/fit-in/1200x300/filters:quality(90):fill(white)/fptshop.com.vn/Uploads/Originals/2023/10/1/638317476292540238_F-C1_1200x300.png"
-                                                    className="d-block w-100" alt="..." style={{height: "280px"}}/>
-                                            </div>
-                                        </div>
-                                        <button className="carousel-control-prev" type="button"
-                                                data-bs-target="#carouselExampleFade" data-bs-slide="prev">
-                                            <span className="carousel-control-prev-icon" aria-hidden="true"></span>
-                                            <span className="visually-hidden">Previous</span>
-                                        </button>
-                                        <button className="carousel-control-next" type="button"
-                                                data-bs-target="#carouselExampleFade" data-bs-slide="next">
-                                            <span className="carousel-control-next-icon" aria-hidden="true"></span>
-                                            <span className="visually-hidden">Next</span>
-                                        </button>
-                                    </div>
+                                    <Carousel fade interval={2000} style={{marginTop: "-5px"}}>
+                                        <Carousel.Item>
+                                            <img
+                                                src="https://images.fpt.shop/unsafe/fit-in/1200x300/filters:quality(90):fill(white)/fptshop.com.vn/Uploads/Originals/2023/9/26/638313613716762671_F-C1_1200x300.png"
+                                                className="d-block w-100" alt="..." style={{height: "280px"}}/>
+                                        </Carousel.Item>
+                                        <Carousel.Item>
+                                            <img
+                                                src="https://images.fpt.shop/unsafe/fit-in/1200x300/filters:quality(90):fill(white)/fptshop.com.vn/Uploads/Originals/2023/8/1/638264776256861272_F-C1_1200x300iP13%201.png"
+                                                className="d-block w-100" alt="..." style={{height: "280px"}}/>
+                                        </Carousel.Item>
+                                        <Carousel.Item>
+                                            <img
+                                                src="https://images.fpt.shop/unsafe/fit-in/1200x300/filters:quality(90):fill(white)/fptshop.com.vn/Uploads/Originals/2023/10/3/638319207158675908_F-C1_1200x300.png"
+                                                className="d-block w-100" alt="..." style={{height: "280px"}}/>
+                                        </Carousel.Item>
+                                        <Carousel.Item>
+                                            <img
+                                                src="https://images.fpt.shop/unsafe/fit-in/1200x300/filters:quality(90):fill(white)/fptshop.com.vn/Uploads/Originals/2023/10/1/638317476292540238_F-C1_1200x300.png"
+                                                className="d-block w-100" alt="..." style={{height: "280px"}}/>
+                                        </Carousel.Item>
+                                    </Carousel>
                                 </div>
                                 <div className="col-3">
                                     <div style={{width: "100%", height: "100px"}}>
@@ -183,40 +222,50 @@ export default function Home() {
 
 
                                 <div className="row product-list">
-                                    {productsNew.map((product, index) => (
+                                    {productsOutstanding.map((product, index) => (
                                         <div className="col-3 cdt-product" style={{marginTop: "20px;"}} key={index}>
-                                            <div className="cdt-product__img"  style={{textAlign:"center",marginTop: "10px;"}}>
-                                                <a href={`product/${product.productId}`}>
+                                            <div className="cdt-product__img"
+                                                 style={{textAlign: "center", marginTop: "10px;"}}>
+                                                <a href={`product/${product.product_Id}`}>
                                               <span
                                                   className=" lazy-load-image-background opacity lazy-load-image-loaded">
-                                                <img className={"image-home"} src={product?.imageUrl}
-                                                     alt={product.modelName} title={product.modelName} height="214"/>
+                                                <div>
+                                                  <img className="image-home" src={product.image_Url.split(',')[0]} alt={product.model_Name} title={product.model_Name}
+                                                       height="214"/>
+                                                </div>
                                               </span>
                                                 </a>
                                             </div>
                                             <div className="cdt-product__info">
-                                                <h6 style={{fontWeight:"bold"}}>
+                                                <h6 style={{fontWeight: "bold"}}>
                                                     {/*<a href={product.link} title={product.modelName}*/}
                                                     {/*   className="cdt-product__name">*/}
-                                                    {product.modelName}
+                                                    {product.model_Name}
                                                     {/*</a>*/}
                                                 </h6>
-                                                <div className="cdt-product__price" style={{marginBottom:"10px"}}>
+                                                <div className="cdt-product__price" style={{marginBottom: "10px"}}>
                                                     <div className="tcdm text-left">
                                                         <div className="price">{formatPrice(product.price)} đ</div>
                                                     </div>
                                                 </div>
                                                 <div className="cdt-product__config list-layout">
-                                                    <div className="product__badge" style={{display:"flex"}}>
+                                                    <div className="product__badge" style={{display: "flex"}}>
                                                         <p
-                                                            className="product__more-info__item">{product.screenSize} inches</p><p
-                                                        className="product__more-info__item">{product.ramCapacity} GB</p><p
-                                                        className="product__more-info__item">{product.storageCapacity} GB</p></div>
+                                                            className="product__more-info__item">{product.screen_Size} inches</p>
+                                                        <p
+                                                            className="product__more-info__item">{product.ram_Capacity} GB</p>
+                                                        <p
+                                                            className="product__more-info__item">{product.storage_Capacity} GB</p>
+                                                    </div>
                                                 </div>
                                                 <div className="cdt-product__btn">
-                                                    <a href={product.link} className="btn btn-primary btn-sm btn-main">
+                                                    <button onClick={() => addToCart(product.product_Id)}
+                                                            className="btn btn-primary btn-sm btn-main">
                                                         MUA NGAY
-                                                    </a>
+                                                    </button>
+                                                    {/*<a href={product.link} className="btn btn-primary btn-sm btn-main">*/}
+                                                    {/*    MUA NGAY*/}
+                                                    {/*</a>*/}
                                                     {/*<a href={product.compareLink}*/}
                                                     {/*   className="btn btn-secondary btn-sm btn-sub">*/}
                                                     {/*    SO SÁNH*/}
@@ -237,86 +286,59 @@ export default function Home() {
                                     </div>
                                     <div>
                                         <div className="col-12" style={{marginBottom: "10px"}}>
-                                            <div className="row">
-                                                <div className="col-2">
-                                                    <div className="card">
-                                                        <a href="detail.html">
-                                                            <img
-                                                                src="https://images.fpt.shop/unsafe/fit-in/214x214/filters:quality(90):fill(white)/fptshop.com.vn/Uploads/Originals/2023/9/14/638302786719525352_ip-15-pro-max-dd.jpg"
-                                                                className="card-img-top" alt="..."/>
-                                                        </a>
-                                                        <div className="card-body">
-                                                            <h6 className="card-title">iPhone 15 Pro Max 256GB</h6>
-                                                            <p className="card-text"><small className="text-muted">Last
-                                                                updated 3 mins ago</small></p>
-                                                        </div>
-                                                    </div>
+                                            <div className="row product-list">
+                                                {products.map((product, index) => (
+                                                    <div className="col-3 cdt-product" style={{marginTop: "20px;"}} key={index}>
+                                                        <div className="cdt-product__img"
+                                                             style={{textAlign: "center", marginTop: "10px;"}}>
+                                                            <a href={`product/${product.product_Id}`}>
+                                              <span
+                                                  className=" lazy-load-image-background opacity lazy-load-image-loaded">
+                                                <div>
+                                                  <img className="image-home" src={product.image_Url.split(',')[0]} alt={product.model_Name} title={product.model_Name}
+                                                       height="214"/>
                                                 </div>
-                                                <div className="col-2">
-                                                    <div className="card">
-                                                        <img
-                                                            src="https://images.fpt.shop/unsafe/fit-in/214x214/filters:quality(90):fill(white)/fptshop.com.vn/Uploads/Originals/2023/3/31/638158962810512367_ss-galaxy-s22-dd-icon.jpg"
-                                                            className="card-img-top" alt="..."/>
-                                                        <div className="card-body">
-                                                            <h6 className="card-title">Samsung Galaxy S22 5G 128GB
+                                              </span>
+                                                            </a>
+                                                        </div>
+                                                        <div className="cdt-product__info">
+                                                            <h6 style={{fontWeight: "bold"}}>
+                                                                {/*<a href={product.link} title={product.modelName}*/}
+                                                                {/*   className="cdt-product__name">*/}
+                                                                {product.model_Name}
+                                                                {/*</a>*/}
                                                             </h6>
-                                                            <p className="card-text"><small className="text-muted">Last
-                                                                updated 3 mins ago</small></p>
+                                                            <div className="cdt-product__price" style={{marginBottom: "10px"}}>
+                                                                <div className="tcdm text-left">
+                                                                    <div className="price">{formatPrice(product.price)} đ</div>
+                                                                </div>
+                                                            </div>
+                                                            <div className="cdt-product__config list-layout">
+                                                                <div className="product__badge" style={{display: "flex"}}>
+                                                                    <p
+                                                                        className="product__more-info__item">{product.screen_Size} inches</p>
+                                                                    <p
+                                                                        className="product__more-info__item">{product.ram_Capacity} GB</p>
+                                                                    <p
+                                                                        className="product__more-info__item">{product.storage_Capacity} GB</p>
+                                                                </div>
+                                                            </div>
+                                                            <div className="cdt-product__btn">
+                                                                <button onClick={() => addToCart(product.product_Id)}
+                                                                        className="btn btn-primary btn-sm btn-main">
+                                                                    MUA NGAY
+                                                                </button>
+                                                                {/*<a href={product.link} className="btn btn-primary btn-sm btn-main">*/}
+                                                                {/*    MUA NGAY*/}
+                                                                {/*</a>*/}
+                                                                {/*<a href={product.compareLink}*/}
+                                                                {/*   className="btn btn-secondary btn-sm btn-sub">*/}
+                                                                {/*    SO SÁNH*/}
+                                                                {/*</a>*/}
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                </div>
-                                                <div className="col-2">
-                                                    <div className="card">
-                                                        <img
-                                                            src="https://images.fpt.shop/unsafe/fit-in/214x214/filters:quality(90):fill(white)/fptshop.com.vn/Uploads/Originals/2023/3/27/638155148198300095_oppo-reno8-t-4g-dd.jpg"
-                                                            className="card-img-top" alt="..."/>
-                                                        <div className="card-body">
-                                                            <h6 className="card-title">
-                                                                OPPO Reno8 T 4G 256GB</h6>
-                                                            <p className="card-text"><small className="text-muted">Last
-                                                                updated 3 mins ago</small></p>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div className="col-2">
-                                                    <div className="card">
-                                                        <img
-                                                            src="https://images.fpt.shop/unsafe/fit-in/214x214/filters:quality(90):fill(white)/fptshop.com.vn/Uploads/Originals/2023/6/30/638237370001190590_honor-x8-dd-docquyen.jpg"
-                                                            className="card-img-top" alt="..."/>
-                                                        <div className="card-body">
-                                                            <h6 className="card-title">Honor X8A 8GB-128GB
-                                                            </h6>
-                                                            <p className="card-text"><small className="text-muted">Last
-                                                                updated 3 mins ago</small></p>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div className="col-2">
-                                                    <div className="card">
-                                                        <img
-                                                            src="https://images.fpt.shop/unsafe/fit-in/214x214/filters:quality(90):fill(white)/fptshop.com.vn/Uploads/Originals/2023/3/24/638152739283440892_xiaomi-redmi-note-12-dd-bh.jpg"
-                                                            className="card-img-top" alt="..."/>
-                                                        <div className="card-body">
-                                                            <h6 className="card-title">
-                                                                Xiaomi Redmi Note 12 4GB-128GB</h6>
-                                                            <p className="card-text"><small className="text-muted">Last
-                                                                updated 3 mins ago</small></p>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div className="col-2">
-                                                    <div className="card">
-                                                        <img
-                                                            src="https://images.fpt.shop/unsafe/fit-in/214x214/filters:quality(90):fill(white)/fptshop.com.vn/Uploads/Originals/2023/10/4/638320081767757292_samsung-galaxy-a05s-dd-moi.jpg"
-                                                            className="card-img-top" alt="..."/>
-                                                        <div className="card-body">
-                                                            <h6 className="card-title">
-                                                                Samsung Galaxy A05s 128GB</h6>
-                                                            <p className="card-text"><small className="text-muted">Last
-                                                                updated 3 mins ago</small></p>
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                                ))}
                                             </div>
                                         </div>
                                     </div>
@@ -347,38 +369,48 @@ export default function Home() {
                                 <div className="row product-list">
                                     {productsNew.map((product, index) => (
                                         <div className="col-3 cdt-product" style={{marginTop: "20px;"}} key={index}>
-                                            <div className="cdt-product__img"  style={{textAlign:"center",marginTop: "10px;"}}>
-                                                <a href={`product/${product.productId}`}>
+                                            <div className="cdt-product__img"
+                                                 style={{textAlign: "center", marginTop: "10px;"}}>
+                                                <a href={`product/${product.product_Id}`}>
                                               <span
                                                   className=" lazy-load-image-background opacity lazy-load-image-loaded">
-                                                <img className={"image-home"} src={product?.imageUrl}
-                                                     alt={product.modelName} title={product.modelName} height="214"/>
+                                                <div>
+                                                  <img className="image-home" src={product.image_Url.split(',')[0]} alt={product.model_Name} title={product.model_Name}
+                                                       height="214"/>
+                                                </div>
                                               </span>
                                                 </a>
                                             </div>
                                             <div className="cdt-product__info">
-                                                <h6 style={{fontWeight:"bold"}}>
+                                                <h6 style={{fontWeight: "bold"}}>
                                                     {/*<a href={product.link} title={product.modelName}*/}
                                                     {/*   className="cdt-product__name">*/}
-                                                        {product.modelName}
+                                                    {product.model_Name}
                                                     {/*</a>*/}
                                                 </h6>
-                                                <div className="cdt-product__price" style={{marginBottom:"10px"}}>
+                                                <div className="cdt-product__price" style={{marginBottom: "10px"}}>
                                                     <div className="tcdm text-left">
                                                         <div className="price">{formatPrice(product.price)} đ</div>
                                                     </div>
                                                 </div>
                                                 <div className="cdt-product__config list-layout">
-                                                    <div className="product__badge" style={{display:"flex"}}>
+                                                    <div className="product__badge" style={{display: "flex"}}>
                                                         <p
-                                                            className="product__more-info__item">{product.screenSize} inches</p><p
-                                                        className="product__more-info__item">{product.ramCapacity} GB</p><p
-                                                        className="product__more-info__item">{product.storageCapacity} GB</p></div>
+                                                            className="product__more-info__item">{product.screen_Size} inches</p>
+                                                        <p
+                                                            className="product__more-info__item">{product.ram_Capacity} GB</p>
+                                                        <p
+                                                            className="product__more-info__item">{product.storage_Capacity} GB</p>
+                                                    </div>
                                                 </div>
                                                 <div className="cdt-product__btn">
-                                                    <a href={product.link} className="btn btn-primary btn-sm btn-main">
+                                                    <button onClick={() => addToCart(product.product_Id)}
+                                                            className="btn btn-primary btn-sm btn-main">
                                                         MUA NGAY
-                                                    </a>
+                                                    </button>
+                                                    {/*<a href={product.link} className="btn btn-primary btn-sm btn-main">*/}
+                                                    {/*    MUA NGAY*/}
+                                                    {/*</a>*/}
                                                     {/*<a href={product.compareLink}*/}
                                                     {/*   className="btn btn-secondary btn-sm btn-sub">*/}
                                                     {/*    SO SÁNH*/}

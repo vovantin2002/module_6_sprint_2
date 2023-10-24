@@ -32,7 +32,7 @@ public class Customers {
     private String note;
 
     @Column(name = "flag_deleted")
-    private Boolean flagDeleted;
+    private boolean flagDeleted;
 
     public Integer getCustomerId() {
         return this.customerId;
@@ -98,11 +98,11 @@ public class Customers {
         this.note = note;
     }
 
-    public Boolean getFlagDeleted() {
+    public boolean getFlagDeleted() {
         return this.flagDeleted;
     }
 
-    public void setFlagDeleted(Boolean flagDeleted) {
+    public void setFlagDeleted(boolean flagDeleted) {
         this.flagDeleted = flagDeleted;
     }
 }
