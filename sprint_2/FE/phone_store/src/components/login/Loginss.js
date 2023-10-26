@@ -81,7 +81,7 @@ const Loginss = () => {
                                     placeholder="Username"
                                     id="username"
                                     name="username"
-                                    required="required"
+                                    required
                                 />
                             </div>
                             <div className="input-field">
@@ -91,7 +91,7 @@ const Loginss = () => {
                                     placeholder="Password"
                                     id="password"
                                     name="password"
-                                    required="required"
+                                    required
                                 />
                             </div>
                             <button className="btn solid"
@@ -147,7 +147,9 @@ const Loginss = () => {
                                         name="username"
                                         required="required"
                                     />
-                                    <ErrorMessage name="username" component="small" className="error"/>
+                                </div>
+                                <div style={{height:"12px"}}>
+                                    <ErrorMessage className="text-danger" name="username" component="small"/>
                                 </div>
                                 {/*<div className="input-field">*/}
                                 {/*    <i className="fas fa-envelope"/>*/}
@@ -166,8 +168,9 @@ const Loginss = () => {
                                         name="password"
                                         required="required"
                                     />
+                                </div>
+                                <div style={{height:"12px"}}>
                                     <ErrorMessage className="text-danger" name="password" component="small"/>
-
                                 </div>
                                 <div className="input-field">
                                     <i className="fas fa-lock"/>
@@ -177,7 +180,9 @@ const Loginss = () => {
                                         name="confirmPassword"
                                         required="required"
                                     />
-                                    <ErrorMessage name="confirmPassword" component="span" className="text-danger"/>
+                                </div>
+                                <div style={{height:"12px"}}>
+                                    <ErrorMessage className="text-danger" name="confirmPassword" component="small"/>
                                 </div>
                                 <input type="submit" className="btn" value="Đăng ký"/>
                                 <p className="social-text">Hoặc Đăng ký bằng nền tảng xã hội</p>

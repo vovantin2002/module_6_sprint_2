@@ -23,20 +23,9 @@ public class ProductController {
     @GetMapping("/{id}")
     @ResponseBody
     public ResponseEntity<?> display(@PathVariable("id") int id){
-//        Products products=productService.findProductById(id);
-//        products.setProductImagesList(productImagesService.findByProductId(id));
         return new ResponseEntity<>(productService.findProductById(id), HttpStatus.OK);
     }
-//    @GetMapping("/check-quantity")
-//    public ResponseEntity<?> checkQuantity(@RequestParam("medicineId") Long medicineId,
-//                                           @RequestParam("inputQuantity") Long inputQuantity) {
-//        MedicineProjection med = iCartDetailsService.getMedicineToCheckAndDisplay(medicineId);
-//        if (iMedicineService.existsByIdAndFlagDeletedIsFalse(medicineId)
-//                && med.getQuantity() >= (inputQuantity * med.getConversion_Rate())) {
-//            return new ResponseEntity<>(HttpStatus.OK);
-//        }
-//        return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
-//    }
+
     @GetMapping("/order")
     @ResponseBody
     public ResponseEntity displayPage(){

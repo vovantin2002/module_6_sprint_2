@@ -4,6 +4,7 @@ import com.example.phone_store.model.ProductReviews;
 import com.example.phone_store.service.review.IProductReviewService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,10 +16,11 @@ import org.springframework.web.bind.annotation.*;
 public class ProductReviewController {
     @Autowired
     private IProductReviewService productReviewService;
-    @GetMapping("")
+    @GetMapping("/{productId}")
     @ResponseBody
-    public ResponseEntity displayPage(@PageableDefault(size = 8) Pageable pageable){
-        return new ResponseEntity<>(productReviewService.display(pageable), HttpStatus.OK);
+    public ResponseEntity displayPage(@PageableDefault(size = 8, sort = "reviewId", direction = Sort.Direction.DESC )
+                                          Pageable pageable, @PathVariable("productId") Integer productId){
+        return new ResponseEntity<>(productReviewService.display(pageable, productId), HttpStatus.OK);
     }
     @PostMapping("")
     @ResponseBody

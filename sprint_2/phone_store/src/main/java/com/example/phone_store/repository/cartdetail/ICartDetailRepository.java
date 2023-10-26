@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface ICartDetailRepository extends JpaRepository<CartDetails,Integer> {
     List<CartDetails> findAllByAccounts_AccountId(Integer accountId);
+    CartDetails findByAccounts_AccountId(Integer accountId);
+    CartDetails findAllByProducts_ProductId(Integer productId);
 }

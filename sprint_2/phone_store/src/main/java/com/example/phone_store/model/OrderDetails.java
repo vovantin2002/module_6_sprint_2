@@ -12,7 +12,7 @@ public class OrderDetails {
     @Column(name = "quantity")
     private Integer quantity;
     @Column(name = "flag_deleted")
-    private Boolean flagDeleted;
+    private boolean flagDeleted;
     @ManyToOne
     @JoinColumn(name = "product_id", referencedColumnName = "product_id")
     private Products products;
@@ -63,11 +63,11 @@ public class OrderDetails {
         this.quantity = quantity;
     }
 
-    public Boolean getFlagDeleted() {
+    public boolean getFlagDeleted() {
         return this.flagDeleted;
     }
 
-    public void setFlagDeleted(Boolean flagDeleted) {
+    public void setFlagDeleted(boolean flagDeleted) {
         this.flagDeleted = flagDeleted;
     }
 }

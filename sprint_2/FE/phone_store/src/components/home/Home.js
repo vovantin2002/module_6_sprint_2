@@ -42,6 +42,9 @@ export default function Home() {
         const formatter = new Intl.NumberFormat('vi-VN');
         return formatter.format(price);
     }
+    useEffect(() => {
+        document.title = "VVT Shop - Trang chủ";
+    }, []);
 
     const infoAppUserByJwtToken = () => {
         const jwtToken = localStorage.getItem("JWT");
@@ -58,7 +61,6 @@ export default function Home() {
         } else {
             const id = await axios.get(`http://localhost:8080/api/user/getId?userName=${isLoggedIn.sub}`);
             console.log(id.data);
-            // setAppUserId(id.data);
             const cart = {
                 quantity: 1,
                 products: {
@@ -68,15 +70,15 @@ export default function Home() {
                     accountId: id.data
                 }
             }
-            await axios.post(
-                `http://localhost:8080/api/cart/add`, cart);
-            // const response = await addToCartFromHomeAndDetails(
-            //     id.data,
-            //     medicineId,
-            //     1
-            // );
-            // dispatch(getAllCarts(id.data));
-            Swal.fire("Thêm sản phẩm vào giỏ hàng thành công", "", "success");
+            try {
+                await axios.post(
+                    `http://localhost:8080/api/cart/add`, cart);
+                // await axios.post(
+                //     `http://localhost:8080/api/cart/${cartId}`);
+                Swal.fire("Thêm sản phẩm vào giỏ hàng thành công", "", "success");
+            }catch (e){
+                Swal.fire("Sản phẩm đã tồn tại trong giỏ hàng! ", "", "warning");
+            }
         }
     };
     return (
@@ -261,7 +263,7 @@ export default function Home() {
                                                 <div className="cdt-product__btn">
                                                     <button onClick={() => addToCart(product.product_Id)}
                                                             className="btn btn-primary btn-sm btn-main">
-                                                        MUA NGAY
+                                                        THÊM VÀO GIỎ HÀNG
                                                     </button>
                                                     {/*<a href={product.link} className="btn btn-primary btn-sm btn-main">*/}
                                                     {/*    MUA NGAY*/}
@@ -295,7 +297,7 @@ export default function Home() {
                                               <span
                                                   className=" lazy-load-image-background opacity lazy-load-image-loaded">
                                                 <div>
-                                                  <img className="image-home" src={product.image_Url.split(',')[0]} alt={product.model_Name} title={product.model_Name}
+                                                  <img className="image-home" src={product.image_Url.split(',')[1]} alt={product.model_Name} title={product.model_Name}
                                                        height="214"/>
                                                 </div>
                                               </span>
@@ -326,7 +328,7 @@ export default function Home() {
                                                             <div className="cdt-product__btn">
                                                                 <button onClick={() => addToCart(product.product_Id)}
                                                                         className="btn btn-primary btn-sm btn-main">
-                                                                    MUA NGAY
+                                                                    THÊM VÀO GIỎ HÀNG
                                                                 </button>
                                                                 {/*<a href={product.link} className="btn btn-primary btn-sm btn-main">*/}
                                                                 {/*    MUA NGAY*/}
@@ -375,7 +377,7 @@ export default function Home() {
                                               <span
                                                   className=" lazy-load-image-background opacity lazy-load-image-loaded">
                                                 <div>
-                                                  <img className="image-home" src={product.image_Url.split(',')[0]} alt={product.model_Name} title={product.model_Name}
+                                                  <img className="image-home" src={product.image_Url.split(',')[2]} alt={product.model_Name} title={product.model_Name}
                                                        height="214"/>
                                                 </div>
                                               </span>
@@ -406,7 +408,7 @@ export default function Home() {
                                                 <div className="cdt-product__btn">
                                                     <button onClick={() => addToCart(product.product_Id)}
                                                             className="btn btn-primary btn-sm btn-main">
-                                                        MUA NGAY
+                                                        THÊM VÀO GIỎ HÀNG
                                                     </button>
                                                     {/*<a href={product.link} className="btn btn-primary btn-sm btn-main">*/}
                                                     {/*    MUA NGAY*/}

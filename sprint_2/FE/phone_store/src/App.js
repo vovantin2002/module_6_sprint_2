@@ -9,6 +9,7 @@ import Loginss from "./components/login/Loginss";
 import Home from "./components/home/Home";
 import Login from "./components/login/Login";
 import ReturnVNPay from "./components/cart_detail/ReturnVNPay";
+import History from "./components/history/History";
 
 
 function App() {
@@ -16,6 +17,7 @@ function App() {
         <>
             <BrowserRouter>
                 <Routes>
+                    <Route path="/history" element={<History/>}></Route>
                     <Route path="" element={<Loginss/>}></Route>
                     <Route path="/success" element={<ReturnVNPay/>}></Route>
                     <Route path="/home" element={<Home/>}></Route>

@@ -17,7 +17,7 @@ public class Orders {
     private Double totalAmount;
 
     @Column(name = "flag_deleted")
-    private Boolean flagDeleted;
+    private boolean flagDeleted;
     @ManyToOne
     @JoinColumn(name = "account_id", referencedColumnName = "account_id")
     private Accounts accounts;
@@ -65,11 +65,11 @@ public class Orders {
         this.totalAmount = totalAmount;
     }
 
-    public Boolean getFlagDeleted() {
+    public boolean getFlagDeleted() {
         return this.flagDeleted;
     }
 
-    public void setFlagDeleted(Boolean flagDeleted) {
+    public void setFlagDeleted(boolean flagDeleted) {
         this.flagDeleted = flagDeleted;
     }
 }

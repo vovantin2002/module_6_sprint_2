@@ -9,4 +9,6 @@ public interface ICartDetailService {
     void delete(Integer id);
     List<CartDetails> display();
     List<CartDetails> findCartByAccountId(Integer accountId);
+    CartDetails findByAccountId(Integer accountId);
+    CartDetails findByProducts(Integer productId);
 }

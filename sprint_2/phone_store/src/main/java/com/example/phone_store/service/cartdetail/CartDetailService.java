@@ -30,4 +30,14 @@ public class CartDetailService implements ICartDetailService{
     public List<CartDetails> findCartByAccountId(Integer accountId) {
         return cartDetailRepository.findAllByAccounts_AccountId(accountId);
     }
+
+    @Override
+    public CartDetails findByAccountId(Integer accountId) {
+        return cartDetailRepository.findByAccounts_AccountId(accountId);
+    }
+
+    @Override
+    public CartDetails findByProducts(Integer productId) {
+        return cartDetailRepository.findAllByProducts_ProductId(productId);
+    }
 }

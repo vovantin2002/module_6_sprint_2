@@ -13,8 +13,8 @@ public class ProductReviewService implements IProductReviewService {
     private IProductReviewRepository productReviewRepository;
 
     @Override
-    public Page<ProductReviews> display(Pageable pageable) {
-        return productReviewRepository.findAll(pageable);
+    public Page<ProductReviews> display(Pageable pageable, Integer productId) {
+        return productReviewRepository.findAllByProducts_ProductId(pageable, productId);
     }
 
     @Override
