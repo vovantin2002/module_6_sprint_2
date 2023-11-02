@@ -1,0 +1,132 @@
+.fpt-comment .user-rate__box {
+    padding: 16px 0;
+}
+
+html, body, body .fpt-comment div {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    font-weight: normal;
+    vertical-align: baseline;
+    background: transparent;
+}
+.cdt-product__btn {
+    /*margin-top: 15px;*/
+    /*margin-bottom: 15px;*/
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.cdt-product:hover .cdt-product__btn {
+    opacity: 1;
+}
+.cdt-product__name {
+    font-size: 17px;
+    font-weight: 700;
+    line-height: normal;
+    color: #474c51;
+    margin-bottom: 10px;
+    position: relative;
+    z-index: 10;
+    display: block;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    -o-text-overflow: ellipsis;
+    text-overflow: ellipsis;
+    word-break: break-word;
+}
+.fpheadbox .card-header {
+    border-bottom: none;
+}
+.card-header:first-child {
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
+}
+.card-header {
+    padding: 15px;
+    margin-bottom: 0;
+    background-color: #fff;
+    border-radius: 6px;
+    border-bottom: 1px solid rgba(0,0,0,.125);
+}
+
+.cdt-filter__checklist {
+    margin-top: 20px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-gap: 10px;
+}
+
+.carousel {
+    border-radius: 10px;
+    display: block;
+    left: 0;
+    margin-left: auto;
+    margin-right: auto;
+    position: relative;
+    top: 0;
+}
+
+.star-rating {
+    /*direction: rtl;*/
+    /*display: inline-block;*/
+    /*font-size: 0;*/
+    content: "\f005";
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    font-size: inherit;
+    display: inline-block;
+    margin-right: 5px;
+    color: #efb140;
+}
+
+.star-rating input[type="radio"] {
+    display: none;
+    content: "\f005";
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    font-size: inherit;
+    display: inline-block;
+    margin-right: 5px;
+    color: #efb140;
+}
+
+.star-rating label {
+    color: #bbb;
+    font-size: 1.5rem;
+    padding: 5px;
+    cursor: pointer;
+    content: "\f005";
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    font-size: inherit;
+    display: inline-block;
+    margin-right: 5px;
+    color: #efb140;
+}
+
+.tin label:before {
+    content: "\f005";
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    font-size: inherit;
+    display: inline-block;
+    margin-right: 5px;
+}
+
+.tin {
+    color: #efb140;
+}
+
+.custom-checkbox input[type="checkbox"]:checked + label {
+    background-color: red; /* Màu đỏ */
+}
+/*.progress-block__line{*/
+/*    display: flex;*/
+/*    align-items: center;*/
+/*    font-size: 14px;*/
+/*    line-height: 20px;*/
+/*}*/

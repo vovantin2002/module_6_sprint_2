@@ -214,21 +214,23 @@ export default function Home() {
                                 </div>
                             </div>
                             {/*sản phẩm nổi bật*/}
-                            <div className="box-container cate-box cat-prd box-pad15 bg-white mb24">
+                            {
+                                productsOutstanding &&
+                                <div className="box-container cate-box cat-prd box-pad15 bg-white mb24">
 
-                                <div className="row cat-prd-oustanding margin-18">
-                                    <div className="col-11 title f20"><h5>SẢN PHẨM NỐI BẬT</h5></div>
-                                    <div className="col-1 cat-prd-tabs"><a href="/product"><small>Xem tất cả</small></a>
+                                    <div className="row cat-prd-oustanding margin-18">
+                                        <div className="col-11 title f20"><h5>SẢN PHẨM NỐI BẬT</h5></div>
+                                        <div className="col-1 cat-prd-tabs"><a href="/product"><small>Xem tất cả</small></a>
+                                        </div>
                                     </div>
-                                </div>
 
 
-                                <div className="row product-list">
-                                    {productsOutstanding.map((product, index) => (
-                                        <div className="col-3 cdt-product" style={{marginTop: "20px;"}} key={index}>
-                                            <div className="cdt-product__img"
-                                                 style={{textAlign: "center", marginTop: "10px;"}}>
-                                                <a href={`product/${product.product_Id}`}>
+                                    <div className="row product-list">
+                                        {productsOutstanding.map((product, index) => (
+                                            <div className="col-3 cdt-product" style={{marginTop: "20px;"}} key={index}>
+                                                <div className="cdt-product__img"
+                                                     style={{textAlign: "center", marginTop: "10px;"}}>
+                                                    <a href={`product/${product.product_Id}`}>
                                               <span
                                                   className=" lazy-load-image-background opacity lazy-load-image-loaded">
                                                 <div>
@@ -236,48 +238,49 @@ export default function Home() {
                                                        height="214"/>
                                                 </div>
                                               </span>
-                                                </a>
-                                            </div>
-                                            <div className="cdt-product__info">
-                                                <h6 style={{fontWeight: "bold"}}>
-                                                    {/*<a href={product.link} title={product.modelName}*/}
-                                                    {/*   className="cdt-product__name">*/}
-                                                    {product.model_Name}
-                                                    {/*</a>*/}
-                                                </h6>
-                                                <div className="cdt-product__price" style={{marginBottom: "10px"}}>
-                                                    <div className="tcdm text-left">
-                                                        <div className="price">{formatPrice(product.price)} đ</div>
+                                                    </a>
+                                                </div>
+                                                <div className="cdt-product__info">
+                                                    <h6 style={{fontWeight: "bold"}}>
+                                                        {/*<a href={product.link} title={product.modelName}*/}
+                                                        {/*   className="cdt-product__name">*/}
+                                                        {product.model_Name}
+                                                        {/*</a>*/}
+                                                    </h6>
+                                                    <div className="cdt-product__price" style={{marginBottom: "10px"}}>
+                                                        <div className="tcdm text-left">
+                                                            <div className="price">{formatPrice(product.price)} đ</div>
+                                                        </div>
+                                                    </div>
+                                                    <div className="cdt-product__config list-layout">
+                                                        <div className="product__badge" style={{display: "flex"}}>
+                                                            <p
+                                                                className="product__more-info__item">{product.screen_Size} inches</p>
+                                                            <p
+                                                                className="product__more-info__item">{product.ram_Capacity} GB</p>
+                                                            <p
+                                                                className="product__more-info__item">{product.storage_Capacity} GB</p>
+                                                        </div>
+                                                    </div>
+                                                    <div className="cdt-product__btn">
+                                                        <button onClick={() => addToCart(product.product_Id)}
+                                                                className="btn btn-primary btn-sm btn-main">
+                                                            THÊM VÀO GIỎ HÀNG
+                                                        </button>
+                                                        {/*<a href={product.link} className="btn btn-primary btn-sm btn-main">*/}
+                                                        {/*    MUA NGAY*/}
+                                                        {/*</a>*/}
+                                                        {/*<a href={product.compareLink}*/}
+                                                        {/*   className="btn btn-secondary btn-sm btn-sub">*/}
+                                                        {/*    SO SÁNH*/}
+                                                        {/*</a>*/}
                                                     </div>
                                                 </div>
-                                                <div className="cdt-product__config list-layout">
-                                                    <div className="product__badge" style={{display: "flex"}}>
-                                                        <p
-                                                            className="product__more-info__item">{product.screen_Size} inches</p>
-                                                        <p
-                                                            className="product__more-info__item">{product.ram_Capacity} GB</p>
-                                                        <p
-                                                            className="product__more-info__item">{product.storage_Capacity} GB</p>
-                                                    </div>
-                                                </div>
-                                                <div className="cdt-product__btn">
-                                                    <button onClick={() => addToCart(product.product_Id)}
-                                                            className="btn btn-primary btn-sm btn-main">
-                                                        THÊM VÀO GIỎ HÀNG
-                                                    </button>
-                                                    {/*<a href={product.link} className="btn btn-primary btn-sm btn-main">*/}
-                                                    {/*    MUA NGAY*/}
-                                                    {/*</a>*/}
-                                                    {/*<a href={product.compareLink}*/}
-                                                    {/*   className="btn btn-secondary btn-sm btn-sub">*/}
-                                                    {/*    SO SÁNH*/}
-                                                    {/*</a>*/}
-                                                </div>
                                             </div>
-                                        </div>
-                                    ))}
+                                        ))}
+                                    </div>
                                 </div>
-                            </div>
+                            }
                             <div className="container-fluid">
                                 <div className="row"
                                      style={{backgroundColor: "#ffd391", marginTop: "10px", borderRadius: "10px"}}>
