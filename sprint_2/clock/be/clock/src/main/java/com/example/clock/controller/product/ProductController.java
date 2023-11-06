@@ -20,25 +20,33 @@ public class ProductController {
     private IProductService productService;
     @Autowired
     private IProductImagesService productImagesService;
+
     @GetMapping("/{id}")
     @ResponseBody
-    public ResponseEntity<?> display(@PathVariable("id") int id){
+    public ResponseEntity<?> display(@PathVariable("id") int id) {
         return new ResponseEntity<>(productService.findProductById(id), HttpStatus.OK);
     }
 
     @GetMapping("/order")
     @ResponseBody
-    public ResponseEntity displayPage(){
+    public ResponseEntity displayByOrder() {
         return new ResponseEntity<>(productService.displayAllByQuantityOrder(), HttpStatus.OK);
     }
+
+    @GetMapping("/page")
+    @ResponseBody
+    public ResponseEntity displayPage(@PageableDefault(size = 8, sort = "productId", direction = Sort.Direction.DESC) Pageable pageable) {
+        return new ResponseEntity<>(productService.displayList(pageable), HttpStatus.OK);
+    }
+
     @GetMapping("")
     @ResponseBody
-    public ResponseEntity findAllByName(@PageableDefault(size = 8, sort = "product_id", direction = Sort.Direction.DESC )Pageable pageable, @RequestParam(value = "modelName",
+    public ResponseEntity findAllByName(@PageableDefault(size = 8, sort = "product_id", direction = Sort.Direction.DESC) Pageable pageable, @RequestParam(value = "modelName",
             defaultValue = "") String modelName, @RequestParam(value = "productTypes",
             defaultValue = "") String productTypes, @RequestParam(value = "minPrice",
             defaultValue = "") String minPrice, @RequestParam(value = "maxPrice",
             defaultValue = "") String maxPrice, @RequestParam(value = "phoneBrands",
-            defaultValue = "") String phoneBrands){
-        return new ResponseEntity<>(productService.search( modelName, productTypes, minPrice, maxPrice, phoneBrands, pageable), HttpStatus.OK);
+            defaultValue = "") String phoneBrands) {
+        return new ResponseEntity<>(productService.search(modelName, productTypes, minPrice, maxPrice, phoneBrands, pageable), HttpStatus.OK);
     }
 }

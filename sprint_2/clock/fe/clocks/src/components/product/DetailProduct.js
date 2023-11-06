@@ -200,11 +200,11 @@ export default function DetailProduct() {
     return (
         <>
             <Header></Header>
-            <div className="container-fluid">
+            <div className="container-fluid" style={{ marginTop:"95px"}}>
                 <div style={{backgroundColor: "#f8f9fa"}}>
                     <div className="container">
                         <div className={"row"}>
-                            <div className={"col-8"}><h4><b>{product?.model_Name}</b></h4></div>
+                            <div className={"col-8"}><h4><b>{product?.name}</b></h4></div>
                         </div>
                         <hr/>
                         <div className="row">
@@ -292,7 +292,7 @@ export default function DetailProduct() {
                                     {/*// <!--                    <div class="product-description">Mô tả sản phẩm điện thoại XYZ.</div>-->*/}
                                     <div className="card re-card st-card">
                                         <h5 className="card-title" style={{marginLeft: "10px", marginTop: "16px"}}><b>Thông
-                                            số kỹ thuật</b></h5>
+                                            tin sản phẩm</b></h5>
                                         <div className="card-body"
                                              style={{
                                                  backgroundColor: "#f8f9fa",
@@ -302,40 +302,44 @@ export default function DetailProduct() {
                                             <table className="st-pd-table">
                                                 <tbody>
                                                 <tr style={{borderSpacing: "10px;"}}>
-                                                    <td>Màn hình</td>
-                                                    <td style={{paddingLeft: "10px"}}>{product?.screen_Size} inch
+                                                    <td>Thương hiệu</td>
+                                                    <td style={{paddingLeft: "10px"}}>{product?.brands}
                                                     </td>
                                                 </tr>
                                                 <tr style={{height: "8px"}}></tr>
+                                                {/*<tr style={{paddingBottom: "20px"}}>*/}
+                                                {/*    <td>Xuất xứ</td>*/}
+                                                {/*    <td style={{paddingLeft: "10px"}}>{product?.origin} </td>*/}
+                                                {/*</tr>*/}
+                                                <tr style={{height: "8px"}}></tr>
                                                 <tr style={{paddingBottom: "20px"}}>
-                                                    <td>Camera sau</td>
-                                                    <td style={{paddingLeft: "10px"}}>{product?.camera_Resolution} MP</td>
+                                                    <td>Kính</td>
+                                                    <td style={{paddingLeft: "10px"}}>{product?.glasses} </td>
+                                                </tr>
+                                                <tr style={{paddingBottom: "20px"}}>
+                                                    <td>Màu mặt số</td>
+                                                    <td style={{paddingLeft: "10px"}}>{product?.dial_Color} </td>
                                                 </tr>
                                                 <tr style={{height: "8px"}}></tr>
                                                 <tr style={{paddingBottom: "20px"}}>
-                                                    <td>RAM</td>
-                                                    <td style={{paddingLeft: "10px"}}>{product?.battery_Capacity} GB</td>
+                                                    <td>Bảo hành quốc tế</td>
+                                                    <td style={{paddingLeft: "10px"}}>{product?.international_Warranty} </td>
                                                 </tr>
                                                 <tr style={{height: "8px"}}></tr>
                                                 <tr style={{paddingBottom: "20px"}}>
-                                                    <td>Bộ nhớ trong</td>
-                                                    <td style={{paddingLeft: "10px"}}>{product?.storage_Capacity} GB</td>
+                                                    <td>Bề dày mặc số</td>
+                                                    <td style={{paddingLeft: "10px"}}>{product?.dial_Thickness} mm</td>
                                                 </tr>
                                                 <tr style={{height: "8px"}}></tr>
                                                 <tr style={{paddingBottom: "20px"}}>
-                                                    <td>Dung lượng pin</td>
-                                                    <td style={{paddingLeft: "10px"}}>{product?.battery_Capacity} Giờ</td>
-                                                </tr>
-                                                <tr style={{height: "8px"}}></tr>
-                                                <tr style={{paddingBottom: "20px"}}>
-                                                    <td>Thẻ sim</td>
-                                                    <td style={{paddingLeft: "10px"}}>{product?.sim}</td>
+                                                    <td>Đường kính mặc số</td>
+                                                    <td style={{paddingLeft: "10px"}}>{product?.dial_Diameter} mm</td>
                                                     {/*<td style={{paddingLeft:"10px"}}>1 - 1 eSIM, 1 Nano SIM </td>*/}
                                                 </tr>
                                                 <tr style={{height: "8px"}}></tr>
                                                 <tr style={{paddingBottom: "20px"}}>
-                                                    <td>Hệ điều hành</td>
-                                                    <td style={{paddingLeft: "10px"}}>{product?.operating_System}</td>
+                                                    <td>Chức năng</td>
+                                                    <td style={{paddingLeft: "10px"}}>{product?.functions}</td>
                                                 </tr>
                                                 <tr style={{height: "8px"}}></tr>
                                                 <tr style={{paddingBottom: "20px"}}>
@@ -344,10 +348,10 @@ export default function DetailProduct() {
                                                     {/*<td style={{paddingLeft:"10px"}}>Trung Quốc </td>*/}
                                                 </tr>
                                                 <tr style={{height: "8px"}}></tr>
-                                                <tr style={{paddingBottom: "20px"}}>
-                                                    <td>Thời gian ra mắt</td>
-                                                    <td style={{paddingLeft: "10px"}}>{product?.launch_Time}</td>
-                                                </tr>
+                                                {/*<tr style={{paddingBottom: "20px"}}>*/}
+                                                {/*    <td>Thời gian ra mắt</td>*/}
+                                                {/*    <td style={{paddingLeft: "10px"}}>{product?.launch_Time}</td>*/}
+                                                {/*</tr>*/}
                                                 {/* Các thông tin khác */}
                                                 </tbody>
                                             </table>
@@ -361,10 +365,84 @@ export default function DetailProduct() {
                                             {/*    tiết <span className="carret"></span></a></div>*/}
                                         </div>
                                     </div>
+                {/*                    <div className="product-info">*/}
+                {/*                        <div className="display-header text-light">*/}
+                {/*                            <h2 itemProp="name" className="product-title text-light">Order Your*/}
+                {/*                                Choice</h2>*/}
+                {/*                            <p>Experience the elegance of Reddy on your wrist. Place your order today*/}
+                {/*                                and enjoy free worldwide shipping.</p>*/}
+                {/*                        </div>*/}
+                {/*                        <div className="product-action mt-4">*/}
+                {/*                            <div className="detail-list mt-3">*/}
+                {/*                                <ul className="text-light list-unstyled">*/}
+                {/*                                    <li className="pb-3">*/}
+                {/*                                        <strong>Watch Model:</strong>*/}
+                {/*                                        <a href="#" className="text-light">Reddy Watch</a>*/}
+                {/*                                    </li>*/}
+                {/*                                    <li className="pb-3">*/}
+                {/*                                        <strong>Price:</strong>*/}
+                {/*                                        <a href="#" className="text-light">$2000.00</a>*/}
+                {/*                                    </li>*/}
+                {/*                                    <li className="color-product-options pb-3">*/}
+                {/*                                        <div className="color-toggle d-flex" data-option-index="0">*/}
+                {/*                                            <div className="item-title">*/}
+                {/*                                                <strong>Choose Strap Color:</strong>*/}
+                {/*                                            </div>*/}
+                {/*                                            <div className="color-item ms-2" data-val="Cement"*/}
+                {/*                                                 title="Cement">*/}
+                {/*                                                <span className="color-inner d-block rounded-pill"*/}
+                {/*                                                      style={{backgroundColor: "#ABA194"}}></span>*/}
+                {/*                                            </div>*/}
+                {/*                                            <div className="color-item ms-2" data-val="Reddish Brown"*/}
+                {/*                                                 title="Reddish Brown">*/}
+                {/*                                                <span className="color-inner d-block rounded-pill"*/}
+                {/*                                                      style={{backgroundColor: "#812013"}}></span>*/}
+                {/*                                            </div>*/}
+                {/*                                            <div className="color-item ms-2" data-val="Woody Brown"*/}
+                {/*                                                 title="Woody Brown">*/}
+                {/*                                                <span className="color-inner d-block rounded-pill"*/}
+                {/*                                                      style={{backgroundColor: "#4A3937"}}></span>*/}
+                {/*                                            </div>*/}
+                {/*                                        </div>*/}
+                {/*                                    </li>*/}
+                {/*                                </ul>*/}
+                {/*                            </div>*/}
+                {/*                            <div className="product-quantity">*/}
+                {/*                                <div className="input-group product-qty me-3 border rounded-2"*/}
+                {/*                                     style={{maxWidth: "130px"}}>*/}
+                {/*    <span className="input-group-btn bg-gray-2">*/}
+                {/*      <button type="button" className="quantity-left-minus btn btn-number" data-type="minus"*/}
+                {/*              data-field="">*/}
+                {/*        <svg width="16" height="16">*/}
+                {/*          <use ></use>*/}
+                {/*        </svg>*/}
+                {/*      </button>*/}
+                {/*    </span>*/}
+                {/*                                    <input type="text" id="quantity" name="quantity"*/}
+                {/*                                           className="form-control input-number text-center bg-gray-1"*/}
+                {/*                                           value="1" min="1" max="100"/>*/}
+                {/*<span className="input-group-btn bg-gray-2">*/}
+                {/*      <button type="button" className="quantity-right-plus btn btn-number" data-type="plus"*/}
+                {/*              data-field="">*/}
+                {/*        <svg width="16" height="16">*/}
+                {/*          <use></use>*/}
+                {/*        </svg>*/}
+                {/*      </button>*/}
+                {/*    </span>*/}
+                {/*                                </div>*/}
+                {/*                                <button type="submit" name="add" id="add-to-cart"*/}
+                {/*                                        className="btn btn-lg btn-outline-dark btn-bg-light text-uppercase mt-5 rounded-pill fw-bold">Order*/}
+                {/*                                    Now*/}
+                {/*                                </button>*/}
+                {/*                            </div>*/}
+                {/*                        </div>*/}
+                {/*                    </div>*/}
 
                                 </div>
                                 <div className={"row"} style={{marginLeft: "10px", marginTop: "15px"}}>
-                                    <div className={"col-6"}></div>
+                                    <div className={"col-6"}>
+
+                                    </div>
                                     <div className="col-3 product-price">
                                         <b><h4 style={{
                                             color: "#cb1c22", fontSizeize: "28px;",
@@ -379,6 +457,9 @@ export default function DetailProduct() {
                                             THÊM VÀO GIỎ HÀNG
                                         </button>
                                     </div>
+                                </div>
+                                <div>
+                                    {product?.description}
                                 </div>
                             </div>
 

@@ -2278,11 +2278,11 @@ body.mobile-nav-active #mobile-nav-toggle {
   background-size: cover;
 }
 
-@media (max-width: 1199.98px) {
+/*@media (max-width: 1199.98px) {*/
   .banner-area .fullscreen {
-    height: 800px !important;
+    height: 569px !important;
   }
-}
+/*}*/
 
 .banner-content {
   margin-top: -250px;
@@ -2294,7 +2294,7 @@ body.mobile-nav-active #mobile-nav-toggle {
   font-size: 72px;
   font-weight: 700;
   line-height: 1em;
-  margin-top: 20px;
+  margin-top: -215px;
 }
 
 .banner-content h1 span {

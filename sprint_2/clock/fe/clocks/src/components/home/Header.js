@@ -4,6 +4,8 @@ import Product from "../product/Product";
 import {Link, useNavigate} from "react-router-dom";
 import jwt_decode from "jwt-decode";
 import Swal from "sweetalert2";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faClock } from '@fortawesome/free-solid-svg-icons';
 
 export const name = async () => {
     let name = document.getElementById("name").value;
@@ -83,49 +85,61 @@ export default function Header() {
             <div className="container">
                 <div className="row align-items-center justify-content-between d-flex">
                     <div id="logo" className={"col-3"}>
-                        <a style={{ color: "white", textDecoration: "none"}} href="index.html">
+                        {/*<img src={"\"C:\\Users\\Admin\\Downloads\\Màu đào Hình tròn Logo đám cưới.png\""}/>*/}
+                        <a style={{ color: "white", textDecoration: "none"}} href="/home">
                             <h1 style={{ color: "white", textDecoration: "none"}}>VVT Shop</h1>
                         </a>
                     </div>
                     <nav className={"col-9"} id="nav-menu-container">
                         <ul className="nav-menu">
-                            <li className="col-3 menu-active">
-                                <a href="#home">
+                            <li className=" menu-active">
+                                <a href="/home">
                                     <i className="fa-solid fa-house-chimney" /> Trang chủ
                                 </a>
                             </li>
-                            <li className="col-3 nav-item dropdown">
+                            <li className=" nav-item">
                                 {/*								<ul class="dropdown-menu" aria-labelledby="navbarDropdown">*/}
                                 <a
-                                    className="nav-link dropdown-toggle"
-                                    href="#"
-                                    id="navbarDropdown"
+                                    // className="nav-link"
+                                    href="product"
+                                    // id="navbarDropdown"
                                     role="button"
-                                    data-bs-toggle="dropdown"
+                                    // data-bs-toggle="dropdown"
                                     aria-expanded="false"
                                     style={{ color: "white" }}
                                 >
-                                    <i className="fa-solid fa-book" />
-                                     Danh mục
+                                    <FontAwesomeIcon icon={faClock} /> <i className="fa-duotone fa-watch"></i>  Đồng hồ
+
                                 </a>
                                 {/*								</ul>*/}
-                                <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
-                                    <li>
-                                        <a className="dropdown-item" href="#">
-                                            Đồng hồ nam
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a className="dropdown-item" href="#">
-                                            Đồng hồ nữ
-                                        </a>
-                                    </li>
-                                </ul>
+                                {/*<ul className="dropdown-menu" aria-labelledby="navbarDropdown">*/}
+                                {/*    <li>*/}
+                                {/*        <a className="dropdown-item" href="#">*/}
+                                {/*            Đồng hồ nam*/}
+                                {/*        </a>*/}
+                                {/*    </li>*/}
+                                {/*    <li>*/}
+                                {/*        <a className="dropdown-item" href="#">*/}
+                                {/*            Đồng hồ nữ*/}
+                                {/*        </a>*/}
+                                {/*    </li>*/}
+                                {/*</ul>*/}
                             </li>
-                            {/*                    <li><a href="#service">Service</a></li>*/}
-                            {/*                    <li><a href="#unique">Unique Feature</a></li>*/}
-                            {/*                    <li><a href="#review">Review</a></li>*/}
-                            <li className={"col-3"}>
+                            <li>
+                                <form action="/product" method="get" className="d-flex" onSubmit={handleSearch}>
+                                    <input type="text" name="action" value="search" hidden/>
+                                    <input name="name" id="name" className="form-control me-2" type="text"
+                                           value={searchTerm}
+                                           onChange={(event) => setSearchTerm(event.target.value)}
+                                           placeholder="Bạn cần tìm gì?"
+                                           aria-label="Search"/>
+                                    <button className="btn btn-outline-light" type="submit">
+                                        <i className="fa-solid fa-magnifying-glass"></i>
+                                    </button>
+                                </form>
+                            </li>
+                            {username && (
+                            <li className={""}>
                                 <a href="#faq" />
                                 <a
                                     className="nav-link active"
@@ -136,16 +150,51 @@ export default function Header() {
                                     <i className="fa-solid fa-cart-shopping" /> Giỏ hàng của bạn
                                 </a>
                             </li>
-                            <li className="nav-item" style={{ position: "absolute", right: 0 }}>
-                                <a
-                                    className="nav-link active"
-                                    aria-current="page"
-                                    href="login.html"
-                                    style={{ color: "white" }}
-                                >
-                                    <i className="fa-solid fa-circle-user" /> Đăng Nhập
-                                </a>
-                            </li>
+                            )}
+                            {/*<li className="nav-item" style={{ position: "absolute", right: 0 }}>*/}
+                            {/*    <a*/}
+                            {/*        className="nav-link active"*/}
+                            {/*        aria-current="page"*/}
+                            {/*        href="/"*/}
+                            {/*        style={{ color: "white" }}*/}
+                            {/*    >*/}
+                            {/*        <i className="fa-solid fa-circle-user" /> Đăng Nhập*/}
+                            {/*    </a>*/}
+                            {/*</li>*/}
+                            {!username ? (
+                                <li className="nav-item"  style={{ position: "absolute", right: 0 }}>
+                                    <a className="nav-link active" aria-current="page" href="/"
+                                       style={{color: "white"}}>
+                                        <i className="fa-solid fa-circle-user"></i>  Đăng Nhập
+                                    </a>
+                                </li>
+                            ) : (
+                                <li className="nav-item dropdown" style={{ position: "absolute", right: 0 }}>
+                                    <a className="nav-link dropdown-toggle" href="#" id="navbarDropdown"
+                                       role="button"
+                                       data-bs-toggle="dropdown" aria-expanded="false"
+                                       style={{color: "white"}}>
+                                        <i className="fa-solid fa-circle-user"></i>  {username.sub}
+
+                                    </a>
+                                    <ul className="dropdown-menu" aria-labelledby="navbarDropdown" style={{left:"auto",right:"0"}}>
+                                        <li>
+                                            {/*<div className="dropdown-item">*/}
+                                                <a href="/history">Lịch sử mua
+                                                    hàng</a>
+                                            {/*</div>*/}
+                                        </li>
+                                        <li>
+                                            <div
+                                                // className="dropdown-item"
+                                                onClick={() => handleLogOut()}
+                                            >
+                                                <a>Đăng xuất</a>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </li>
+                            )}
                         </ul>
                     </nav>
                     {/* #nav-menu-container */}

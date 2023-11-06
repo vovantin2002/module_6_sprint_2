@@ -54,16 +54,19 @@ export default function Product() {
         console.log(max)
         console.log(selectedBrands)
         console.log(page)
-        if (searchTerm) {
-            const result = await axios.get(`http://localhost:8080/api/product?modelName=${searchTerm}&productTypes=&minPrice=${min}&maxPrice=${max}&phoneBrands=${selectedBrands}&page=${page}&size=9`);
-            await setProducts(result?.data.content);
-            setTotalPage(result?.data.totalPages);
-        } else {
-            const result = await axios.get(`http://localhost:8080/api/product?modelName=&productTypes=&minPrice=${min}&maxPrice=${max}&phoneBrands=${selectedBrands}&page=0&size=9`);
-            await setProducts(result?.data.content);
-            setTotalPage(result?.data.totalPages);
+        try {
+            if (searchTerm) {
+                const result = await axios.get(`http://localhost:8080/api/product?modelName=${searchTerm}&productTypes=&minPrice=${min}&maxPrice=${max}&phoneBrands=${selectedBrands}&page=${page}&size=9`);
+                await setProducts(result?.data.content);
+                setTotalPage(result?.data.totalPages);
+            } else {
+                const result = await axios.get(`http://localhost:8080/api/product?modelName=&productTypes=&minPrice=${min}&maxPrice=${max}&phoneBrands=${selectedBrands}&page=0&size=9`);
+                await setProducts(result?.data.content);
+                setTotalPage(result?.data.totalPages);
+            }
+        }catch (e) {
+            console.log(e)
         }
-
         // await console.log(result.data.content);
 
     };
@@ -75,7 +78,7 @@ export default function Product() {
         }
     };
     useEffect(() => {
-        document.title = "VVT Shop - Điện thoại";
+        document.title = "VVT Shop - Đồng hồ";
     }, []);
     const addToCart = async (cartId) => {
         const isLoggedIn = infoAppUserByJwtToken();
@@ -126,10 +129,10 @@ export default function Product() {
         <>
             <div>
                 <Header></Header>
-                <div className="container-fluid">
+                <div className="container-fluid" style={{ marginTop:"68px"}}>
                     <div style={{backgroundColor: "#f8f9fa"}}>
                         <div id="carouselExampleFade" className="carousel slide carousel-fade w-100"
-                             data-bs-ride="carousel" data-bs-interval="3000"
+                             data-bs-interval="3000"
                              style={{
                                  marginTop: "20px",
                                  marginBottom: "20px",
@@ -137,28 +140,9 @@ export default function Product() {
                                  marginRight: "20px",
                                  borderRadius: "10px"
                              }}>
-                            <div id="myCarousel" className="carousel slide" data-bs-ride="carousel">
-                                <Carousel fade interval={2000} style={{marginTop: "-5px"}}>
-                                    <Carousel.Item>
-                                        <img
-                                            src="https://images.fpt.shop/unsafe/fit-in/1200x300/filters:quality(90):fill(white)/fptshop.com.vn/Uploads/Originals/2023/10/11/638326123868033069_F-C1_1200x300.png"
-                                            className="d-block w-100" alt="Image 1"/> </Carousel.Item>
-                                    <Carousel.Item>
-                                        <img
-                                            src="https://images.fpt.shop/unsafe/fit-in/1200x300/filters:quality(90):fill(white)/fptshop.com.vn/Uploads/Originals/2023/10/6/638321846764449015_F-C1_1200x300.png"
-                                            className="d-block w-100" alt="Image 2"/> </Carousel.Item>
-                                </Carousel>
-                                <button className="carousel-control-prev" type="button"
-                                        data-bs-target="#carouselExampleFade" data-bs-slide="prev">
-                                    <span className="carousel-control-prev-icon" aria-hidden="true"></span>
-                                    <span className="visually-hidden">Previous</span>
-                                </button>
-                                <button className="carousel-control-next" type="button"
-                                        data-bs-target="#carouselExampleFade" data-bs-slide="next">
-                                    <span className="carousel-control-next-icon" aria-hidden="true"></span>
-                                    <span className="visually-hidden">Next</span>
-                                </button>
-                            </div>
+                            <div className="category-image"><img
+                                src="https://cdn.galle.vn/media/catalog/category/banner_dong_ho_nam_1440x262.jpg" alt=""
+                                title="Đồng hồ nam" className="image"/></div>
                         </div>
                         <div className={"row"} style={{marginTop: "20px"}}>
                             <div className={"col-3"} style={{marginTop: "20px"}}>
@@ -403,7 +387,7 @@ export default function Product() {
                             <div className={"col-9"} style={{marginTop: "20px"}}>
                                 <div className="card-header">
                                     <div className="cdt-head" style={{display: "inline", border: "1px solid #f8f9fa;"}}>
-                                        <h1 className="cdt-head__title">Điện thoại</h1>
+                                        <h1 className="cdt-head__title">Đồng hồ</h1>
                                     </div>
                                 </div>
                                 <div className="box-container cate-box cat-prd box-pad15 bg-white mb24">
@@ -413,7 +397,7 @@ export default function Product() {
                                                 {products.map((product, index) => (
                                                     <div className="col-4 cdt-product" style={{marginTop: "20px;"}}
                                                          key={index}>
-                                                        <div className="cdt-product__img"
+                                                        <div classNamse="cdt-product__img"
                                                              style={{textAlign: "center", marginTop: "10px;"}}>
                                                             <a href={`product/${product.product_Id}`}>
                                               <span

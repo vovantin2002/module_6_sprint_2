@@ -1,38 +1,39 @@
 package com.example.clock.model;
 
 public interface ProductProjection {
-    Long getProduct_Id();
+    Integer getProduct_Id();
 
-    String getModel_Name();
+    String getName();
 
-    String getColor();
+    String getDial_Color();
 
-    String getPrice();
+    Double getPrice();
 
     Double getQuantity();
 
-    String getScreen_Size();
+    String getGlasses();
 
-    String getCamera_Resolution();
+    String getInternational_Warranty();
 
-    String getStorage_Capacity();
-
-    Long getRam_Capacity();
-
-    Long getBattery_Capacity();
-
-    String getOperating_System();
+    String getModel_Number();
 
     String getImage_Url();
 
-    String getSim();
-
-    String getLaunch_Time();
-
     String getOrigin();
 
-    String getProduct_Types();
+    String getGlass_Material();
 
-    String getPhone_Brands();
+    String getMovement_Type();
+
+    String getDial_Diameter();
+
+    String getDial_Thickness();
+
+    String getFunctions();
+
+    String getCategories();
+
+    String getBrands();
+    String getDescription();
 }
 
