@@ -14,7 +14,7 @@ public class Products {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "color")
+    @Column(name = "dial_color")
     private String color;
 
     @Column(name = "price")

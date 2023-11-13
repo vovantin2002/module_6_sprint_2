@@ -260,10 +260,10 @@ export default function DetailProduct() {
                                             data-bs-target="#carouselExampleIndicators"
                                             data-bs-slide="prev"
                                         >
-                    <span
-                        className="carousel-control-prev-icon"
-                        aria-hidden="true"
-                    />
+                                        <span
+                                            className="carousel-control-prev-icon"
+                                            aria-hidden="true"
+                                        />
                                             <span className="visually-hidden">Previous</span>
                                         </button>
                                         <button
@@ -272,10 +272,10 @@ export default function DetailProduct() {
                                             data-bs-target="#carouselExampleIndicators"
                                             data-bs-slide="next"
                                         >
-                    <span
-                        className="carousel-control-next-icon"
-                        aria-hidden="true"
-                    />
+                                        <span
+                                            className="carousel-control-next-icon"
+                                            aria-hidden="true"
+                                        />
                                             <span className="visually-hidden">Next</span>
                                         </button>
                                     </div>
@@ -285,7 +285,6 @@ export default function DetailProduct() {
                                     <br/>
 
                                     {/*<h5><Link href="cart.html" className="product-button">Thêm vào giỏ hàng</Link></h5>*/}
-
                                 </div>
                                 <div className="product-details col-6">
                                     {/*// <!--                    <div class="product-title">Điện thoại XYZ</div>-->*/}
@@ -558,7 +557,6 @@ export default function DetailProduct() {
                                         .map((word) => word[0])
                                         .join('')}
                                 </div>
-
                                 <div className={"col-11"}>
                                     <h5>{review?.customers?.name}</h5>
                                     {Array.from({length: 5}, (_, index) => (

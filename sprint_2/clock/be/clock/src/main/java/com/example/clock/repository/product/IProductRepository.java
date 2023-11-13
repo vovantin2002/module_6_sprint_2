@@ -12,22 +12,24 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface IProductRepository extends JpaRepository<Products, Integer> {
-    @Query(value = "SELECT p.product_id, p.model_name, p.color, p.price, p.quantity, p.screen_size, p.camera_resolution,\n" +
-            "       p.storage_capacity, p.ram_capacity, p.battery_capacity, p.operating_system,GROUP_CONCAT(i.image_url) AS image_Url,\n" +
-            "       p.flag_deleted, p.sim, p.launch_time, p.origin, p.product_type_id as product_types, p.brand_id as phone_brands\n" +
+    @Query(value = "SELECT p.product_id, p.name, p.description, p.dial_color as dial_Color, p.price, p.quantity, p.glasses, p.international_warranty,\n" +
+            "       p.model_number, p.glass_material, p.movement_type, p.dial_diameter,GROUP_CONCAT(i.image_url) AS image_Url,\n" +
+            "       p.flag_deleted, p.dial_thickness, p.functions, p.origin, p.categories_id as categories, p.brand_id as brands\n" +
             "FROM Products p JOIN product_images i " +
-            "WHERE (p.model_name LIKE CONCAT('%', :modelName, '%') or :modelName='')" +
-            "AND (:productTypes ='' OR p.product_type_id = :productTypes) " +
+            "WHERE (p.name LIKE CONCAT('%', :name, '%') or :name='')" +
+            "AND (:brands ='' OR p.brand_id = :brands) " +
+            "AND (:color ='' OR p.dial_color = :color) " +
+            "AND (:categories ='' OR p.categories_id = :categories) " +
             "AND (:minPrice ='' OR :maxPrice ='' OR p.price BETWEEN :minPrice AND :maxPrice) " +
-            "AND (p.brand_id = :phoneBrands or :phoneBrands ='') " +
             "GROUP BY p.product_id",
             nativeQuery = true)
-    Page<ProductProjection> findAllByModelNameContainingAndProductTypesAndPriceBetweenAndPhoneBrands(
-            @Param("modelName") String modelName,
-            @Param("productTypes") String productTypes,
+    Page<ProductProjection> search(
+            @Param("name") String name,
+            @Param("brands") String brands,
+            @Param("color") String color,
+            @Param("categories") String categories,
             @Param("minPrice") String minPrice,
             @Param("maxPrice") String maxPrice,
-            @Param("phoneBrands") String phoneBrands,
             Pageable pageable
     );
 
@@ -39,7 +41,7 @@ public interface IProductRepository extends JpaRepository<Products, Integer> {
             "JOIN order_details o ON p.product_id = o.product_id\n" +
             "GROUP BY p.product_id\n" +
             "ORDER BY SUM(o.quantity) DESC\n" +
-            "LIMIT 4;", nativeQuery = true)
+            "LIMIT 4", nativeQuery = true)
     List<ProductProjection> displayAllByQuantityOrder();
 
     @Query(value = "SELECT p.product_id, p.name, p.description, p.dial_color as dial_Color, p.price, p.quantity, p.glasses, p.international_warranty,\n" +

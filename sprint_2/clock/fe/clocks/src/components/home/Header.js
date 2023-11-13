@@ -99,18 +99,18 @@ export default function Header() {
                             </li>
                             <li className=" nav-item">
                                 {/*								<ul class="dropdown-menu" aria-labelledby="navbarDropdown">*/}
-                                <a
+                                <Link
                                     // className="nav-link"
-                                    href="product"
+                                    to={"/product"}
                                     // id="navbarDropdown"
                                     role="button"
                                     // data-bs-toggle="dropdown"
-                                    aria-expanded="false"
+                                    // aria-expanded="false"
                                     style={{ color: "white" }}
                                 >
                                     <FontAwesomeIcon icon={faClock} /> <i className="fa-duotone fa-watch"></i>  Đồng hồ
 
-                                </a>
+                                </Link>
                                 {/*								</ul>*/}
                                 {/*<ul className="dropdown-menu" aria-labelledby="navbarDropdown">*/}
                                 {/*    <li>*/}
@@ -140,15 +140,19 @@ export default function Header() {
                             </li>
                             {username && (
                             <li className={""}>
-                                <a href="#faq" />
-                                <a
-                                    className="nav-link active"
-                                    aria-current="page"
-                                    href="/order?action=back&id=${sessionScope.user.userId}"
-                                    style={{ color: "white" }}
-                                >
+                                <Link className="nav-link active" aria-current="page"
+                                      to={`/cart/${id}`} style={{color: "white"}}>
                                     <i className="fa-solid fa-cart-shopping" /> Giỏ hàng của bạn
-                                </a>
+                                </Link>
+                                {/*<a href="#faq" />*/}
+                                {/*<a*/}
+                                {/*    className="nav-link active"*/}
+                                {/*    aria-current="page"*/}
+                                {/*    href="/order?action=back&id=${sessionScope.user.userId}"*/}
+                                {/*    style={{ color: "white" }}*/}
+                                {/*>*/}
+                                {/*    */}
+                                {/*</a>*/}
                             </li>
                             )}
                             {/*<li className="nav-item" style={{ position: "absolute", right: 0 }}>*/}

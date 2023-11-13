@@ -41,12 +41,14 @@ public class ProductController {
 
     @GetMapping("")
     @ResponseBody
-    public ResponseEntity findAllByName(@PageableDefault(size = 8, sort = "product_id", direction = Sort.Direction.DESC) Pageable pageable, @RequestParam(value = "modelName",
-            defaultValue = "") String modelName, @RequestParam(value = "productTypes",
-            defaultValue = "") String productTypes, @RequestParam(value = "minPrice",
+    public ResponseEntity findAllByName(@PageableDefault(size = 8, sort = "product_id", direction = Sort.Direction.DESC)
+                                        Pageable pageable, @RequestParam(value = "name",
+            defaultValue = "") String name, @RequestParam(value = "brands",
+            defaultValue = "") String brands, @RequestParam(value = "minPrice",
             defaultValue = "") String minPrice, @RequestParam(value = "maxPrice",
-            defaultValue = "") String maxPrice, @RequestParam(value = "phoneBrands",
-            defaultValue = "") String phoneBrands) {
-        return new ResponseEntity<>(productService.search(modelName, productTypes, minPrice, maxPrice, phoneBrands, pageable), HttpStatus.OK);
+            defaultValue = "") String maxPrice, @RequestParam(value = "color",
+            defaultValue = "") String color, @RequestParam(value = "categories",
+            defaultValue = "") String categories) {
+        return new ResponseEntity<>(productService.search(name, brands, color, categories, minPrice, maxPrice, pageable), HttpStatus.OK);
     }
 }

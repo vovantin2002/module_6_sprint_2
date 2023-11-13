@@ -47,10 +47,7 @@ public class ProductService implements IProductService {
     }
 
     @Override
-    public Page<ProductProjection> search(String modelName, String productTypes, String minPrice, String maxPrice, String phoneBrands, Pageable pageable) {
-        System.out.println(productRepository.findAllByModelNameContainingAndProductTypesAndPriceBetweenAndPhoneBrands(modelName, productTypes, minPrice, maxPrice, phoneBrands, pageable));
-        return productRepository.findAllByModelNameContainingAndProductTypesAndPriceBetweenAndPhoneBrands(modelName, productTypes, minPrice, maxPrice, phoneBrands, pageable);
+    public Page<ProductProjection> search(String name, String brands, String color, String categories, String minPrice, String maxPrice, Pageable pageable) {
+        return productRepository.search(name,brands,color,categories,minPrice,maxPrice,pageable);
     }
-
-
 }

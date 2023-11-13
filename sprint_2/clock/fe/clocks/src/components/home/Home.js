@@ -134,56 +134,30 @@ export default function Home() {
                             </div>
                         </div>
                     </div>
-                    <div className="row">
-                        <div className="col-lg-3 col-md-6">
-                            <div className="single-unique-product">
-                                <img className="img-fluid" src="img/u1.jpg" alt=""/>
-                                <div className="desc">
-                                    <h4>Apple Watch White</h4>
-                                    <h6>£399.00</h6>
-                                    <a className="text-uppercase primary-btn" href="#" style={{textDecoration: "none"}}>
-                                        Thêm vào giỏ hàng
-                                    </a>
-                                </div>
+                    {
+                        productsOutstanding.length>0 ?(
+                            <div className="row">
+                                {productsNew.map((product, index) => (
+                                    <div key={index} className="col-3">
+                                        <div className="single-unique-product">
+                                            <a href={`product/${product.productId}`}>
+                                                <img className="img-fluid" src={product?.imageUrl} alt=""/>
+                                            </a>
+                                            <div className="desc">
+                                                <h6>{product?.name}</h6>
+                                                <h6 style={{color:"red"}}>{formatPrice(product?.price)} đ</h6>
+                                                <button onClick={() => addToCart(product.productId)} className="text-uppercase primary-btn" style={{textDecoration: "none"}}>
+                                                    Thêm vào giỏ hàng
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                ))}
                             </div>
-                        </div>
-                        <div className="col-lg-3 col-md-6">
-                            <div className="single-unique-product">
-                                <img className="img-fluid" src="img/u2.jpg" alt=""/>
-                                <div className="desc">
-                                    <h4>Apple Watch White</h4>
-                                    <h6>£399.00</h6>
-                                    <a className="text-uppercase primary-btn" href="#">
-                                        Thêm vào giỏ hàng
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="col-lg-3 col-md-6">
-                            <div className="single-unique-product">
-                                <img className="img-fluid" src="img/u3.jpg" alt=""/>
-                                <div className="desc">
-                                    <h4>Apple Watch White</h4>
-                                    <h6>£399.00</h6>
-                                    <a className="text-uppercase primary-btn" href="#">
-                                        Thêm vào giỏ hàng
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="col-lg-3 col-md-6">
-                            <div className="single-unique-product">
-                                <img className="img-fluid" src="img/u4.jpg" alt=""/>
-                                <div className="desc">
-                                    <h4>Apple Watch White</h4>
-                                    <h6>£399.00</h6>
-                                    <a className="text-uppercase primary-btn" href="#">
-                                        Thêm vào giỏ hàng
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                        ):(
+                            <p style={{color: "red"}}>Không có sản phẩm nào!</p>
+                        )
+                    }
                 </div>
                 <div className="container">
                     <div className="row d-flex justify-content-center">
@@ -198,17 +172,17 @@ export default function Home() {
                             productsNew.length>0 ?(
                                 <div className="row">
                                     {productsNew.map((product, index) => (
-                                            <div key={index} className="col-lg-3 col-md-6">
+                                            <div key={index} className="col-3">
                                                 <div className="single-unique-product">
                                                     <a href={`product/${product.productId}`}>
                                                     <img className="img-fluid" src={product?.imageUrl} alt=""/>
                                                     </a>
                                                     <div className="desc">
-                                                        <h4>{product?.name}</h4>
-                                                        <h6>{formatPrice(product?.price)} đ</h6>
-                                                        <a className="text-uppercase primary-btn" href="#" style={{textDecoration: "none"}}>
+                                                        <h6>{product?.name}</h6>
+                                                        <h6 style={{color:"red"}}>{formatPrice(product?.price)} đ</h6>
+                                                        <button onClick={() => addToCart(product.productId)} className="text-uppercase primary-btn" style={{textDecoration: "none"}}>
                                                             Thêm vào giỏ hàng
-                                                        </a>
+                                                        </button>
                                                     </div>
                                                 </div>
                                             </div>

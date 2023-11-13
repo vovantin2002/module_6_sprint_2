@@ -664,7 +664,8 @@ export default function CartDetail() {
                                             {/*<div className={"col-2"}>*/}
                                             {/*</div>*/}
                                             <div className="col-6 hidden flex-1 flex-col justify-between md:flex">
-                                                <div className="flex justify-between"  style={{ position: "absolute", left: 0, marginTop:"20px" }}><p
+                                                <div className="flex justify-between"  style={{ position: "absolute", left: 0, marginTop:"20px" }}>
+                                                    <p
                                                     className="css-1oqd6bl text-text-secondary">Tổng
                                                     tiền:
                                                     {/*{formatPrice(totalPrice)}đ*/}

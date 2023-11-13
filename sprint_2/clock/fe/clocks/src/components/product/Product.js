@@ -21,6 +21,13 @@ export default function Product() {
     const [products, setProducts] = useState([]);
     const [priceRange, setPriceRange] = useState('');
     const [selectedBrands, setSelectedBrands] = useState('');
+    const [selectedColor, setSelectedColor] = useState('');
+    const [selectedCategories, setSelectedCategories] = useState('');
+
+    const handleColorChange = (event) => {
+        console.log(event.target.value)
+        setSelectedColor(event.target.value);
+    };
 
     const handlePriceChange = (event) => {
         const value = event.target.value;
@@ -48,27 +55,26 @@ export default function Product() {
         setSelectedBrands(value);
         console.log(selectedBrands)
     };
+    const handleCategoriesChange = (event) => {
+        const value = event.target.value;
+        setSelectedCategories(value);
+    };
 
-    const search = async (searchTerm, min, max, page, selectedBrands) => {
-        console.log(min)
-        console.log(max)
-        console.log(selectedBrands)
-        console.log(page)
+    const search = async (searchTerm, min, max, page, selectedBrands, selectedColor, selectedCategories) => {
         try {
             if (searchTerm) {
-                const result = await axios.get(`http://localhost:8080/api/product?modelName=${searchTerm}&productTypes=&minPrice=${min}&maxPrice=${max}&phoneBrands=${selectedBrands}&page=${page}&size=9`);
+                const result = await axios.get(`http://localhost:8080/api/product?name=${searchTerm}&color=${selectedColor}&minPrice=${min}&maxPrice=${max}&brands=${selectedBrands}&categories=${selectedCategories}&page=&size=9`);
                 await setProducts(result?.data.content);
                 setTotalPage(result?.data.totalPages);
             } else {
-                const result = await axios.get(`http://localhost:8080/api/product?modelName=&productTypes=&minPrice=${min}&maxPrice=${max}&phoneBrands=${selectedBrands}&page=0&size=9`);
+                const result = await axios.get(`http://localhost:8080/api/product?name=&color=${selectedColor}&minPrice=${min}&maxPrice=${max}&brands=${selectedBrands}&categories=${selectedCategories}&page=&size=9`);
                 await setProducts(result?.data.content);
                 setTotalPage(result?.data.totalPages);
             }
-        }catch (e) {
+        } catch (e) {
             console.log(e)
         }
         // await console.log(result.data.content);
-
     };
     const infoAppUserByJwtToken = () => {
         const jwtToken = localStorage.getItem("JWT");
@@ -103,7 +109,7 @@ export default function Product() {
                 // await axios.post(
                 //     `http://localhost:8080/api/cart/${cartId}`);
                 Swal.fire("Thêm sản phẩm vào giỏ hàng thành công", "", "success");
-            }catch (e){
+            } catch (e) {
                 Swal.fire("Sản phẩm đã tồn tại trong giỏ hàng! ", "", "warning");
             }
         }
@@ -120,8 +126,8 @@ export default function Product() {
         }
     }
     useEffect(() => {
-        search(searchTerm, min, max, page, selectedBrands);
-    }, [searchTerm, min, max, page, selectedBrands])
+        search(searchTerm, min, max, page, selectedBrands, selectedColor, selectedCategories);
+    }, [searchTerm, min, max, page, selectedBrands,selectedColor, selectedCategories])
     // useEffect(() => {
     //     search(searchTerm,min,max,selectedBrands);
     // }, [])
@@ -129,7 +135,7 @@ export default function Product() {
         <>
             <div>
                 <Header></Header>
-                <div className="container-fluid" style={{ marginTop:"68px"}}>
+                <div className="container-fluid" style={{marginTop: "68px"}}>
                     <div style={{backgroundColor: "#f8f9fa"}}>
                         <div id="carouselExampleFade" className="carousel slide carousel-fade w-100"
                              data-bs-interval="3000"
@@ -149,8 +155,7 @@ export default function Product() {
                                 <div className="cdt-filter__block" style={{marginLeft: "10px", marginBottom: "20px"}}>
                                     <div className="cdt-filter__title" data-toggle="collapse"
                                          data-target="#hang-san-xuat"
-                                         aria-expanded="true"><b><h5>Hãng sản xuất</h5></b>
-
+                                         aria-expanded="true"><b><h5>Thương hiệu</h5></b>
                                     </div>
                                     <div>
                                         <table style={{
@@ -163,8 +168,7 @@ export default function Product() {
                                                 value=""
                                                 checked={selectedBrands === ''}
                                                 onChange={handleBrandChange}
-                                            />
-                                            Tất cả
+                                            /> Tất cả
                                             <tr style={{marginTop: "10px", marginBottom: '10px'}}>
 
                                                 <td>
@@ -172,11 +176,10 @@ export default function Product() {
                                                         <input
                                                             style={{backgroundColor: "#cb1c22"}}
                                                             type="checkbox"
-                                                            value="2"
-                                                            checked={selectedBrands === '2'}
+                                                            value="1"
+                                                            checked={selectedBrands === '1'}
                                                             onChange={handleBrandChange}
-                                                        />
-                                                        Samsung
+                                                        /> Alpina
                                                     </label>
                                                     <br/>
                                                 </td>
@@ -185,11 +188,11 @@ export default function Product() {
                                                         <input
                                                             style={{backgroundColor: "#cb1c22"}}
                                                             type="checkbox"
-                                                            value="7"
-                                                            checked={selectedBrands === '7'}
+                                                            value="2"
+                                                            checked={selectedBrands === '2'}
                                                             onChange={handleBrandChange}
-                                                        />
-                                                        Apple (iPhone)
+                                                        /> Baume & Mercier
+
                                                     </label>
                                                 </td>
                                                 <br/>
@@ -204,8 +207,8 @@ export default function Product() {
                                                             value="3"
                                                             checked={selectedBrands === '3'}
                                                             onChange={handleBrandChange}
-                                                        />
-                                                        Oppo
+                                                        /> Bering
+
                                                     </label>
                                                     <br/>
                                                 </td>
@@ -214,11 +217,11 @@ export default function Product() {
                                                         <input
                                                             style={{backgroundColor: "#cb1c22"}}
                                                             type="checkbox"
-                                                            value="8"
-                                                            checked={selectedBrands === '8'}
+                                                            value="4"
+                                                            checked={selectedBrands === '4'}
                                                             onChange={handleBrandChange}
-                                                        />
-                                                        Xiaomi
+                                                        /> Calvin Klein
+
                                                     </label>
                                                     <br/>
                                                 </td>
@@ -231,59 +234,14 @@ export default function Product() {
                                                         <input
                                                             style={{backgroundColor: "#cb1c22"}}
                                                             type="checkbox"
-                                                            value="4"
-                                                            checked={selectedBrands === '4'}
-                                                            onChange={handleBrandChange}
-                                                        />
-                                                        Honor
-                                                    </label>
-                                                    <br/>
-                                                </td>
-                                                <td>
-                                                    <label>
-                                                        <input
-                                                            style={{backgroundColor: "#cb1c22"}}
-                                                            type="checkbox"
-                                                            value="9"
-                                                            checked={selectedBrands === '9'}
-                                                            onChange={handleBrandChange}
-                                                        />
-                                                        realme
-                                                    </label>
-                                                    <br/>
-                                                </td>
-                                            </tr>
-                                            <tr style={{height: "10px"}}></tr>
-                                            <tr style={{marginBottom: '10px'}}>
-                                                <td>
-                                                    <label>
-                                                        <input
-                                                            style={{backgroundColor: "#cb1c22"}}
-                                                            type="checkbox"
                                                             value="5"
                                                             checked={selectedBrands === '5'}
                                                             onChange={handleBrandChange}
-                                                        />
-                                                        Vivo
+                                                        /> Candino
+
                                                     </label>
                                                     <br/>
                                                 </td>
-                                                <td>
-                                                    <label>
-                                                        <input
-                                                            style={{backgroundColor: "#cb1c22"}}
-                                                            type="checkbox"
-                                                            value="1"
-                                                            checked={selectedBrands === '1'}
-                                                            onChange={handleBrandChange}
-                                                        />
-                                                        Asus
-                                                    </label>
-                                                    <br/>
-                                                </td>
-                                            </tr>
-                                            <tr style={{height: "10px"}}></tr>
-                                            <tr style={{marginBottom: '10px'}}>
                                                 <td>
                                                     <label>
                                                         <input
@@ -292,8 +250,53 @@ export default function Product() {
                                                             value="6"
                                                             checked={selectedBrands === '6'}
                                                             onChange={handleBrandChange}
-                                                        />
-                                                        Masstel
+                                                        /> Casio
+
+                                                    </label>
+                                                    <br/>
+                                                </td>
+                                            </tr>
+                                            <tr style={{height: "10px"}}></tr>
+                                            <tr style={{marginBottom: '10px'}}>
+                                                <td>
+                                                    <label>
+                                                        <input
+                                                            style={{backgroundColor: "#cb1c22"}}
+                                                            type="checkbox"
+                                                            value="7"
+                                                            checked={selectedBrands === '7'}
+                                                            onChange={handleBrandChange}
+                                                        /> Century
+
+                                                    </label>
+                                                    <br/>
+                                                </td>
+                                                <td>
+                                                    <label>
+                                                        <input
+                                                            style={{backgroundColor: "#cb1c22"}}
+                                                            type="checkbox"
+                                                            value="8"
+                                                            checked={selectedBrands === '8'}
+                                                            onChange={handleBrandChange}
+                                                        /> Certina
+
+                                                    </label>
+                                                    <br/>
+                                                </td>
+                                            </tr>
+                                            <tr style={{height: "10px"}}></tr>
+                                            <tr style={{marginBottom: '10px'}}>
+                                                <td>
+                                                    <label>
+                                                        <input
+                                                            style={{backgroundColor: "#cb1c22"}}
+                                                            type="checkbox"
+                                                            value="9"
+                                                            checked={selectedBrands === '9'}
+                                                            onChange={handleBrandChange}
+                                                        /> Chronoswiss
+
                                                     </label>
                                                     <br/>
                                                 </td>
@@ -305,12 +308,147 @@ export default function Product() {
                                                             value="10"
                                                             checked={selectedBrands === '10'}
                                                             onChange={handleBrandChange}
-                                                        />
-                                                        Nokia
+                                                        /> Citizen
+
                                                     </label>
                                                     <br/>
                                                 </td>
                                             </tr>
+                                            <tr style={{height: "10px"}}></tr>
+                                            <label style={{marginBottom: "10px"}}>
+                                                <h5>Danh mục</h5>
+                                                <input
+                                                    style={{backgroundColor: "#cb1c22"}}
+                                                    type="checkbox"
+                                                    value=""
+                                                    checked={selectedCategories === ''}
+                                                    onChange={handleCategoriesChange}
+                                                /> Tất cả
+
+                                            </label>
+                                            <br/>
+                                            <label style={{marginBottom: "10px"}}>
+                                                <input
+                                                    style={{backgroundColor: "#cb1c22"}}
+                                                    type="checkbox"
+                                                    value="1"
+                                                    checked={selectedCategories === '1'}
+                                                    onChange={handleCategoriesChange}
+                                                /> Đồng hồ nam
+                                            </label>
+                                            <br/>
+                                            <label style={{marginBottom: "10px"}}>
+                                                <input
+                                                    style={{backgroundColor: "#cb1c22"}}
+                                                    type="checkbox"
+                                                    value="2"
+                                                    checked={selectedCategories === '2'}
+                                                    onChange={handleCategoriesChange}
+                                                /> Đồng hồ nữ
+                                            </label>
+                                            <br/>
+                                            <label style={{marginBottom: "10px"}}>
+                                                <input
+                                                    style={{backgroundColor: "#cb1c22"}}
+                                                    type="checkbox"
+                                                    value="3"
+                                                    checked={selectedCategories === '3'}
+                                                    onChange={handleCategoriesChange}
+                                                /> Smartwatch
+                                                {/*\Đồng hồ thông minh ()*/}
+                                            </label>
+                                            <br/>
+                                            <label style={{marginBottom: "10px"}}>
+                                                <input
+                                                    style={{backgroundColor: "#cb1c22"}}
+                                                    type="checkbox"
+                                                    value="4"
+                                                    checked={selectedCategories === '4'}
+                                                    onChange={handleCategoriesChange}
+                                                /> Sports watch
+                                                {/*Đồng hồ thể thao ()*/}
+                                            </label>
+                                            <br/>
+                                            <label style={{marginBottom: "10px"}}>
+                                                <input
+                                                    style={{backgroundColor: "#cb1c22"}}
+                                                    type="checkbox"
+                                                    value="5"
+                                                    checked={selectedCategories === '5'}
+                                                    onChange={handleCategoriesChange}
+                                                /> Khác
+                                            </label>
+
+                                            <br/>
+                                            <tr style={{height: "10px"}}></tr>
+                                            <label style={{marginBottom: "10px"}}>
+                                                <h5>Màu mặt</h5>
+                                                <input
+                                                    style={{backgroundColor: "#cb1c22"}}
+                                                    type="checkbox"
+                                                    value=""
+                                                    checked={selectedColor === ''}
+                                                    onChange={handleColorChange}
+                                                /> Tất cả
+
+                                            </label>
+                                            <br/>
+                                            <label style={{marginBottom: "10px"}}>
+                                                <input
+                                                    style={{backgroundColor: "#cb1c22"}}
+                                                    type="checkbox"
+                                                    value="Trắng"
+                                                    checked={selectedColor === 'Trắng'}
+                                                    onChange={handleColorChange}
+                                                /> Trắng
+
+                                            </label>
+                                            <br/>
+                                            <label style={{marginBottom: "10px"}}>
+                                                <input
+                                                    style={{backgroundColor: "#cb1c22"}}
+                                                    type="checkbox"
+                                                    value="Xanh"
+                                                    checked={selectedColor === 'Xanh'}
+                                                    onChange={handleColorChange}
+                                                /> Xanh
+
+                                            </label>
+                                            <br/>
+                                            <label style={{marginBottom: "10px"}}>
+                                                <input
+                                                    style={{backgroundColor: "#cb1c22"}}
+                                                    type="checkbox"
+                                                    value="Đen"
+                                                    checked={selectedColor === 'Đen'}
+                                                    onChange={handleColorChange}
+                                                /> Đen
+
+                                            </label>
+                                            <br/>
+                                            <label style={{marginBottom: "10px"}}>
+                                                <input
+                                                    style={{backgroundColor: "#cb1c22"}}
+                                                    type="checkbox"
+                                                    value="Bạc"
+                                                    checked={selectedColor === 'Bạc'}
+                                                    onChange={handleColorChange}
+                                                /> Bạc
+
+                                            </label>
+                                            <br/>
+                                            <label style={{marginBottom: "10px"}}>
+                                                <input
+                                                    style={{backgroundColor: "#cb1c22"}}
+                                                    type="checkbox"
+                                                    value="Nâu"
+                                                    checked={selectedColor === 'Nâu'}
+                                                    onChange={handleColorChange}
+                                                /> Nâu
+
+                                            </label>
+
+                                            <br/>
                                             <tr style={{height: "10px"}}></tr>
                                             <label style={{marginBottom: "10px"}}>
                                                 <h5>Mức giá</h5>
@@ -320,8 +458,8 @@ export default function Product() {
                                                     value=""
                                                     checked={priceRange === ''}
                                                     onChange={handlePriceChange}
-                                                />
-                                                Tất cả
+                                                /> Tất cả
+
                                             </label>
                                             <br/>
                                             <label style={{marginBottom: "10px"}}>
@@ -331,8 +469,8 @@ export default function Product() {
                                                     value="0-2000000"
                                                     checked={priceRange === '0-2000000'}
                                                     onChange={handlePriceChange}
-                                                />
-                                                Dưới 2 triệu
+                                                /> Dưới 2 triệu
+
                                             </label>
                                             <br/>
                                             <label style={{marginBottom: "10px"}}>
@@ -342,8 +480,8 @@ export default function Product() {
                                                     value="2000000-4000000"
                                                     checked={priceRange === '2000000-4000000'}
                                                     onChange={handlePriceChange}
-                                                />
-                                                Từ 2 - 4 triệu
+                                                /> Từ 2 - 4 triệu
+
                                             </label>
                                             <br/>
                                             <label style={{marginBottom: "10px"}}>
@@ -353,8 +491,8 @@ export default function Product() {
                                                     value="4000000-7000000"
                                                     checked={priceRange === '4000000-7000000'}
                                                     onChange={handlePriceChange}
-                                                />
-                                                Từ 4 - 7 triệu
+                                                /> Từ 4 - 7 triệu
+
                                             </label>
                                             <br/>
                                             <label style={{marginBottom: "10px"}}>
@@ -364,8 +502,8 @@ export default function Product() {
                                                     value="7000000-13000000"
                                                     checked={priceRange === '7000000-13000000'}
                                                     onChange={handlePriceChange}
-                                                />
-                                                Từ 7 - 13 triệu
+                                                /> Từ 7 - 13 triệu
+
                                             </label>
                                             <br/>
                                             <label style={{marginBottom: "10px"}}>
@@ -375,8 +513,8 @@ export default function Product() {
                                                     value="13000000-1000000000"
                                                     checked={priceRange === '13000000-1000000000'}
                                                     onChange={handlePriceChange}
-                                                />
-                                                Trên 13 triệu
+                                                /> Trên 13 triệu
+
                                             </label>
 
                                             <br/>
@@ -392,61 +530,28 @@ export default function Product() {
                                 </div>
                                 <div className="box-container cate-box cat-prd box-pad15 bg-white mb24">
                                     {
-                                        products.length > 0 ? (
-                                            <div className="row product-list">
+                                        products.length>0 ?(
+                                            <div className="row">
                                                 {products.map((product, index) => (
-                                                    <div className="col-4 cdt-product" style={{marginTop: "20px;"}}
-                                                         key={index}>
-                                                        <div classNamse="cdt-product__img"
-                                                             style={{textAlign: "center", marginTop: "10px;"}}>
+                                                    <div key={index} className="col-4">
+                                                        <div className="single-unique-product">
                                                             <a href={`product/${product.product_Id}`}>
-                                              <span
-                                                  className=" lazy-load-image-background opacity lazy-load-image-loaded">
-                                                <div>
-                                                  <img className="image-home" src={product.image_Url.split(',')[0]}
-                                                       alt={product.model_Name} title={product.model_Name}
-                                                       height="214"/>
-                                                </div>
-                                              </span>
+                                                                <img className="image-home" src={product.image_Url.split(',')[0]}
+                                                                     alt={product.name} title={product.name}
+                                                                     height="214"/>
                                                             </a>
-                                                        </div>
-                                                        <div className="cdt-product__info">
-                                                            <h6 style={{fontWeight: "bold"}}>
-                                                                {/*<a href={product.link} title={product.modelName}*/}
-                                                                {/*   className="cdt-product__name">*/}
-                                                                {product.model_Name}
-                                                                {/*</a>*/}
-                                                            </h6>
-                                                            <div className="cdt-product__price"
-                                                                 style={{marginBottom: "10px"}}>
-                                                                <div className="tcdm text-left">
-                                                                    <div
-                                                                        className="price">{formatPrice(product.price)} đ
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div className="cdt-product__config list-layout">
-                                                                <div className="product__badge"
-                                                                     style={{display: "flex"}}>
-                                                                    <p
-                                                                        className="product__more-info__item">{product.screen_Size} inches</p>
-                                                                    <p
-                                                                        className="product__more-info__item">{product.ram_Capacity} GB</p>
-                                                                    <p
-                                                                        className="product__more-info__item">{product.storage_Capacity} GB</p>
-                                                                </div>
-                                                            </div>
-                                                            <div className="cdt-product__btn">
-                                                                <button onClick={() => addToCart(product.product_Id)}
-                                                                        className="btn btn-primary btn-sm btn-main">
-                                                                    THÊM VÀO GIỎ HÀNG
+                                                            <div className="desc">
+                                                                <h6>{product?.name}</h6>
+                                                                <h6 style={{color:"red"}}>{formatPrice(product?.price)} đ</h6>
+                                                                <button onClick={() => addToCart(product.productId)} className="text-uppercase primary-btn" style={{textDecoration: "none"}}>
+                                                                    Thêm vào giỏ hàng
                                                                 </button>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 ))}
                                             </div>
-                                        ) : (
+                                        ):(
                                             <h3 style={{color: "red"}}>Không có sản phẩm nào!</h3>
                                         )
                                     }
