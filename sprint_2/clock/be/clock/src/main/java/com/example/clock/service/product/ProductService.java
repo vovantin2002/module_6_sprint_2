@@ -47,6 +47,11 @@ public class ProductService implements IProductService {
     }
 
     @Override
+    public void reduceQuantityProduct(Integer quantity, Integer productId) {
+        productRepository.reduceQuantityProduct(quantity,productId);
+    }
+
+    @Override
     public Page<ProductProjection> search(String name, String brands, String color, String categories, String minPrice, String maxPrice, Pageable pageable) {
         return productRepository.search(name,brands,color,categories,minPrice,maxPrice,pageable);
     }

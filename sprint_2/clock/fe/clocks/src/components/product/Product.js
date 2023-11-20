@@ -25,7 +25,6 @@ export default function Product() {
     const [selectedCategories, setSelectedCategories] = useState('');
 
     const handleColorChange = (event) => {
-        console.log(event.target.value)
         setSelectedColor(event.target.value);
     };
 
@@ -51,9 +50,7 @@ export default function Product() {
 
     const handleBrandChange = (event) => {
         const value = event.target.value;
-        console.log(value)
         setSelectedBrands(value);
-        console.log(selectedBrands)
     };
     const handleCategoriesChange = (event) => {
         const value = event.target.value;
@@ -63,11 +60,11 @@ export default function Product() {
     const search = async (searchTerm, min, max, page, selectedBrands, selectedColor, selectedCategories) => {
         try {
             if (searchTerm) {
-                const result = await axios.get(`http://localhost:8080/api/product?name=${searchTerm}&color=${selectedColor}&minPrice=${min}&maxPrice=${max}&brands=${selectedBrands}&categories=${selectedCategories}&page=&size=9`);
+                const result = await axios.get(`http://localhost:8080/api/product?name=${searchTerm}&color=${selectedColor}&minPrice=${min}&maxPrice=${max}&brands=${selectedBrands}&categories=${selectedCategories}&page=&size=`);
                 await setProducts(result?.data.content);
                 setTotalPage(result?.data.totalPages);
             } else {
-                const result = await axios.get(`http://localhost:8080/api/product?name=&color=${selectedColor}&minPrice=${min}&maxPrice=${max}&brands=${selectedBrands}&categories=${selectedCategories}&page=&size=9`);
+                const result = await axios.get(`http://localhost:8080/api/product?name=&color=${selectedColor}&minPrice=${min}&maxPrice=${max}&brands=${selectedBrands}&categories=${selectedCategories}&page=&size=`);
                 await setProducts(result?.data.content);
                 setTotalPage(result?.data.totalPages);
             }
@@ -93,7 +90,6 @@ export default function Product() {
             navigate("/");
         } else {
             const id = await axios.get(`http://localhost:8080/api/user/getId?userName=${isLoggedIn.sub}`);
-            console.log(id.data);
             const cart = {
                 quantity: 1,
                 products: {
@@ -118,6 +114,11 @@ export default function Product() {
         if (page > 0) {
             setPage((pre) => pre - 1)
         }
+    }
+    function calculateDiscountPercentage(originalPrice, salePrice) {
+        const discount = originalPrice - salePrice;
+        const discountPercentage = (discount / originalPrice) * 100;
+        return Math.round(discountPercentage);
     }
 
     const nextPage = () => {
@@ -153,15 +154,17 @@ export default function Product() {
                         <div className={"row"} style={{marginTop: "20px"}}>
                             <div className={"col-3"} style={{marginTop: "20px"}}>
                                 <div className="cdt-filter__block" style={{marginLeft: "10px", marginBottom: "20px"}}>
-                                    <div className="cdt-filter__title" data-toggle="collapse"
-                                         data-target="#hang-san-xuat"
-                                         aria-expanded="true"><b><h5>Thương hiệu</h5></b>
-                                    </div>
+                                    {/*<div className="cdt-filter__title" data-toggle="collapse"*/}
+                                    {/*     data-target="#hang-san-xuat"*/}
+                                    {/*     aria-expanded="true">*/}
+                                    {/*</div>*/}
                                     <div>
                                         <table style={{
                                             borderCollapse: "separate;",
                                             borderSpacing: "0 10px; "/* Khoảng cách ngang và dọc giữa các hàng */
                                         }}>
+                                            <label style={{marginBottom: "10px"}}>
+                                            <h5>Thương hiệu</h5>
                                             <input
                                                 style={{backgroundColor: "#cb1c22", marginBottom: "10px"}}
                                                 type="checkbox"
@@ -169,6 +172,7 @@ export default function Product() {
                                                 checked={selectedBrands === ''}
                                                 onChange={handleBrandChange}
                                             /> Tất cả
+                                            </label>
                                             <tr style={{marginTop: "10px", marginBottom: '10px'}}>
 
                                                 <td>
@@ -314,6 +318,74 @@ export default function Product() {
                                                     <br/>
                                                 </td>
                                             </tr>
+                                            {/*<br/>*/}
+                                            <tr style={{height: "10px"}}></tr>
+                                            <label style={{marginBottom: "10px"}}>
+                                                <h5>Mức giá</h5>
+                                                <input
+                                                    style={{backgroundColor: "#cb1c22"}}
+                                                    type="checkbox"
+                                                    value=""
+                                                    checked={priceRange === ''}
+                                                    onChange={handlePriceChange}
+                                                /> Tất cả
+
+                                            </label>
+                                            <br/>
+                                            <label style={{marginBottom: "10px"}}>
+                                                <input
+                                                    style={{backgroundColor: "#cb1c22"}}
+                                                    type="checkbox"
+                                                    value="0-500000"
+                                                    checked={priceRange === '0-500000'}
+                                                    onChange={handlePriceChange}
+                                                /> Dưới 500k
+
+                                            </label>
+                                            <br/>
+                                            <label style={{marginBottom: "10px"}}>
+                                                <input
+                                                    style={{backgroundColor: "#cb1c22"}}
+                                                    type="checkbox"
+                                                    value="500000-1000000"
+                                                    checked={priceRange === '500000-1000000'}
+                                                    onChange={handlePriceChange}
+                                                /> Từ 500k - 1 triệu
+
+                                            </label>
+                                            <br/>
+                                            <label style={{marginBottom: "10px"}}>
+                                                <input
+                                                    style={{backgroundColor: "#cb1c22"}}
+                                                    type="checkbox"
+                                                    value="1000000-1500000"
+                                                    checked={priceRange === '1000000-1500000'}
+                                                    onChange={handlePriceChange}
+                                                /> Từ 1 - 1 triệu rưỡi
+
+                                            </label>
+                                            <br/>
+                                            <label style={{marginBottom: "10px"}}>
+                                                <input
+                                                    style={{backgroundColor: "#cb1c22"}}
+                                                    type="checkbox"
+                                                    value="1500000-2000000"
+                                                    checked={priceRange === '1500000-2000000'}
+                                                    onChange={handlePriceChange}
+                                                /> Từ 1 triệu rưỡi - 2 triệu
+
+                                            </label>
+                                            <br/>
+                                            <label style={{marginBottom: "10px"}}>
+                                                <input
+                                                    style={{backgroundColor: "#cb1c22"}}
+                                                    type="checkbox"
+                                                    value="2000000-1000000000"
+                                                    checked={priceRange === '2000000-1000000000'}
+                                                    onChange={handlePriceChange}
+                                                /> Trên 2 triệu
+
+                                            </label>
                                             <tr style={{height: "10px"}}></tr>
                                             <label style={{marginBottom: "10px"}}>
                                                 <h5>Danh mục</h5>
@@ -448,74 +520,7 @@ export default function Product() {
 
                                             </label>
 
-                                            <br/>
-                                            <tr style={{height: "10px"}}></tr>
-                                            <label style={{marginBottom: "10px"}}>
-                                                <h5>Mức giá</h5>
-                                                <input
-                                                    style={{backgroundColor: "#cb1c22"}}
-                                                    type="checkbox"
-                                                    value=""
-                                                    checked={priceRange === ''}
-                                                    onChange={handlePriceChange}
-                                                /> Tất cả
 
-                                            </label>
-                                            <br/>
-                                            <label style={{marginBottom: "10px"}}>
-                                                <input
-                                                    style={{backgroundColor: "#cb1c22"}}
-                                                    type="checkbox"
-                                                    value="0-2000000"
-                                                    checked={priceRange === '0-2000000'}
-                                                    onChange={handlePriceChange}
-                                                /> Dưới 2 triệu
-
-                                            </label>
-                                            <br/>
-                                            <label style={{marginBottom: "10px"}}>
-                                                <input
-                                                    style={{backgroundColor: "#cb1c22"}}
-                                                    type="checkbox"
-                                                    value="2000000-4000000"
-                                                    checked={priceRange === '2000000-4000000'}
-                                                    onChange={handlePriceChange}
-                                                /> Từ 2 - 4 triệu
-
-                                            </label>
-                                            <br/>
-                                            <label style={{marginBottom: "10px"}}>
-                                                <input
-                                                    style={{backgroundColor: "#cb1c22"}}
-                                                    type="checkbox"
-                                                    value="4000000-7000000"
-                                                    checked={priceRange === '4000000-7000000'}
-                                                    onChange={handlePriceChange}
-                                                /> Từ 4 - 7 triệu
-
-                                            </label>
-                                            <br/>
-                                            <label style={{marginBottom: "10px"}}>
-                                                <input
-                                                    style={{backgroundColor: "#cb1c22"}}
-                                                    type="checkbox"
-                                                    value="7000000-13000000"
-                                                    checked={priceRange === '7000000-13000000'}
-                                                    onChange={handlePriceChange}
-                                                /> Từ 7 - 13 triệu
-
-                                            </label>
-                                            <br/>
-                                            <label style={{marginBottom: "10px"}}>
-                                                <input
-                                                    style={{backgroundColor: "#cb1c22"}}
-                                                    type="checkbox"
-                                                    value="13000000-1000000000"
-                                                    checked={priceRange === '13000000-1000000000'}
-                                                    onChange={handlePriceChange}
-                                                /> Trên 13 triệu
-
-                                            </label>
 
                                             <br/>
                                         </table>
@@ -524,8 +529,9 @@ export default function Product() {
                             </div>
                             <div className={"col-9"} style={{marginTop: "20px"}}>
                                 <div className="card-header">
-                                    <div className="cdt-head" style={{display: "inline", border: "1px solid #f8f9fa;"}}>
-                                        <h1 className="cdt-head__title">Đồng hồ</h1>
+                                    <div className="cdt-head" style={{display: "flex", alignItems: "center", border: "1px solid #f8f9fa"}}>
+                                        <h1 className="cdt-head__title">Đồng hồ </h1>
+                                        <span style={{marginLeft:"10px"}}> ({products.length} sản phẩm)</span>
                                     </div>
                                 </div>
                                 <div className="box-container cate-box cat-prd box-pad15 bg-white mb24">
@@ -536,14 +542,27 @@ export default function Product() {
                                                     <div key={index} className="col-4">
                                                         <div className="single-unique-product">
                                                             <a href={`product/${product.product_Id}`}>
-                                                                <img className="image-home" src={product.image_Url.split(',')[0]}
+                                                                <img className="image-home" src={product.image_Url.split(',')[index]}
                                                                      alt={product.name} title={product.name}
                                                                      height="214"/>
                                                             </a>
                                                             <div className="desc">
-                                                                <h6>{product?.name}</h6>
+                                                                <h6 style={{height:"30px"}}>{product?.name}</h6>
+                                                                <p>
+                                                                     <span style={{textDecoration: "line-through", color:"#999999", fontSize:"15px"}}>
+                                                                        {formatPrice(product?.original_Price)} đ
+                                                                    </span>
+                                                                                        <span style={{background: "#f9e9e2",
+                                                                                            borderRadius:" 2px",
+                                                                                            color: "#ef5555",
+                                                                                            marginLeft: "10px",
+                                                                                            padding: "2px 2px",
+                                                                                            fontSize: "12px"}}>
+                                                                        -{calculateDiscountPercentage(product?.original_Price,product?.price)}%
+                                                                    </span>{" "}
+                                                                </p>
                                                                 <h6 style={{color:"red"}}>{formatPrice(product?.price)} đ</h6>
-                                                                <button onClick={() => addToCart(product.productId)} className="text-uppercase primary-btn" style={{textDecoration: "none"}}>
+                                                                <button onClick={() => addToCart(product?.product_Id)} className="text-uppercase primary-btn" style={{textDecoration: "none"}}>
                                                                     Thêm vào giỏ hàng
                                                                 </button>
                                                             </div>

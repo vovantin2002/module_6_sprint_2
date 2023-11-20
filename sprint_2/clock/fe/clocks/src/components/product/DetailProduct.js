@@ -23,21 +23,27 @@ export default function DetailProduct() {
     const [reviews, setReviews] = useState([]);
     const [product, setProducts] = useState({});
     const [images, setImages] = useState([]);
+    const [ratings, setRatings] = useState([]);
     const [activeIndex, setActiveIndex] = useState(0);
     const [showEvaluate, setShowEvaluate] = useState(false);
     useEffect(() => {
         getProducts();
         getAccount();
-        fetchReviews()
+        // fetchReviews();
     }, [])
     const getProducts = async () => {
         try {
             const product = await axios.get(`http://localhost:8080/api/product/${id}`)
-            console.log(product?.data);
             setProducts(product?.data);
             const str = product.data.image_Url.split(",");
             setImages(str);
-            console.log(product.data);
+            const response = await axios.get(`http://localhost:8080/api/review/${product?.data?.product_Id}`);
+            response?.data?.content?.forEach((review) => {
+                if (review?.rating) {
+                    ratings.push(review?.rating);
+                }
+            });
+            setReviews(response?.data?.content);
         } catch (e) {
             console.log(e)
         }
@@ -47,12 +53,21 @@ export default function DetailProduct() {
         try {
             const isLoggedIn = infoAppUserByJwtToken();
             const result = await axios.get(`http://localhost:8080/api/user?userName=${isLoggedIn.sub}`);
-            console.log(result?.data);
             setCustomer(result?.data?.customers?.customerId)
-            console.log(result.data.customers.customerId)
         } catch (e) {
             console.log(e)
         }
+    }
+
+    function calculateAverageRating(ratings) {
+        // console.log(ratings)
+        if (ratings?.length === 0) {
+            return 0; // Trả về 0 nếu danh sách rỗng
+        }
+
+        const sum = ratings?.reduce((accumulator, currentValue) => accumulator + currentValue);
+        const average = sum / ratings?.length;
+        return average;
     }
 
     const ratingChanged = (newRating) => {
@@ -73,9 +88,7 @@ export default function DetailProduct() {
             }
         }
         try {
-            console.log(rating)
             await axios.post("http://localhost:8080/api/review", rating);
-            console.log(rating)
             setInputStar(0);
             setInputValue('');
             setBeCommented(!beCommented);
@@ -94,18 +107,15 @@ export default function DetailProduct() {
 
     const fetchReviews = async () => {
         try {
-            const response = await axios.get(`http://localhost:8080/api/review/${product?.product_Id}`); // Replace with your API endpoint
+            const response = await axios.get(`http://localhost:8080/api/review/${product?.product_Id}`);
             setReviews(response?.data?.content);
-            console.log("dsvsdv");
-            console.log(response?.data?.content);
         } catch (error) {
             console.error(error);
         }
     };
-    console.log(reviews)
-    // useEffect(() => {
-    //     fetchReviews();
-    // }, []);
+    useEffect(() => {
+        fetchReviews();
+    }, []);
     const getTimeAgo = (reviewDate) => {
         const currentTime = moment();
         const reviewTime = moment(reviewDate);
@@ -134,6 +144,13 @@ export default function DetailProduct() {
     const handleInputChange = (event) => {
         setInputValue(event.target.value);
     };
+
+    function calculateDiscountPercentage(originalPrice, salePrice) {
+        const discount = originalPrice - salePrice;
+        const discountPercentage = (discount / originalPrice) * 100;
+        return Math.round(discountPercentage);
+    }
+
     const infoAppUserByJwtToken = () => {
         const jwtToken = localStorage.getItem("JWT");
         if (jwtToken) {
@@ -152,7 +169,6 @@ export default function DetailProduct() {
         } else {
             try {
                 const id = await axios.get(`http://localhost:8080/api/user/getId?userName=${isLoggedIn.sub}`);
-                console.log(id.data);
                 // setAppUserId(id.data);
                 const cart = {
                     quantity: 1,
@@ -200,7 +216,7 @@ export default function DetailProduct() {
     return (
         <>
             <Header></Header>
-            <div className="container-fluid" style={{ marginTop:"95px"}}>
+            <div className="container-fluid" style={{marginTop: "95px"}}>
                 <div style={{backgroundColor: "#f8f9fa"}}>
                     <div className="container">
                         <div className={"row"}>
@@ -301,7 +317,7 @@ export default function DetailProduct() {
                                             <table className="st-pd-table">
                                                 <tbody>
                                                 <tr style={{borderSpacing: "10px;"}}>
-                                                    <td>Thương hiệu</td>
+                                                    <td style={{width:"100px"}}>Thương hiệu</td>
                                                     <td style={{paddingLeft: "10px"}}>{product?.brands}
                                                     </td>
                                                 </tr>
@@ -326,12 +342,12 @@ export default function DetailProduct() {
                                                 </tr>
                                                 <tr style={{height: "8px"}}></tr>
                                                 <tr style={{paddingBottom: "20px"}}>
-                                                    <td>Bề dày mặc số</td>
+                                                    <td>Bề dày mặt số</td>
                                                     <td style={{paddingLeft: "10px"}}>{product?.dial_Thickness} mm</td>
                                                 </tr>
                                                 <tr style={{height: "8px"}}></tr>
                                                 <tr style={{paddingBottom: "20px"}}>
-                                                    <td>Đường kính mặc số</td>
+                                                    <td>Đường kính mặt số</td>
                                                     <td style={{paddingLeft: "10px"}}>{product?.dial_Diameter} mm</td>
                                                     {/*<td style={{paddingLeft:"10px"}}>1 - 1 eSIM, 1 Nano SIM </td>*/}
                                                 </tr>
@@ -347,96 +363,10 @@ export default function DetailProduct() {
                                                     {/*<td style={{paddingLeft:"10px"}}>Trung Quốc </td>*/}
                                                 </tr>
                                                 <tr style={{height: "8px"}}></tr>
-                                                {/*<tr style={{paddingBottom: "20px"}}>*/}
-                                                {/*    <td>Thời gian ra mắt</td>*/}
-                                                {/*    <td style={{paddingLeft: "10px"}}>{product?.launch_Time}</td>*/}
-                                                {/*</tr>*/}
-                                                {/* Các thông tin khác */}
                                                 </tbody>
                                             </table>
-                                            {/*<div className="st-pd-table-viewDetail">*/}
-                                            {/*    <a href="#" className="re-link js--open-modal">Xem cấu hình chi tiết <span*/}
-                                            {/*        className="carret"></span></a>*/}
-                                            {/*</div>*/}
-                                            {/*<div className="st-pd-table-viewDetail"><a href="#"*/}
-                                            {/*                                           className="re-link js--open-modal">Xem*/}
-                                            {/*    cấu hình chi*/}
-                                            {/*    tiết <span className="carret"></span></a></div>*/}
                                         </div>
                                     </div>
-                {/*                    <div className="product-info">*/}
-                {/*                        <div className="display-header text-light">*/}
-                {/*                            <h2 itemProp="name" className="product-title text-light">Order Your*/}
-                {/*                                Choice</h2>*/}
-                {/*                            <p>Experience the elegance of Reddy on your wrist. Place your order today*/}
-                {/*                                and enjoy free worldwide shipping.</p>*/}
-                {/*                        </div>*/}
-                {/*                        <div className="product-action mt-4">*/}
-                {/*                            <div className="detail-list mt-3">*/}
-                {/*                                <ul className="text-light list-unstyled">*/}
-                {/*                                    <li className="pb-3">*/}
-                {/*                                        <strong>Watch Model:</strong>*/}
-                {/*                                        <a href="#" className="text-light">Reddy Watch</a>*/}
-                {/*                                    </li>*/}
-                {/*                                    <li className="pb-3">*/}
-                {/*                                        <strong>Price:</strong>*/}
-                {/*                                        <a href="#" className="text-light">$2000.00</a>*/}
-                {/*                                    </li>*/}
-                {/*                                    <li className="color-product-options pb-3">*/}
-                {/*                                        <div className="color-toggle d-flex" data-option-index="0">*/}
-                {/*                                            <div className="item-title">*/}
-                {/*                                                <strong>Choose Strap Color:</strong>*/}
-                {/*                                            </div>*/}
-                {/*                                            <div className="color-item ms-2" data-val="Cement"*/}
-                {/*                                                 title="Cement">*/}
-                {/*                                                <span className="color-inner d-block rounded-pill"*/}
-                {/*                                                      style={{backgroundColor: "#ABA194"}}></span>*/}
-                {/*                                            </div>*/}
-                {/*                                            <div className="color-item ms-2" data-val="Reddish Brown"*/}
-                {/*                                                 title="Reddish Brown">*/}
-                {/*                                                <span className="color-inner d-block rounded-pill"*/}
-                {/*                                                      style={{backgroundColor: "#812013"}}></span>*/}
-                {/*                                            </div>*/}
-                {/*                                            <div className="color-item ms-2" data-val="Woody Brown"*/}
-                {/*                                                 title="Woody Brown">*/}
-                {/*                                                <span className="color-inner d-block rounded-pill"*/}
-                {/*                                                      style={{backgroundColor: "#4A3937"}}></span>*/}
-                {/*                                            </div>*/}
-                {/*                                        </div>*/}
-                {/*                                    </li>*/}
-                {/*                                </ul>*/}
-                {/*                            </div>*/}
-                {/*                            <div className="product-quantity">*/}
-                {/*                                <div className="input-group product-qty me-3 border rounded-2"*/}
-                {/*                                     style={{maxWidth: "130px"}}>*/}
-                {/*    <span className="input-group-btn bg-gray-2">*/}
-                {/*      <button type="button" className="quantity-left-minus btn btn-number" data-type="minus"*/}
-                {/*              data-field="">*/}
-                {/*        <svg width="16" height="16">*/}
-                {/*          <use ></use>*/}
-                {/*        </svg>*/}
-                {/*      </button>*/}
-                {/*    </span>*/}
-                {/*                                    <input type="text" id="quantity" name="quantity"*/}
-                {/*                                           className="form-control input-number text-center bg-gray-1"*/}
-                {/*                                           value="1" min="1" max="100"/>*/}
-                {/*<span className="input-group-btn bg-gray-2">*/}
-                {/*      <button type="button" className="quantity-right-plus btn btn-number" data-type="plus"*/}
-                {/*              data-field="">*/}
-                {/*        <svg width="16" height="16">*/}
-                {/*          <use></use>*/}
-                {/*        </svg>*/}
-                {/*      </button>*/}
-                {/*    </span>*/}
-                {/*                                </div>*/}
-                {/*                                <button type="submit" name="add" id="add-to-cart"*/}
-                {/*                                        className="btn btn-lg btn-outline-dark btn-bg-light text-uppercase mt-5 rounded-pill fw-bold">Order*/}
-                {/*                                    Now*/}
-                {/*                                </button>*/}
-                {/*                            </div>*/}
-                {/*                        </div>*/}
-                {/*                    </div>*/}
-
                                 </div>
                                 <div className={"row"} style={{marginLeft: "10px", marginTop: "15px"}}>
                                     <div className={"col-6"}>
@@ -448,6 +378,25 @@ export default function DetailProduct() {
                                             fontWeighteight: "500;",
                                             lineHeight: "36px;",
                                         }}>{formatPrice(product?.price)}₫</h4></b>
+                                        <p>
+                                            <span style={{
+                                                textDecoration: "line-through",
+                                                color: "#999999",
+                                                fontSize: "15px"
+                                            }}>
+                                                {formatPrice(product?.original_Price)} đ
+                                            </span>
+                                            <span style={{
+                                                background: "#f9e9e2",
+                                                borderRadius: " 2px",
+                                                color: "#ef5555",
+                                                marginLeft: "10px",
+                                                padding: "2px 2px",
+                                                fontSize: "12px"
+                                            }}>
+                                                -{calculateDiscountPercentage(product?.original_Price, product?.price)}%
+                                            </span>{" "}
+                                        </p>
                                     </div>
                                     <div className={"col-3"}>
                                         <button style={{backgroundColor: "#cb1c22", color: "white"}}
@@ -485,20 +434,35 @@ export default function DetailProduct() {
                                     <div className="star" style={{textAlign: "center"}}>
                                         <div className="text f-s-p-16">Đánh Giá Trung Bình</div>
                                         <div className="f-s-ui-44 text-primary f-w-500 m-t-4"><h1
-                                            style={{color: "#cb1c22"}}>5/5</h1></div>
+                                            style={{color: "#cb1c22"}}>{calculateAverageRating(ratings)}/5</h1></div>
                                         <div className="tin">
+                                            {Array.from({length: 5}, (_, index) => (
+                                                <span
+                                                    key={index}
+                                                    style={{
+                                                        color: calculateAverageRating(ratings) >= index + 1 ? '#efb140' : '#cbd1d6',
+                                                        fontSize: calculateAverageRating(ratings) >= index + 1 ? '24px' : '20px',
+                                                        fontWeight: "900;",
+                                                        content: "\f005",
+                                                        fontFamily: "Font Awesome 5 Free",
+                                                        display: "inline-block;"
+                                                    }}
+                                                >
+                                        {calculateAverageRating(ratings) >= index + 1 ? '\u2605' : '\u2606'}
+                                    </span>
+                                            ))}
                                             {/*<input type="radio" name="rating" id="star5" value="5"/>*/}
-                                            <label htmlFor="star5"></label>
-                                            {/*<input type="radio" name="rating" id="star4" value="4"/>*/}
-                                            <label htmlFor="star4"></label>
-                                            {/*<input type="radio" name="rating" id="star3" value="3"/>*/}
-                                            <label htmlFor="star3"></label>
-                                            {/*<input type="radio" name="rating" id="star2" value="2"/>*/}
-                                            <label htmlFor="star2"></label>
-                                            {/*<input type="radio" name="rating" id="star1" value="1"/>*/}
-                                            <label htmlFor="star1"></label>
+                                            {/*<label htmlFor="star5"></label>*/}
+                                            {/*/!*<input type="radio" name="rating" id="star4" value="4"/>*!/*/}
+                                            {/*<label htmlFor="star4"></label>*/}
+                                            {/*/!*<input type="radio" name="rating" id="star3" value="3"/>*!/*/}
+                                            {/*<label htmlFor="star3"></label>*/}
+                                            {/*/!*<input type="radio" name="rating" id="star2" value="2"/>*!/*/}
+                                            {/*<label htmlFor="star2"></label>*/}
+                                            {/*/!*<input type="radio" name="rating" id="star1" value="1"/>*!/*/}
+                                            {/*<label htmlFor="star1"></label>*/}
                                         </div>
-                                        <div className="text text-grayscale m-t-4">45 đánh giá</div>
+                                        <div className="text text-grayscale m-t-4">{reviews.length} đánh giá</div>
                                     </div>
                                 </div>
                                 <div className="col-4" style={{textAlign: "center"}}>

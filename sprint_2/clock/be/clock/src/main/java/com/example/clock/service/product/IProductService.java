@@ -20,6 +20,7 @@ public interface IProductService {
     void editProduct(Products products);
 
     ProductProjection findProductById(int id);
+    void reduceQuantityProduct(Integer quantity, Integer productId);
 
     Page<ProductProjection> search(
             String name,

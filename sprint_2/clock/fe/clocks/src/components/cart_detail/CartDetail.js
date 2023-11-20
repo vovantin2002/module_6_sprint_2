@@ -8,6 +8,7 @@ import {useParams} from "react-router-dom";
 import {ErrorMessage, Field, Form, Formik} from "formik";
 import * as Yup from "yup"
 import swal from "sweetalert2";
+import {format} from "date-fns";
 
 export default function CartDetail() {
     const [carts, setCarts] = useState([]);
@@ -21,13 +22,22 @@ export default function CartDetail() {
     const getCarts = async () => {
         try {
             const result = await axios.get(`http://localhost:8080/api/cart/${id}`);
-            const result1 = await axios.get(`http://localhost:8080/api/customer/${result.data[0]?.accounts?.customers?.customerId}`);
-            setCustomer(result1.data);
             setCarts(result.data);
+            if (result){
+                const result1 = await axios.get(`http://localhost:8080/api/customer/${result?.data[0]?.accounts?.customers?.customerId}`);
+                setCustomer(result1.data);
+            }
         } catch (e) {
             console.log(e)
         }
-
+    }
+    const getCustomers = async () => {
+        try {
+            const result1 = await axios.get(`http://localhost:8080/api/customer/${carts[0]?.accounts?.customers?.customerId}`);
+            setCustomer(result1.data);
+        } catch (e) {
+            console.log(e)
+        }
     }
     useEffect(() => {
         document.title = "VVT Shop - Giỏ hàng";
@@ -37,9 +47,7 @@ export default function CartDetail() {
             (total, el) => total + el?.products?.price * el.quantity,
             0
         );
-        console.log(newTotalPrice)
         setTotalPrice(newTotalPrice);
-        console.log(selectedCart)
     }, [selectedCart]);
     useEffect(() => {
         getCarts();
@@ -72,7 +80,6 @@ export default function CartDetail() {
         border: "1px solid #ccc",
     };
     const handleMultiSelect = (cart) => {
-        console.log(cart?.products?.productId);
         if (
             selectedCart.find(
                 (selected) => selected?.products?.productId === cart?.products?.productId
@@ -89,42 +96,47 @@ export default function CartDetail() {
     };
 
     const handleVNPAY = async () => {
-        // let finalPrice = totalPrice - discount;
-        const {format} = require('date-fns');
+        if (!customer){
+            swal.fire({
+                title: "Vui lòng nhập thông tin đặt hàng!",
+                icon: "warning",
+            });
+        }else {
+            // let finalPrice = totalPrice - discount;
+            const {format} = require('date-fns');
 
-        let currentDate = new Date();
-        let formattedDate = format(currentDate, 'yyyy-MM-dd');
-        const plusPoint = totalPrice / 100;
-        let integerValue = Math.floor(totalPrice);
-        // const loyaltyPoint = point + plusPoint - discount;
-        let deletedCartIDs = [];
-        selectedCart.forEach((med) => deletedCartIDs.push(med.cartId));
-        console.log(selectedCart)
-        const tempOrder = {
-            orderDetails: selectedCart.map(cartItem => ({
-                quantity: cartItem?.quantity,
-                products: {
-                    productId: cartItem?.products?.productId
+            let currentDate = new Date();
+            let formattedDate = format(currentDate, 'yyyy-MM-dd');
+            const plusPoint = totalPrice / 100;
+            let integerValue = Math.floor(totalPrice);
+            // const loyaltyPoint = point + plusPoint - discount;
+            let deletedCartIDs = [];
+            selectedCart.forEach((med) => deletedCartIDs.push(med.cartId));
+            const tempOrder = {
+                orderDetails: selectedCart.map(cartItem => ({
+                    quantity: cartItem?.quantity,
+                    products: {
+                        productId: cartItem?.products?.productId
+                    }
+                })),
+                orders: {
+                    orderDate: formattedDate,
+                    totalAmount: integerValue,
+                    accounts: {
+                        accountId: selectedCart[0]?.accounts?.accountId
+                    }
                 }
-            })),
-            orders: {
-                orderDate: formattedDate,
-                totalAmount: integerValue,
-                accounts: {
-                    accountId: selectedCart[0]?.accounts?.accountId
-                }
-            }
-        };
-        console.log(tempOrder)
-        localStorage.setItem("tempOrder", JSON.stringify(tempOrder));
-        localStorage.setItem("deletedCartIDs", JSON.stringify(deletedCartIDs));
-        const res = await axios.get("http://localhost:8080/payment", {
-            params: {
-                price: integerValue,
-            },
-        });
-        // const res = await createVNPayPayment(finalPrice);
-        window.location.href = res.data;
+            };
+            localStorage.setItem("tempOrder", JSON.stringify(tempOrder));
+            localStorage.setItem("deletedCartIDs", JSON.stringify(deletedCartIDs));
+            const res = await axios.get("http://localhost:8080/payment", {
+                params: {
+                    price: integerValue,
+                },
+            });
+            // const res = await createVNPayPayment(finalPrice);
+            window.location.href = res.data;
+        }
     };
 
     const buttonStyles = {
@@ -163,7 +175,6 @@ export default function CartDetail() {
         } else {
             let deletedCartIDs = [];
             selectedCart.forEach((med) => deletedCartIDs.push(med.cartId));
-            console.log(deletedCartIDs);
             let names = selectedCart
                 .map((cart) => cart.products.modleName)
                 .join(", ");
@@ -192,7 +203,7 @@ export default function CartDetail() {
                                 (med) => !deletedCartIDs.includes(med.cartId)
                             )
                         );
-                        getCarts();
+                         await getCarts();
                         // setDiscount(0);
                         swal.fire("Xoá sản phẩm thành công!", "", "success");
                     }
@@ -328,6 +339,7 @@ export default function CartDetail() {
     }, [cart2])
     useEffect(() => {
         getCustomer()
+        getCustomers()
     }, [])
     const addCustomer = async (value) => {
         try {
@@ -335,8 +347,6 @@ export default function CartDetail() {
                 ...value
                 , customerId: customer.customerId,
             };
-            console.log(value)
-            console.log(result)
             await axios.patch(
                 `http://localhost:8080/api/customer`, result);
             Swal.fire("Cập nhật thông tin khách hàng thành công", "", "success");
@@ -349,7 +359,6 @@ export default function CartDetail() {
             if (carts && carts[0]?.accounts?.customers?.customerId) {
                 try {
                     const result = await axios.get(`http://localhost:8080/api/customer/${carts[0]?.accounts?.customers?.customerId}`);
-                    console.log(result.data);
                     setCustomer(result.data);
                 } catch (e) {
                     console.log(e);
@@ -402,7 +411,7 @@ export default function CartDetail() {
                                                     <div className="col-lg-12">
                                                         <div className="p-5">
                                                             {
-                                                                carts.length > 0 ? (
+                                                                carts?.length > 0 ? (
                                                                     <div
                                                                         className="row mb-4 d-flex justify-content-between align-items-center">
                                                                         <div className={"row"}>
@@ -453,7 +462,7 @@ export default function CartDetail() {
                                                                                 </div>
                                                                                 <div className="col-6 "
                                                                                      style={{textAlign: "center"}}>
-                                                                                    <h6 className="text-muted">{cart?.products?.modelName}</h6>
+                                                                                    <h6 className="text-muted">{cart?.products?.name}</h6>
                                                                                     <div style={{
                                                                                         fontSize: " 18px",
                                                                                         fontWeight: "700",
@@ -476,7 +485,7 @@ export default function CartDetail() {
                                                                                        onClick={() =>
                                                                                            handleMinus(
                                                                                                cart.products.productId,
-                                                                                               cart.products.modelName,
+                                                                                               cart.products.name,
                                                                                                cart
                                                                                            )
                                                                                        }

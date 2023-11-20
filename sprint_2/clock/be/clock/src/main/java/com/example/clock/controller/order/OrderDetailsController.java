@@ -3,8 +3,10 @@ package com.example.clock.controller.order;
 
 import com.example.clock.model.OrderDetails;
 import com.example.clock.model.OrderRequestDTO;
+import com.example.clock.model.Products;
 import com.example.clock.service.order.IOrderDetailsService;
 import com.example.clock.service.order.IOrderService;
+import com.example.clock.service.product.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -21,13 +23,17 @@ public class OrderDetailsController {
     private IOrderDetailsService orderDetailsService;
     @Autowired
     private IOrderService orderService;
+    @Autowired
+    private ProductService productService;
 
     @PostMapping("")
     @ResponseBody
     public ResponseEntity add(@RequestBody OrderRequestDTO orderRequestDTO) {
+
         orderService.add(orderRequestDTO.getOrders());
         for (OrderDetails orderDetails : orderRequestDTO.getOrderDetails()) {
             orderDetails.setOrders(orderRequestDTO.getOrders());
+            productService.reduceQuantityProduct(orderDetails.getQuantity(),orderDetails.getProducts().getProductId());
             orderDetailsService.add(orderDetails);
         }
         return new ResponseEntity<>(HttpStatus.OK);

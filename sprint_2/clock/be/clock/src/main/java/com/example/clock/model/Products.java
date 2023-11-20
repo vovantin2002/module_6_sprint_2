@@ -20,6 +20,9 @@ public class Products {
     @Column(name = "price")
     private BigDecimal price;
 
+    @Column(name = "original_price")
+    private BigDecimal originalPrice;
+
     @Column(name = "quantity")
     private Integer quantity;
 
@@ -65,11 +68,12 @@ public class Products {
     @JoinColumn(name = "brand_id", referencedColumnName = "brand_id")
     private Brands brands;
 
-    public Products(Integer productId, String name, String color, BigDecimal price, Integer quantity, String glasses, String internationalWarranty, String modelNumber, String imageUrl, String origin, String glassMaterial, String movementType, BigDecimal dialDiameter, BigDecimal dialThickness, String functions, String description, Boolean flagDeleted, Categories categories, Brands brands) {
+    public Products(Integer productId, String name, String color, BigDecimal price, BigDecimal originalPrice, Integer quantity, String glasses, String internationalWarranty, String modelNumber, String imageUrl, String origin, String glassMaterial, String movementType, BigDecimal dialDiameter, BigDecimal dialThickness, String functions, String description, Boolean flagDeleted, Categories categories, Brands brands) {
         this.productId = productId;
         this.name = name;
         this.color = color;
         this.price = price;
+        this.originalPrice = originalPrice;
         this.quantity = quantity;
         this.glasses = glasses;
         this.internationalWarranty = internationalWarranty;
@@ -88,6 +92,14 @@ public class Products {
     }
 
     public Products() {
+    }
+
+    public BigDecimal getOriginalPrice() {
+        return originalPrice;
+    }
+
+    public void setOriginalPrice(BigDecimal originalPrice) {
+        this.originalPrice = originalPrice;
     }
 
     public Categories getCategories() {

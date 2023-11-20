@@ -17,7 +17,6 @@ export default function ReturnVNPay() {
   const getURL = () => {
     const urlParams = new URLSearchParams(window.location.search);
     const responseCode = urlParams.get("vnp_ResponseCode");
-    console.log(responseCode);
     setResponseCode(responseCode);
   };
 
@@ -28,8 +27,6 @@ export default function ReturnVNPay() {
       const tempOrder = JSON.parse(temp);
       const deletedCartIDs1 = JSON.parse(deletedCartIDs);
       setDataList(tempOrder);
-      console.log(JSON.parse(temp));
-      console.log(deletedCartIDs1);
         await axios.post(
             "http://localhost:8080/api/cart/delete",
             deletedCartIDs1

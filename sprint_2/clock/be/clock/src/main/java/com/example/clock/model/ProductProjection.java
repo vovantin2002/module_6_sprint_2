@@ -8,6 +8,7 @@ public interface ProductProjection {
     String getDial_Color();
 
     Double getPrice();
+    Double getOriginal_Price();
 
     Double getQuantity();
 
@@ -35,5 +36,6 @@ public interface ProductProjection {
 
     String getBrands();
     String getDescription();
+//    String getReviews();
 }
 

@@ -6,9 +6,7 @@ export default function Login() {
     const [carts, setCarts] = useState([]);
     const getCarts = async () => {
         const result = await axios.get("http://localhost:8080/api/cart");
-        console.log(result.data);
         setCarts(result.data);
-        console.log(result.data); // Đây sẽ hiển thị giá trị mới của `carts`
     };
     useEffect(() => {
         getCarts();
@@ -20,7 +18,6 @@ export default function Login() {
     return(
         <>
             {carts.map((a,index) => {
-                console.log(a);
                 return(<div key={index} className="row" style={{marginBottom: "10px"}}>
                     <div className="col-3 ">
                         <img

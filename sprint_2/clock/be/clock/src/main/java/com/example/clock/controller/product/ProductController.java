@@ -41,7 +41,7 @@ public class ProductController {
 
     @GetMapping("")
     @ResponseBody
-    public ResponseEntity findAllByName(@PageableDefault(size = 8, sort = "product_id", direction = Sort.Direction.DESC)
+    public ResponseEntity findAllByName(@PageableDefault( sort = "product_id", direction = Sort.Direction.DESC)
                                         Pageable pageable, @RequestParam(value = "name",
             defaultValue = "") String name, @RequestParam(value = "brands",
             defaultValue = "") String brands, @RequestParam(value = "minPrice",

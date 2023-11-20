@@ -4,7 +4,21 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9fa92384-66b2-4a2d-ae8c-5dbaaef2b9d1" name="Changes" comment="" />
+    <list default="true" id="9fa92384-66b2-4a2d-ae8c-5dbaaef2b9d1" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/../clock/fe/clocks/public/img/Màu đào Hình tròn Logo đám cưới.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../clock/fe/clocks/src/components/home/Màu đào Hình tròn Logo đám cưới.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../clock/be/clock/src/main/java/com/example/clock/controller/customer/CustomerController.java" beforeDir="false" afterPath="$PROJECT_DIR$/../clock/be/clock/src/main/java/com/example/clock/controller/customer/CustomerController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../clock/be/clock/src/main/java/com/example/clock/controller/order/PaymentConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/../clock/be/clock/src/main/java/com/example/clock/controller/order/PaymentConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../clock/fe/clocks/public/css/main.css" beforeDir="false" afterPath="$PROJECT_DIR$/../clock/fe/clocks/public/css/main.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../clock/fe/clocks/src/components/cart_detail/CartDetail.js" beforeDir="false" afterPath="$PROJECT_DIR$/../clock/fe/clocks/src/components/cart_detail/CartDetail.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../clock/fe/clocks/src/components/history/History.js" beforeDir="false" afterPath="$PROJECT_DIR$/../clock/fe/clocks/src/components/history/History.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../clock/fe/clocks/src/components/home/Header.js" beforeDir="false" afterPath="$PROJECT_DIR$/../clock/fe/clocks/src/components/home/Header.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../clock/fe/clocks/src/components/home/Home.css" beforeDir="false" afterPath="$PROJECT_DIR$/../clock/fe/clocks/src/components/home/Home.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../clock/fe/clocks/src/components/home/Home.js" beforeDir="false" afterPath="$PROJECT_DIR$/../clock/fe/clocks/src/components/home/Home.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../clock/fe/clocks/src/components/product/DetailProduct.js" beforeDir="false" afterPath="$PROJECT_DIR$/../clock/fe/clocks/src/components/product/DetailProduct.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../clock/fe/clocks/src/components/product/Product.js" beforeDir="false" afterPath="$PROJECT_DIR$/../clock/fe/clocks/src/components/product/Product.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -44,11 +58,12 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "WebServerToolWindowFactoryState": "false",
-    "last_opened_file_path": "D:/module_6_sprint_2/module_6_sprint_2/sprint_2/phone_store/be/phone_store",
+    "last_opened_file_path": "D:/module_6_sprint_2/module_6_sprint_2/sprint_2/phone_store",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
     "spring.configuration.checksum": "11464d2155fb502a666dba34ddbe48c1",
     "vue.rearranger.settings.migration": "true"
   },
@@ -117,6 +132,7 @@
       <workItem from="1698369355476" duration="3531000" />
       <workItem from="1698628715686" duration="604000" />
       <workItem from="1698720728182" duration="59000" />
+      <workItem from="1699950396688" duration="651000" />
     </task>
     <servers />
   </component>

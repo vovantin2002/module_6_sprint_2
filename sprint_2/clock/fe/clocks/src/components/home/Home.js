@@ -49,6 +49,11 @@ export default function Home() {
     useEffect(() => {
         getNewProducts();
     }, [])
+    function calculateDiscountPercentage(originalPrice, salePrice) {
+        const discount = originalPrice - salePrice;
+        const discountPercentage = (discount / originalPrice) * 100;
+        return Math.round(discountPercentage);
+    }
 
     function formatPrice(price) {
         const formatter = new Intl.NumberFormat('vi-VN');
@@ -73,7 +78,6 @@ export default function Home() {
         } else {
             try {
                 const id = await axios.get(`http://localhost:8080/api/user/getId?userName=${isLoggedIn.sub}`);
-                console.log(id.data);
                 const cart = {
                     quantity: 1,
                     products: {
@@ -134,30 +138,43 @@ export default function Home() {
                             </div>
                         </div>
                     </div>
-                    {
-                        productsOutstanding.length>0 ?(
-                            <div className="row">
-                                {productsNew.map((product, index) => (
-                                    <div key={index} className="col-3">
-                                        <div className="single-unique-product">
-                                            <a href={`product/${product.productId}`}>
-                                                <img className="img-fluid" src={product?.imageUrl} alt=""/>
-                                            </a>
-                                            <div className="desc">
-                                                <h6>{product?.name}</h6>
-                                                <h6 style={{color:"red"}}>{formatPrice(product?.price)} đ</h6>
-                                                <button onClick={() => addToCart(product.productId)} className="text-uppercase primary-btn" style={{textDecoration: "none"}}>
-                                                    Thêm vào giỏ hàng
-                                                </button>
-                                            </div>
+                    {productsOutstanding.length > 0 ? (
+                        <div className="row">
+                            {productsNew.map((product, index) => (
+                                <div key={index} className="col-3">
+                                    <div className="single-unique-product">
+                                        <a href={`product/${product.productId}`}>
+                                            <img className="image-home img-fluid" src={product?.imageUrl} alt=""/>
+                                        </a>
+                                        <div className="desc">
+                                            <h6 style={{height:"30px"}}>{product?.name}</h6>
+                                            <p>
+                                                 <span style={{textDecoration: "line-through", color:"#999999", fontSize:"15px"}}>
+                                                    {formatPrice(product?.originalPrice)} đ
+                                                </span>
+                                                <span style={{background: "#f9e9e2",
+                                                    borderRadius:" 2px",
+                                                    color: "#ef5555",
+                                                    marginLeft: "10px",
+                                                    padding: "2px 2px",
+                                                    fontSize: "12px"}}>
+                                                    -{calculateDiscountPercentage(product?.originalPrice,product?.price)}%
+                                                </span>{" "}
+                                            </p>
+                                            <h6 style={{color:"red"}}>
+                                                {formatPrice(product?.price)} đ
+                                            </h6>
+                                            <button onClick={() => addToCart(product.productId)} className="text-uppercase primary-btn" style={{textDecoration: "none"}}>
+                                                Thêm vào giỏ hàng
+                                            </button>
                                         </div>
                                     </div>
-                                ))}
-                            </div>
-                        ):(
-                            <p style={{color: "red"}}>Không có sản phẩm nào!</p>
-                        )
-                    }
+                                </div>
+                            ))}
+                        </div>
+                    ) : (
+                        <p style={{color: "red"}}>Không có sản phẩm nào!</p>
+                    )}
                 </div>
                 <div className="container">
                     <div className="row d-flex justify-content-center">
@@ -175,10 +192,23 @@ export default function Home() {
                                             <div key={index} className="col-3">
                                                 <div className="single-unique-product">
                                                     <a href={`product/${product.productId}`}>
-                                                    <img className="img-fluid" src={product?.imageUrl} alt=""/>
+                                                    <img className="image-home img-fluid" src={product?.imageUrl} alt=""/>
                                                     </a>
                                                     <div className="desc">
-                                                        <h6>{product?.name}</h6>
+                                                        <h6 style={{height:"30px"}}>{product?.name}</h6>
+                                                        <p>
+                                                             <span style={{textDecoration: "line-through", color:"#999999", fontSize:"15px"}}>
+                                                                {formatPrice(product?.originalPrice)} đ
+                                                            </span>
+                                                                        <span style={{background: "#f9e9e2",
+                                                                            borderRadius:" 2px",
+                                                                            color: "#ef5555",
+                                                                            marginLeft: "10px",
+                                                                            padding: "2px 2px",
+                                                                            fontSize: "12px"}}>
+                                                                -{calculateDiscountPercentage(product?.originalPrice,product?.price)}%
+                                                            </span>{" "}
+                                                        </p>
                                                         <h6 style={{color:"red"}}>{formatPrice(product?.price)} đ</h6>
                                                         <button onClick={() => addToCart(product.productId)} className="text-uppercase primary-btn" style={{textDecoration: "none"}}>
                                                             Thêm vào giỏ hàng

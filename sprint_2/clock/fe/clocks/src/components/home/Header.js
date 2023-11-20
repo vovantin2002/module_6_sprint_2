@@ -6,10 +6,10 @@ import jwt_decode from "jwt-decode";
 import Swal from "sweetalert2";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faClock } from '@fortawesome/free-solid-svg-icons';
+import logo from './Màu đào Hình tròn Logo đám cưới.png';
 
 export const name = async () => {
     let name = document.getElementById("name").value;
-    console.log(name)
     return name;
 }
 export default function Header() {
@@ -63,7 +63,6 @@ export default function Header() {
         try {
             const isLoggedIn = infoAppUserByJwtToken();
             const id = await axios.get(`http://localhost:8080/api/user/getId?userName=${isLoggedIn.sub}`);
-            console.log(id.data);
             setId(id.data);
         } catch (e) {
             console.log(e)
@@ -84,10 +83,10 @@ export default function Header() {
         <header id="header" style={{background: "rgba(4, 9, 30, 0.9)"}}>
             <div className="container">
                 <div className="row align-items-center justify-content-between d-flex">
-                    <div id="logo" className={"col-3"}>
-                        {/*<img src={"\"C:\\Users\\Admin\\Downloads\\Màu đào Hình tròn Logo đám cưới.png\""}/>*/}
-                        <a style={{ color: "white", textDecoration: "none"}} href="/home">
-                            <h1 style={{ color: "white", textDecoration: "none"}}>VVT Shop</h1>
+                    <div id="logo" className={"col-3"} >
+                        <a style={{ display: 'flex', alignItems: 'center', color: "white", textDecoration: "none" }} href="/home">
+                            <img style={{borderRadius:"10%"}} src={logo} alt="Màu đào Hình tròn Logo đám cưới" width={50}height={50}/>
+                            <h1 style={{ color: "white", textDecoration: "none", marginLeft: '10px'}}>VVT Shop</h1>
                         </a>
                     </div>
                     <nav className={"col-9"} id="nav-menu-container">

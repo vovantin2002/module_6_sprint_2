@@ -47,11 +47,9 @@ const Loginss = () => {
             navigate("")
         } catch (e) {
             if (e.response.status === 406) {
-                console.log(e);
                 setErrors(e.response.data);
             } else {
                 Swal.fire(e.response.data, "", "warning");
-                // alert(e.response.data);
             }
         }
     }
