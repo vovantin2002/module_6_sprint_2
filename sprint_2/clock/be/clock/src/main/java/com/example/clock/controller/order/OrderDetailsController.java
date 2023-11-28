@@ -33,7 +33,7 @@ public class OrderDetailsController {
         orderService.add(orderRequestDTO.getOrders());
         for (OrderDetails orderDetails : orderRequestDTO.getOrderDetails()) {
             orderDetails.setOrders(orderRequestDTO.getOrders());
-            productService.reduceQuantityProduct(orderDetails.getQuantity(),orderDetails.getProducts().getProductId());
+            productService.reduceQuantityProduct(orderDetails.getQuantity(), orderDetails.getProducts().getProductId());
             orderDetailsService.add(orderDetails);
         }
         return new ResponseEntity<>(HttpStatus.OK);
@@ -44,5 +44,13 @@ public class OrderDetailsController {
     public ResponseEntity display(@PageableDefault(size = 8, sort = "orderDetailsId", direction = Sort.Direction.DESC)
                                   Pageable pageable, @PathVariable("id") Integer id) {
         return new ResponseEntity<>(orderDetailsService.display(pageable, id), HttpStatus.OK);
+    }
+
+    @GetMapping("")
+    @ResponseBody
+    public ResponseEntity displayById(
+            @RequestParam("id") Integer id, @RequestParam("accountId") Integer accountId) {
+        return new ResponseEntity<>
+                (orderDetailsService.findByOrderDetailsIdAndOrders_Accounts_AccountId(id, accountId), HttpStatus.OK);
     }
 }

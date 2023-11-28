@@ -10,6 +10,7 @@ import Home from "./components/home/Home";
 import Login from "./components/login/Login";
 import ReturnVNPay from "./components/cart_detail/ReturnVNPay";
 import History from "./components/history/History";
+import UserInformation from "./components/account/UserInformation";
 
 
 function App() {
@@ -26,7 +27,7 @@ function App() {
             {/*<Route path="/customer" element={<Customer/>}></Route>*/}
             <Route path="/product" element={<Product/>}></Route>
             <Route path="/cart" element={<CartDetail/>}></Route>
-            <Route path="/c" element={<Customer/>}></Route>
+            <Route path="/info" element={<UserInformation/>}></Route>
           </Routes>
         </BrowserRouter>
       </>

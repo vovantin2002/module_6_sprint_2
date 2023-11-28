@@ -59,8 +59,8 @@ export default function History() {
                     <div className="container-fluid w-100">
                         <div className="row">
                             <div className="row">
-                                <div className={"col-2"}></div>
-                                <div className="col-8 d-flex flex-column justify-content-center align-items-center">
+                                <div className={"col-1"}></div>
+                                <div className="col-10 d-flex flex-column justify-content-center align-items-center">
                                     <table className="table table-hover" style={{textAlign: "center"}}>
                                         <thead className="text-secondary">
                                         <tr className="text-center fw-bold">
@@ -129,7 +129,7 @@ export default function History() {
             </tbody>
         </table>
         </div>
-    <div className={"col-2"}></div>
+    <div className={"col-1"}></div>
 </div>
 
 </div>

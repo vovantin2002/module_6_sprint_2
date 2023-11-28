@@ -667,7 +667,7 @@ export default function CartDetail() {
                                 {/*</div>*/}
 
                                 {/*<div className="bg-gray-2 h-[1px] w-full"></div>*/}
-                                <div className="bg-gray-1 py-3">
+                                <div className="bg-gray-1 py-3" style={{marginBottom:"35px"}}>
                                     <div className="mx-auto w-full px-4 md:max-w-[806px] md:px-0">
                                         <div className="row flex flex-col md:flex-row md:gap-6 ">
                                             {/*<div className={"col-2"}>*/}
@@ -712,19 +712,23 @@ export default function CartDetail() {
                                             </div>
                                             <div className="col-6 ">
                                                 <div className=" w-100 d-flex justify-content-center">
-                                                    <button
-                                                        className="btn ant-btn css-10ed4xt ant-btn-primary max-w-[147px] !rounded-full md:mt-1 md:w-full md:max-w-none estore-btn estore-btn-bg  css-1krd2ey"
-                                                        style={{
-                                                            // marginBottom: "20px",
-                                                            // color: "black",
-                                                            // backgroundColor: "#119cd4",
-                                                            // border: "1px #119cd4 solid ",
-                                                            // display: checkout ? "block" : "none",
-                                                        }}
-                                                        onClick={handleVNPAY}
-                                                    >
-                                                        THANH TOÁN VỚI VNPAY
-                                                    </button>
+                                                    {
+                                                        totalPrice !==0 &&(
+                                                            <button
+                                                                className="btn ant-btn css-10ed4xt ant-btn-primary max-w-[147px] !rounded-full md:mt-1 md:w-full md:max-w-none estore-btn estore-btn-bg  css-1krd2ey"
+                                                                style={{
+                                                                    // marginBottom: "20px",
+                                                                    // color: "black",
+                                                                    // backgroundColor: "#119cd4",
+                                                                    // border: "1px #119cd4 solid ",
+                                                                    // display: checkout ? "block" : "none",
+                                                                }}
+                                                                onClick={handleVNPAY}
+                                                            >
+                                                                THANH TOÁN VỚI VNPAY
+                                                            </button>
+                                                        )
+                                                    }
                                                 </div>
                                                 {/*<button type="button"*/}
                                                 {/*        className="btn ant-btn css-10ed4xt ant-btn-primary max-w-[147px] !rounded-full md:mt-1 md:w-full md:max-w-none estore-btn estore-btn-bg  css-1krd2ey">*/}

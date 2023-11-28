@@ -20,6 +20,7 @@ export default function DetailProduct() {
     const [iputStar, setInputStar] = useState(0);
     const navigate = useNavigate();
     const {id} = useParams();
+    const [idAccount, setIdAccount] = useState('');
     const [reviews, setReviews] = useState([]);
     const [product, setProducts] = useState({});
     const [images, setImages] = useState([]);
@@ -53,6 +54,7 @@ export default function DetailProduct() {
         try {
             const isLoggedIn = infoAppUserByJwtToken();
             const result = await axios.get(`http://localhost:8080/api/user?userName=${isLoggedIn.sub}`);
+            setIdAccount(result?.data?.accountId)
             setCustomer(result?.data?.customers?.customerId)
         } catch (e) {
             console.log(e)
@@ -88,11 +90,19 @@ export default function DetailProduct() {
             }
         }
         try {
-            await axios.post("http://localhost:8080/api/review", rating);
-            setInputStar(0);
-            setInputValue('');
-            setBeCommented(!beCommented);
-            fetchReviews();
+            console.log(id)
+            console.log(idAccount)
+           const result=await axios.get(`http://localhost:8080/api/order-detail?id=${id}&accountId=${idAccount}`);
+            console.log(result)
+           if (result.data.length<1){
+               await Swal.fire("Chưa mua hàng không thể đánh giá !", "", "warning");
+           }else {
+               await axios.post("http://localhost:8080/api/review", rating);
+               setInputStar(0);
+               setInputValue('');
+               setBeCommented(!beCommented);
+               fetchReviews();
+           }
         } catch (error) {
             await Swal.fire("Đánh giá thất bại!", "", "warning");
         }
@@ -137,6 +147,9 @@ export default function DetailProduct() {
 
         if (minutesAgo > 0) {
             humanizedDuration += `${minutesAgo} phút `;
+        }
+        if (minutesAgo < 1) {
+            humanizedDuration = `1 phút `;
         }
 
         return humanizedDuration + 'trước';

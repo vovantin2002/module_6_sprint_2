@@ -7,6 +7,7 @@ import Swal from "sweetalert2";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faClock } from '@fortawesome/free-solid-svg-icons';
 import logo from './Màu đào Hình tròn Logo đám cưới.png';
+import {FaShoppingCart, FaSignOutAlt, FaUser} from "react-icons/fa";
 
 export const name = async () => {
     let name = document.getElementById("name").value;
@@ -77,7 +78,6 @@ export default function Header() {
             title: "Đăng xuất thành công",
             icon: "success",
         });
-        // navigate("/home");
     };
     return (
         <header id="header" style={{background: "rgba(4, 9, 30, 0.9)"}}>
@@ -110,19 +110,6 @@ export default function Header() {
                                     <FontAwesomeIcon icon={faClock} /> <i className="fa-duotone fa-watch"></i>  Đồng hồ
 
                                 </Link>
-                                {/*								</ul>*/}
-                                {/*<ul className="dropdown-menu" aria-labelledby="navbarDropdown">*/}
-                                {/*    <li>*/}
-                                {/*        <a className="dropdown-item" href="#">*/}
-                                {/*            Đồng hồ nam*/}
-                                {/*        </a>*/}
-                                {/*    </li>*/}
-                                {/*    <li>*/}
-                                {/*        <a className="dropdown-item" href="#">*/}
-                                {/*            Đồng hồ nữ*/}
-                                {/*        </a>*/}
-                                {/*    </li>*/}
-                                {/*</ul>*/}
                             </li>
                             <li>
                                 <form action="/product" method="get" className="d-flex" onSubmit={handleSearch}>
@@ -143,27 +130,8 @@ export default function Header() {
                                       to={`/cart/${id}`} style={{color: "white"}}>
                                     <i className="fa-solid fa-cart-shopping" /> Giỏ hàng của bạn
                                 </Link>
-                                {/*<a href="#faq" />*/}
-                                {/*<a*/}
-                                {/*    className="nav-link active"*/}
-                                {/*    aria-current="page"*/}
-                                {/*    href="/order?action=back&id=${sessionScope.user.userId}"*/}
-                                {/*    style={{ color: "white" }}*/}
-                                {/*>*/}
-                                {/*    */}
-                                {/*</a>*/}
                             </li>
                             )}
-                            {/*<li className="nav-item" style={{ position: "absolute", right: 0 }}>*/}
-                            {/*    <a*/}
-                            {/*        className="nav-link active"*/}
-                            {/*        aria-current="page"*/}
-                            {/*        href="/"*/}
-                            {/*        style={{ color: "white" }}*/}
-                            {/*    >*/}
-                            {/*        <i className="fa-solid fa-circle-user" /> Đăng Nhập*/}
-                            {/*    </a>*/}
-                            {/*</li>*/}
                             {!username ? (
                                 <li className="nav-item"  style={{ position: "absolute", right: 0 }}>
                                     <a className="nav-link active" aria-current="page" href="/"
@@ -183,8 +151,13 @@ export default function Header() {
                                     <ul className="dropdown-menu" aria-labelledby="navbarDropdown" style={{left:"auto",right:"0"}}>
                                         <li>
                                             {/*<div className="dropdown-item">*/}
-                                                <a href="/history">Lịch sử mua
+                                                <a href="/history"><FaShoppingCart /> Lịch sử mua
                                                     hàng</a>
+                                            {/*</div>*/}
+                                        </li>
+                                        <li>
+                                            {/*<div className="dropdown-item">*/}
+                                                <a href="/info"><FaUser /> Thông tin cá nhân</a>
                                             {/*</div>*/}
                                         </li>
                                         <li>
@@ -192,7 +165,7 @@ export default function Header() {
                                                 // className="dropdown-item"
                                                 onClick={() => handleLogOut()}
                                             >
-                                                <a>Đăng xuất</a>
+                                                <a><FaSignOutAlt /> Đăng xuất</a>
                                             </div>
                                         </li>
                                     </ul>
