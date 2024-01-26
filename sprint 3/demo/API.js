@@ -1,5 +1,7 @@
 const express = require('express');
 const cors = require('cors');
+
+
 const app = express();
 
 // Sử dụng middleware CORS
@@ -10,7 +12,7 @@ app.get('/api/books', (req, res) => {
     const books = [
         { id: 1, title: 'Book 1' },
         { id: 2, title: 'Book 2' },
-        { id: 3, title: 'Book 3' }
+        { id: 3, title: 'Book 4' }
     ];
     res.json(books);
 });
