@@ -11,9 +11,8 @@ html, body, body .fpt-comment div {
     vertical-align: baseline;
     background: transparent;
 }
+
 .cdt-product__btn {
-    /*margin-top: 15px;*/
-    /*margin-bottom: 15px;*/
     opacity: 0;
     transition: opacity 0.3s ease;
 }
@@ -21,6 +20,7 @@ html, body, body .fpt-comment div {
 .cdt-product:hover .cdt-product__btn {
     opacity: 1;
 }
+
 .cdt-product__name {
     font-size: 17px;
     font-weight: 700;
@@ -38,19 +38,22 @@ html, body, body .fpt-comment div {
     text-overflow: ellipsis;
     word-break: break-word;
 }
+
 .fpheadbox .card-header {
     border-bottom: none;
 }
+
 .card-header:first-child {
     border-top-left-radius: 6px;
     border-top-right-radius: 6px;
 }
+
 .card-header {
     padding: 15px;
     margin-bottom: 0;
     background-color: #fff;
     border-radius: 6px;
-    border-bottom: 1px solid rgba(0,0,0,.125);
+    border-bottom: 1px solid rgba(0, 0, 0, .125);
 }
 
 .cdt-filter__checklist {
@@ -122,11 +125,6 @@ html, body, body .fpt-comment div {
 }
 
 .custom-checkbox input[type="checkbox"]:checked + label {
-    background-color: red; /* Màu đỏ */
+    background-color: red;
 }
-/*.progress-block__line{*/
-/*    display: flex;*/
-/*    align-items: center;*/
-/*    font-size: 14px;*/
-/*    line-height: 20px;*/
-/*}*/
+

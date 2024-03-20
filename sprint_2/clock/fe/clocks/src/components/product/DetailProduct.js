@@ -10,8 +10,9 @@ import Swal from "sweetalert2";
 import ReactStars from "react-rating-stars-component";
 import jwt_decode from "jwt-decode";
 import {format} from "date-fns";
-import swal from "sweetalert2"; // Import locale for Vietnamese
-moment.locale('vi'); // Set the locale to Vietnamese
+import swal from "sweetalert2";
+
+moment.locale('vi');
 
 export default function DetailProduct() {
     const [beCommented, setBeCommented] = useState(false);
@@ -26,11 +27,9 @@ export default function DetailProduct() {
     const [images, setImages] = useState([]);
     const [ratings, setRatings] = useState([]);
     const [activeIndex, setActiveIndex] = useState(0);
-    const [showEvaluate, setShowEvaluate] = useState(false);
     useEffect(() => {
         getProducts();
         getAccount();
-        // fetchReviews();
     }, [])
     const getProducts = async () => {
         try {
@@ -62,7 +61,6 @@ export default function DetailProduct() {
     }
 
     function calculateAverageRating(ratings) {
-        // console.log(ratings)
         if (ratings?.length === 0) {
             return 0; // Trả về 0 nếu danh sách rỗng
         }
@@ -92,17 +90,17 @@ export default function DetailProduct() {
         try {
             console.log(id)
             console.log(idAccount)
-           const result=await axios.get(`http://localhost:8080/api/order-detail?id=${id}&accountId=${idAccount}`);
+            const result = await axios.get(`http://localhost:8080/api/order-detail?id=${id}&accountId=${idAccount}`);
             console.log(result)
-           if (result.data.length<1){
-               await Swal.fire("Chưa mua hàng không thể đánh giá !", "", "warning");
-           }else {
-               await axios.post("http://localhost:8080/api/review", rating);
-               setInputStar(0);
-               setInputValue('');
-               setBeCommented(!beCommented);
-               fetchReviews();
-           }
+            if (result.data.length < 1) {
+                await Swal.fire("Chưa mua hàng không thể đánh giá !", "", "warning");
+            } else {
+                await axios.post("http://localhost:8080/api/review", rating);
+                setInputStar(0);
+                setInputValue('');
+                setBeCommented(!beCommented);
+                fetchReviews();
+            }
         } catch (error) {
             await Swal.fire("Đánh giá thất bại!", "", "warning");
         }
@@ -196,8 +194,6 @@ export default function DetailProduct() {
                 try {
                     await axios.post(
                         `http://localhost:8080/api/cart/add`, cart);
-                    // await axios.post(
-                    //     `http://localhost:8080/api/cart/${cartId}`);
                     Swal.fire("Thêm sản phẩm vào giỏ hàng thành công", "", "success");
                 } catch (e) {
                     Swal.fire("Sản phẩm đã tồn tại trong giỏ hàng! ", "", "warning");
@@ -308,16 +304,10 @@ export default function DetailProduct() {
                                             <span className="visually-hidden">Next</span>
                                         </button>
                                     </div>
-                                    {/*<img style={{width: "60%"}}*/}
-                                    {/*     src={product.imageUrl}*/}
-                                    {/*     alt="Phone"/>*/}
                                     <br/>
 
-                                    {/*<h5><Link href="cart.html" className="product-button">Thêm vào giỏ hàng</Link></h5>*/}
                                 </div>
                                 <div className="product-details col-6">
-                                    {/*// <!--                    <div class="product-title">Điện thoại XYZ</div>-->*/}
-                                    {/*// <!--                    <div class="product-description">Mô tả sản phẩm điện thoại XYZ.</div>-->*/}
                                     <div className="card re-card st-card">
                                         <h5 className="card-title" style={{marginLeft: "10px", marginTop: "16px"}}><b>Thông
                                             tin sản phẩm</b></h5>
@@ -330,15 +320,11 @@ export default function DetailProduct() {
                                             <table className="st-pd-table">
                                                 <tbody>
                                                 <tr style={{borderSpacing: "10px;"}}>
-                                                    <td style={{width:"100px"}}>Thương hiệu</td>
+                                                    <td style={{width: "100px"}}>Thương hiệu</td>
                                                     <td style={{paddingLeft: "10px"}}>{product?.brands}
                                                     </td>
                                                 </tr>
                                                 <tr style={{height: "8px"}}></tr>
-                                                {/*<tr style={{paddingBottom: "20px"}}>*/}
-                                                {/*    <td>Xuất xứ</td>*/}
-                                                {/*    <td style={{paddingLeft: "10px"}}>{product?.origin} </td>*/}
-                                                {/*</tr>*/}
                                                 <tr style={{height: "8px"}}></tr>
                                                 <tr style={{paddingBottom: "20px"}}>
                                                     <td>Kính</td>
@@ -464,23 +450,11 @@ export default function DetailProduct() {
                                         {calculateAverageRating(ratings) >= index + 1 ? '\u2605' : '\u2606'}
                                     </span>
                                             ))}
-                                            {/*<input type="radio" name="rating" id="star5" value="5"/>*/}
-                                            {/*<label htmlFor="star5"></label>*/}
-                                            {/*/!*<input type="radio" name="rating" id="star4" value="4"/>*!/*/}
-                                            {/*<label htmlFor="star4"></label>*/}
-                                            {/*/!*<input type="radio" name="rating" id="star3" value="3"/>*!/*/}
-                                            {/*<label htmlFor="star3"></label>*/}
-                                            {/*/!*<input type="radio" name="rating" id="star2" value="2"/>*!/*/}
-                                            {/*<label htmlFor="star2"></label>*/}
-                                            {/*/!*<input type="radio" name="rating" id="star1" value="1"/>*!/*/}
-                                            {/*<label htmlFor="star1"></label>*/}
                                         </div>
                                         <div className="text text-grayscale m-t-4">{reviews.length} đánh giá</div>
                                     </div>
                                 </div>
                                 <div className="col-4" style={{textAlign: "center"}}>
-                                    {/*{showEvaluate ? (*/}
-                                    {/*<h3>Comment</h3>*/}
                                     <ReactStars
                                         count={5}
                                         onChange={ratingChanged}
@@ -512,7 +486,6 @@ export default function DetailProduct() {
                             </div>
                         </div>
 
-                        {/*<h1>Đánh giá sản phẩm</h1>*/}
                         {reviews?.map((review) => (
                             <div key={review?.reviewId} className={"row"}
                                  style={{marginLeft: "10px", marginBottom: "30px"}}>

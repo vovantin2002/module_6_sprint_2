@@ -1,7 +1,6 @@
 #cart .btn {
     width: 400px;
     background: #ba1a1f;
-    /*box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);*/
     backdrop-filter: blur(18.5px);
     -webkit-backdrop-filter: blur(18.5px);
     border-radius: 10px;
@@ -20,6 +19,7 @@
 #cart .btn:hover {
     background-color: #4d84e2;
 }
+
 #customer form {
     display: flex;
     flex-direction: column;
@@ -38,19 +38,6 @@
     font-weight: bold;
 }
 
-/* input[type='text'],*/
-/*input[type='email'] {*/
-/*     background: var(--white);*/
-/*     box-shadow: 0 0 0 1px var(--gray-400);*/
-/*     border-radius: 8px;*/
-/*     padding: 16px;*/
-/*     font-size: 16px;*/
-/*     font-weight: 400;*/
-/*     line-height: 24px;*/
-/*     letter-spacing: .005em;*/
-     /*border:  #edf0f3;*/
-/*}*/
-
 #customer button {
     padding: 0.5rem 1rem;
     background-color: #007bff;
@@ -63,6 +50,7 @@
 #customer button:hover {
     background-color: #0056b3;
 }
+
 .price {
     font-size: 18px;
     font-weight: 700;

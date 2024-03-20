@@ -4,8 +4,8 @@ import Product from "../product/Product";
 import {Link, useNavigate} from "react-router-dom";
 import jwt_decode from "jwt-decode";
 import Swal from "sweetalert2";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faClock } from '@fortawesome/free-solid-svg-icons';
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import {faClock} from '@fortawesome/free-solid-svg-icons';
 import logo from './Màu đào Hình tròn Logo đám cưới.png';
 import {FaShoppingCart, FaSignOutAlt, FaUser} from "react-icons/fa";
 
@@ -14,34 +14,15 @@ export const name = async () => {
     return name;
 }
 export default function Header() {
-    const [products, setProducts] = useState([]);
     const [JwtToken, setJwtToken] = useState(localStorage.getItem("JWT"));
     const [searchTerm, setSearchTerm] = useState('');
     const navigate = useNavigate();
     const [id, setId] = useState(""); // Trạng thái đăng nhập
-    const [isLoggedIn, setIsLoggedIn] = useState(""); // Trạng thái đăng nhập
     const [username, setUsername] = useState(''); // Tên người dùng
-
-    const handleLogin = () => {
-        // Logic đăng nhập
-        setIsLoggedIn(true);
-        setUsername('John Doe'); // Thay thế 'John Doe' bằng tên người dùng thực tế
-    };
-
-    const handleLogout = () => {
-        // Logic đăng xuất
-        setIsLoggedIn(false);
-        setUsername('');
-    };
 
     const handleSearch = async (event) => {
         event.preventDefault();
         navigate(`/product?term=${encodeURIComponent(searchTerm)}`);
-        // const result = await axios.get(`http://localhost:8080/api/product?modelName=${searchTerm}&productTypes=&minPrice=&maxPrice=&phoneBrands=&page=0&size=8`);
-        // await console.log(result.data.content);
-        // await setProducts(result?.data.content);
-
-        // onSearch(searchTerm);
     };
     const infoAppUserByJwtToken = () => {
         const jwtToken = localStorage.getItem("JWT");
@@ -83,31 +64,28 @@ export default function Header() {
         <header id="header" style={{background: "rgba(4, 9, 30, 0.9)"}}>
             <div className="container">
                 <div className="row align-items-center justify-content-between d-flex">
-                    <div id="logo" className={"col-3"} >
-                        <a style={{ display: 'flex', alignItems: 'center', color: "white", textDecoration: "none" }} href="/home">
-                            <img style={{borderRadius:"10%"}} src={logo} alt="Màu đào Hình tròn Logo đám cưới" width={50}height={50}/>
-                            <h1 style={{ color: "white", textDecoration: "none", marginLeft: '10px'}}>VVT Shop</h1>
+                    <div id="logo" className={"col-3"}>
+                        <a style={{display: 'flex', alignItems: 'center', color: "white", textDecoration: "none"}}
+                           href="/home">
+                            <img style={{borderRadius: "10%"}} src={logo} alt="Màu đào Hình tròn Logo đám cưới"
+                                 width={50} height={50}/>
+                            <h1 style={{color: "white", textDecoration: "none", marginLeft: '10px'}}>VVT Shop</h1>
                         </a>
                     </div>
                     <nav className={"col-9"} id="nav-menu-container">
                         <ul className="nav-menu">
                             <li className=" menu-active">
                                 <a href="/home">
-                                    <i className="fa-solid fa-house-chimney" /> Trang chủ
+                                    <i className="fa-solid fa-house-chimney"/> Trang chủ
                                 </a>
                             </li>
                             <li className=" nav-item">
-                                {/*								<ul class="dropdown-menu" aria-labelledby="navbarDropdown">*/}
                                 <Link
-                                    // className="nav-link"
                                     to={"/product"}
-                                    // id="navbarDropdown"
                                     role="button"
-                                    // data-bs-toggle="dropdown"
-                                    // aria-expanded="false"
-                                    style={{ color: "white" }}
+                                    style={{color: "white"}}
                                 >
-                                    <FontAwesomeIcon icon={faClock} /> <i className="fa-duotone fa-watch"></i>  Đồng hồ
+                                    <FontAwesomeIcon icon={faClock}/> <i className="fa-duotone fa-watch"></i> Đồng hồ
 
                                 </Link>
                             </li>
@@ -125,47 +103,43 @@ export default function Header() {
                                 </form>
                             </li>
                             {username && (
-                            <li className={""}>
-                                <Link className="nav-link active" aria-current="page"
-                                      to={`/cart/${id}`} style={{color: "white"}}>
-                                    <i className="fa-solid fa-cart-shopping" /> Giỏ hàng của bạn
-                                </Link>
-                            </li>
+                                <li className={""}>
+                                    <Link className="nav-link active" aria-current="page"
+                                          to={`/cart/${id}`} style={{color: "white"}}>
+                                        <i className="fa-solid fa-cart-shopping"/> Giỏ hàng của bạn
+                                    </Link>
+                                </li>
                             )}
                             {!username ? (
-                                <li className="nav-item"  style={{ position: "absolute", right: 0 }}>
+                                <li className="nav-item" style={{position: "absolute", right: 0}}>
                                     <a className="nav-link active" aria-current="page" href="/"
                                        style={{color: "white"}}>
-                                        <i className="fa-solid fa-circle-user"></i>  Đăng Nhập
+                                        <i className="fa-solid fa-circle-user"></i> Đăng Nhập
                                     </a>
                                 </li>
                             ) : (
-                                <li className="nav-item dropdown" style={{ position: "absolute", right: 0 }}>
+                                <li className="nav-item dropdown" style={{position: "absolute", right: 0}}>
                                     <a className="nav-link dropdown-toggle" href="#" id="navbarDropdown"
                                        role="button"
                                        data-bs-toggle="dropdown" aria-expanded="false"
                                        style={{color: "white"}}>
-                                        <i className="fa-solid fa-circle-user"></i>  {username.sub}
+                                        <i className="fa-solid fa-circle-user"></i> {username.sub}
 
                                     </a>
-                                    <ul className="dropdown-menu" aria-labelledby="navbarDropdown" style={{left:"auto",right:"0"}}>
+                                    <ul className="dropdown-menu" aria-labelledby="navbarDropdown"
+                                        style={{left: "auto", right: "0"}}>
                                         <li>
-                                            {/*<div className="dropdown-item">*/}
-                                                <a href="/history"><FaShoppingCart /> Lịch sử mua
-                                                    hàng</a>
-                                            {/*</div>*/}
+                                            <a href="/history"><FaShoppingCart/> Lịch sử mua
+                                                hàng</a>
                                         </li>
                                         <li>
-                                            {/*<div className="dropdown-item">*/}
-                                                <a href="/info"><FaUser /> Thông tin cá nhân</a>
-                                            {/*</div>*/}
+                                            <a href="/info"><FaUser/> Thông tin cá nhân</a>
                                         </li>
                                         <li>
                                             <div
-                                                // className="dropdown-item"
                                                 onClick={() => handleLogOut()}
                                             >
-                                                <a><FaSignOutAlt /> Đăng xuất</a>
+                                                <a><FaSignOutAlt/> Đăng xuất</a>
                                             </div>
                                         </li>
                                     </ul>
@@ -173,7 +147,6 @@ export default function Header() {
                             )}
                         </ul>
                     </nav>
-                    {/* #nav-menu-container */}
                 </div>
             </div>
         </header>

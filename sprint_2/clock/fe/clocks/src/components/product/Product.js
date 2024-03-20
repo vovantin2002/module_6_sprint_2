@@ -6,10 +6,8 @@ import "./DetailProduct.css";
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import "./DetailProduct.css"
 import {useLocation, useNavigate} from 'react-router-dom';
-import {Carousel} from "react-bootstrap";
 import Swal from "sweetalert2";
 import jwt_decode from "jwt-decode";
-import {AiOutlineDoubleLeft, AiOutlineDoubleRight} from "react-icons/ai";
 
 export default function Product() {
     const [totalPage, setTotalPage] = useState(0);
@@ -71,7 +69,6 @@ export default function Product() {
         } catch (e) {
             console.log(e)
         }
-        // await console.log(result.data.content);
     };
     const infoAppUserByJwtToken = () => {
         const jwtToken = localStorage.getItem("JWT");
@@ -102,36 +99,22 @@ export default function Product() {
             try {
                 await axios.post(
                     `http://localhost:8080/api/cart/add`, cart);
-                // await axios.post(
-                //     `http://localhost:8080/api/cart/${cartId}`);
                 Swal.fire("Thêm sản phẩm vào giỏ hàng thành công", "", "success");
             } catch (e) {
                 Swal.fire("Sản phẩm đã tồn tại trong giỏ hàng! ", "", "warning");
             }
         }
     };
-    const previousPage = () => {
-        if (page > 0) {
-            setPage((pre) => pre - 1)
-        }
-    }
+
     function calculateDiscountPercentage(originalPrice, salePrice) {
         const discount = originalPrice - salePrice;
         const discountPercentage = (discount / originalPrice) * 100;
         return Math.round(discountPercentage);
     }
 
-    const nextPage = () => {
-        if (page + 1 < totalPage) {
-            setPage((pre) => pre + 1)
-        }
-    }
     useEffect(() => {
         search(searchTerm, min, max, page, selectedBrands, selectedColor, selectedCategories);
-    }, [searchTerm, min, max, page, selectedBrands,selectedColor, selectedCategories])
-    // useEffect(() => {
-    //     search(searchTerm,min,max,selectedBrands);
-    // }, [])
+    }, [searchTerm, min, max, page, selectedBrands, selectedColor, selectedCategories])
     return (
         <>
             <div>
@@ -154,24 +137,20 @@ export default function Product() {
                         <div className={"row"} style={{marginTop: "20px"}}>
                             <div className={"col-3"} style={{marginTop: "20px"}}>
                                 <div className="cdt-filter__block" style={{marginLeft: "10px", marginBottom: "20px"}}>
-                                    {/*<div className="cdt-filter__title" data-toggle="collapse"*/}
-                                    {/*     data-target="#hang-san-xuat"*/}
-                                    {/*     aria-expanded="true">*/}
-                                    {/*</div>*/}
                                     <div>
                                         <table style={{
                                             borderCollapse: "separate;",
-                                            borderSpacing: "0 10px; "/* Khoảng cách ngang và dọc giữa các hàng */
+                                            borderSpacing: "0 10px; "
                                         }}>
                                             <label style={{marginBottom: "10px"}}>
-                                            <h5>Thương hiệu</h5>
-                                            <input
-                                                style={{backgroundColor: "#cb1c22", marginBottom: "10px"}}
-                                                type="checkbox"
-                                                value=""
-                                                checked={selectedBrands === ''}
-                                                onChange={handleBrandChange}
-                                            /> Tất cả
+                                                <h5>Thương hiệu</h5>
+                                                <input
+                                                    style={{backgroundColor: "#cb1c22", marginBottom: "10px"}}
+                                                    type="checkbox"
+                                                    value=""
+                                                    checked={selectedBrands === ''}
+                                                    onChange={handleBrandChange}
+                                                /> Tất cả
                                             </label>
                                             <tr style={{marginTop: "10px", marginBottom: '10px'}}>
 
@@ -318,7 +297,6 @@ export default function Product() {
                                                     <br/>
                                                 </td>
                                             </tr>
-                                            {/*<br/>*/}
                                             <tr style={{height: "10px"}}></tr>
                                             <label style={{marginBottom: "10px"}}>
                                                 <h5>Mức giá</h5>
@@ -427,7 +405,6 @@ export default function Product() {
                                                     checked={selectedCategories === '3'}
                                                     onChange={handleCategoriesChange}
                                                 /> Smartwatch
-                                                {/*\Đồng hồ thông minh ()*/}
                                             </label>
                                             <br/>
                                             <label style={{marginBottom: "10px"}}>
@@ -438,7 +415,6 @@ export default function Product() {
                                                     checked={selectedCategories === '4'}
                                                     onChange={handleCategoriesChange}
                                                 /> Sports watch
-                                                {/*Đồng hồ thể thao ()*/}
                                             </label>
                                             <br/>
                                             <label style={{marginBottom: "10px"}}>
@@ -521,7 +497,6 @@ export default function Product() {
                                             </label>
 
 
-
                                             <br/>
                                         </table>
                                     </div>
@@ -529,40 +504,50 @@ export default function Product() {
                             </div>
                             <div className={"col-9"} style={{marginTop: "20px"}}>
                                 <div className="card-header">
-                                    <div className="cdt-head" style={{display: "flex", alignItems: "center", border: "1px solid #f8f9fa"}}>
+                                    <div className="cdt-head"
+                                         style={{display: "flex", alignItems: "center", border: "1px solid #f8f9fa"}}>
                                         <h1 className="cdt-head__title">Đồng hồ </h1>
-                                        <span style={{marginLeft:"10px"}}> ({products.length} sản phẩm)</span>
+                                        <span style={{marginLeft: "10px"}}> ({products.length} sản phẩm)</span>
                                     </div>
                                 </div>
                                 <div className="box-container cate-box cat-prd box-pad15 bg-white mb24">
                                     {
-                                        products.length>0 ?(
+                                        products.length > 0 ? (
                                             <div className="row">
                                                 {products.map((product, index) => (
                                                     <div key={index} className="col-4">
                                                         <div className="single-unique-product">
                                                             <a href={`product/${product.product_Id}`}>
-                                                                <img className="image-home" src={product.image_Url.split(',')[index]}
+                                                                <img className="image-home"
+                                                                     src={product.image_Url.split(',')[index]}
                                                                      alt={product.name} title={product.name}
                                                                      height="214"/>
                                                             </a>
                                                             <div className="desc">
-                                                                <h6 style={{height:"30px"}}>{product?.name}</h6>
+                                                                <h6 style={{height: "30px"}}>{product?.name}</h6>
                                                                 <p>
-                                                                     <span style={{textDecoration: "line-through", color:"#999999", fontSize:"15px"}}>
+                                                                     <span style={{
+                                                                         textDecoration: "line-through",
+                                                                         color: "#999999",
+                                                                         fontSize: "15px"
+                                                                     }}>
                                                                         {formatPrice(product?.original_Price)} đ
                                                                     </span>
-                                                                                        <span style={{background: "#f9e9e2",
-                                                                                            borderRadius:" 2px",
-                                                                                            color: "#ef5555",
-                                                                                            marginLeft: "10px",
-                                                                                            padding: "2px 2px",
-                                                                                            fontSize: "12px"}}>
-                                                                        -{calculateDiscountPercentage(product?.original_Price,product?.price)}%
+                                                                    <span style={{
+                                                                        background: "#f9e9e2",
+                                                                        borderRadius: " 2px",
+                                                                        color: "#ef5555",
+                                                                        marginLeft: "10px",
+                                                                        padding: "2px 2px",
+                                                                        fontSize: "12px"
+                                                                    }}>
+                                                                        -{calculateDiscountPercentage(product?.original_Price, product?.price)}%
                                                                     </span>{" "}
                                                                 </p>
-                                                                <h6 style={{color:"red"}}>{formatPrice(product?.price)} đ</h6>
-                                                                <button onClick={() => addToCart(product?.product_Id)} className="text-uppercase primary-btn" style={{textDecoration: "none"}}>
+                                                                <h6 style={{color: "red"}}>{formatPrice(product?.price)} đ</h6>
+                                                                <button onClick={() => addToCart(product?.product_Id)}
+                                                                        className="text-uppercase primary-btn"
+                                                                        style={{textDecoration: "none"}}>
                                                                     Thêm vào giỏ hàng
                                                                 </button>
                                                             </div>
@@ -570,7 +555,7 @@ export default function Product() {
                                                     </div>
                                                 ))}
                                             </div>
-                                        ):(
+                                        ) : (
                                             <h3 style={{color: "red"}}>Không có sản phẩm nào!</h3>
                                         )
                                     }

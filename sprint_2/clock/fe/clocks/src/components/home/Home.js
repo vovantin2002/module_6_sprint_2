@@ -8,7 +8,6 @@ import Swal from "sweetalert2";
 import {useNavigate} from "react-router-dom";
 import jwt_decode from "jwt-decode";
 import React from 'react';
-import {Carousel} from 'react-bootstrap';
 
 
 export default function Home() {
@@ -20,7 +19,7 @@ export default function Home() {
         try {
             const product = await axios.get("http://localhost:8080/api/product?page=3&size=4")
             setProducts(product?.data.content);
-        }catch (e) {
+        } catch (e) {
             console.log(e)
         }
     }
@@ -28,7 +27,7 @@ export default function Home() {
         try {
             const product = await axios.get("http://localhost:8080/api/product/order")
             setProductsOutstanding(product?.data);
-        }catch (e) {
+        } catch (e) {
             console.log(e)
         }
     }
@@ -36,7 +35,7 @@ export default function Home() {
         try {
             const product = await axios.get("http://localhost:8080/api/product/page?page=0&size=4")
             setProductsNew(product?.data.content);
-        }catch (e) {
+        } catch (e) {
             console.log(e)
         }
     }
@@ -49,6 +48,7 @@ export default function Home() {
     useEffect(() => {
         getNewProducts();
     }, [])
+
     function calculateDiscountPercentage(originalPrice, salePrice) {
         const discount = originalPrice - salePrice;
         const discountPercentage = (discount / originalPrice) * 100;
@@ -59,6 +59,7 @@ export default function Home() {
         const formatter = new Intl.NumberFormat('vi-VN');
         return formatter.format(price);
     }
+
     useEffect(() => {
         document.title = "VVT Shop - Trang chủ";
     }, []);
@@ -89,10 +90,8 @@ export default function Home() {
                 }
                 await axios.post(
                     `http://localhost:8080/api/cart/add`, cart);
-                // await axios.post(
-                //     `http://localhost:8080/api/cart/${cartId}`);
                 Swal.fire("Thêm sản phẩm vào giỏ hàng thành công", "", "success");
-            }catch (e){
+            } catch (e) {
                 Swal.fire("Sản phẩm đã tồn tại trong giỏ hàng! ", "", "warning");
             }
         }
@@ -106,7 +105,6 @@ export default function Home() {
                 <div className="container">
                     <div className="row fullscreen d-flex align-items-center justify-content-center">
                         <div className="banner-content col-lg-10">
-                            {/*                <h5 class="text-white text-uppercase">Now you can feel the Heat</h5>*/}
                             <h1>Tương lai mới thông minh</h1>
                             <a href="#" className="primary-btn text-uppercase"
                                style={{
@@ -117,7 +115,7 @@ export default function Home() {
                                    paddingLeft: "40px",
                                    paddingRight: "40px",
                                    borderRadius: "50px",
-                                   marginBottom:"15px"
+                                   marginBottom: "15px"
                                }}
                             >
                                 Mua ngay
@@ -126,15 +124,12 @@ export default function Home() {
                     </div>
                 </div>
             </section>
-            {/* End banner Area */}
-            {/* Start unique-feature Area */}
             <section className="unique-feature-area section-gap" id="unique">
                 <div className="container">
                     <div className="row d-flex justify-content-center">
                         <div className="menu-content pb-60 col-lg-10">
                             <div className="title text-center">
                                 <h1 className="mb-10 text-white">MỘT SỐ SẢN PHẨM NỔI BẬT </h1>
-                                {/*                    <p>Who are in extremely love with eco friendly system.</p>*/}
                             </div>
                         </div>
                     </div>
@@ -147,34 +142,32 @@ export default function Home() {
                                             <img className="image-home img-fluid" src={product?.imageUrl} alt=""/>
                                         </a>
                                         <div className="desc">
-                                            <h6 style={{height:"30px"}}>{product?.name}</h6>
+                                            <h6 style={{height: "30px"}}>{product?.name}</h6>
                                             <p>
-                                                 <span style={{textDecoration: "line-through", color:"#999999", fontSize:"15px"}}>
+                                                 <span style={{
+                                                     textDecoration: "line-through",
+                                                     color: "#999999",
+                                                     fontSize: "15px"
+                                                 }}>
                                                     {formatPrice(product?.originalPrice)} đ
                                                 </span>
-                                                <span style={{background: "#f9e9e2",
-                                                    borderRadius:" 2px",
+                                                <span style={{
+                                                    background: "#f9e9e2",
+                                                    borderRadius: " 2px",
                                                     color: "#ef5555",
                                                     marginLeft: "10px",
                                                     padding: "2px 2px",
-                                                    fontSize: "12px"}}>
-                                                    -{calculateDiscountPercentage(product?.originalPrice,product?.price)}%
+                                                    fontSize: "12px"
+                                                }}>
+                                                    -{calculateDiscountPercentage(product?.originalPrice, product?.price)}%
                                                 </span>{" "}
                                             </p>
-                                            <h6 style={{color:"red"}}>
+                                            <h6 style={{color: "red"}}>
                                                 {formatPrice(product?.price)} đ
                                             </h6>
-                                            {/*<input type="radio" name="rating" id="star5" value="5"/>*/}
-                                            {/*<label htmlFor="star5"></label>*/}
-                                            {/*/!*<input type="radio" name="rating" id="star4" value="4"/>*!/*/}
-                                            {/*<label htmlFor="star4"></label>*/}
-                                            {/*/!*<input type="radio" name="rating" id="star3" value="3"/>*!/*/}
-                                            {/*<label htmlFor="star3"></label>*/}
-                                            {/*/!*<input type="radio" name="rating" id="star2" value="2"/>*!/*/}
-                                            {/*<label htmlFor="star2"></label>*/}
-                                            {/*/!*<input type="radio" name="rating" id="star1" value="1"/>*!/*/}
-                                            {/*<label htmlFor="star1"></label>*/}
-                                            <button onClick={() => addToCart(product.productId)} className="text-uppercase primary-btn" style={{textDecoration: "none"}}>
+                                            <button onClick={() => addToCart(product.productId)}
+                                                    className="text-uppercase primary-btn"
+                                                    style={{textDecoration: "none"}}>
                                                 Thêm vào giỏ hàng
                                             </button>
                                         </div>
@@ -191,50 +184,56 @@ export default function Home() {
                         <div className="menu-content pb-60 col-lg-10">
                             <div className="title text-center">
                                 <h1 className="mb-10 text-white">SẢN PHẨM MỚI NHẤT </h1>
-                                {/*                    <p>Who are in extremely love with eco friendly system.</p>*/}
                             </div>
                         </div>
                     </div>
-                        {
-                            productsNew.length>0 ?(
-                                <div className="row">
-                                    {productsNew.map((product, index) => (
-                                            <div key={index} className="col-3">
-                                                <div className="single-unique-product">
-                                                    <a href={`product/${product.productId}`}>
-                                                    <img className="image-home img-fluid" src={product?.imageUrl} alt=""/>
-                                                    </a>
-                                                    <div className="desc">
-                                                        <h6 style={{height:"30px"}}>{product?.name}</h6>
-                                                        <p>
-                                                             <span style={{textDecoration: "line-through", color:"#999999", fontSize:"15px"}}>
+                    {
+                        productsNew.length > 0 ? (
+                            <div className="row">
+                                {productsNew.map((product, index) => (
+                                    <div key={index} className="col-3">
+                                        <div className="single-unique-product">
+                                            <a href={`product/${product.productId}`}>
+                                                <img className="image-home img-fluid" src={product?.imageUrl} alt=""/>
+                                            </a>
+                                            <div className="desc">
+                                                <h6 style={{height: "30px"}}>{product?.name}</h6>
+                                                <p>
+                                                             <span style={{
+                                                                 textDecoration: "line-through",
+                                                                 color: "#999999",
+                                                                 fontSize: "15px"
+                                                             }}>
                                                                 {formatPrice(product?.originalPrice)} đ
                                                             </span>
-                                                                        <span style={{background: "#f9e9e2",
-                                                                            borderRadius:" 2px",
-                                                                            color: "#ef5555",
-                                                                            marginLeft: "10px",
-                                                                            padding: "2px 2px",
-                                                                            fontSize: "12px"}}>
-                                                                -{calculateDiscountPercentage(product?.originalPrice,product?.price)}%
+                                                    <span style={{
+                                                        background: "#f9e9e2",
+                                                        borderRadius: " 2px",
+                                                        color: "#ef5555",
+                                                        marginLeft: "10px",
+                                                        padding: "2px 2px",
+                                                        fontSize: "12px"
+                                                    }}>
+                                                                -{calculateDiscountPercentage(product?.originalPrice, product?.price)}%
                                                             </span>{" "}
-                                                        </p>
-                                                        <h6 style={{color:"red"}}>{formatPrice(product?.price)} đ</h6>
-                                                        <button onClick={() => addToCart(product.productId)} className="text-uppercase primary-btn" style={{textDecoration: "none"}}>
-                                                            Thêm vào giỏ hàng
-                                                        </button>
-                                                    </div>
-                                                </div>
+                                                </p>
+                                                <h6 style={{color: "red"}}>{formatPrice(product?.price)} đ</h6>
+                                                <button onClick={() => addToCart(product.productId)}
+                                                        className="text-uppercase primary-btn"
+                                                        style={{textDecoration: "none"}}>
+                                                    Thêm vào giỏ hàng
+                                                </button>
                                             </div>
-                                        ))}
-                                </div>
-                            ):(
-                                <p style={{color: "red"}}>Không có sản phẩm nào!</p>
-                            )
-                        }
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        ) : (
+                            <p style={{color: "red"}}>Không có sản phẩm nào!</p>
+                        )
+                    }
                 </div>
             </section>
-            {/* End faq Area */}
             <Footer></Footer>
         </>
     )
